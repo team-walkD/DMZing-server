@@ -1,7 +1,8 @@
 package com.walkd.dmzing.domain;
 
-import com.walkd.dmzing.dto.UserDto;
+import com.walkd.dmzing.dto.user.UserDto;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,10 +34,10 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public static User fromDto(UserDto userDto) {
+    public static User fromDto(UserDto userDto, PasswordEncoder passwordEncoder) {
         return User.builder()
                 .email(userDto.getEmail())
-                .password(userDto.getPassword())
+                .password(passwordEncoder.encode(userDto.getPassword()))
                 .nickname(userDto.getNickname())
                 .phoneNumber(userDto.getPhoneNumber())
                 .authority(false).build();
