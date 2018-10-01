@@ -1,6 +1,6 @@
 package com.walkd.dmzing.advice;
 
-import com.walkd.dmzing.dto.user.validation.ValidationExceptionDto;
+import com.walkd.dmzing.dto.validation.ValidationExceptionDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
