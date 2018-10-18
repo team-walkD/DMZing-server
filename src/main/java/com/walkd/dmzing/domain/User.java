@@ -1,7 +1,10 @@
 package com.walkd.dmzing.domain;
 
+import com.walkd.dmzing.auth.UserDetailsImpl;
 import com.walkd.dmzing.dto.user.UserDto;
 import lombok.*;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Entity;
@@ -21,12 +24,13 @@ public class User {
     private String email;
     private String password;
     private String nickname;
-    private Boolean authority;
+    private String authority;
     private String phoneNumber;
 
 
+
     @Builder
-    public User(String email, String password, String nickname, Boolean authority, String phoneNumber) {
+    public User(String email, String password, String nickname, String authority, String phoneNumber) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -40,6 +44,10 @@ public class User {
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .nickname(userDto.getNickname())
                 .phoneNumber(userDto.getPhoneNumber())
-                .authority(false).build();
+                .authority(UserDto.USER_AUTHORITY).build();
+    }
+
+    public UserDetailsImpl createUserDetails(){
+        return new UserDetailsImpl(email, password, AuthorityUtils.createAuthorityList(authority));
     }
 }
