@@ -1,5 +1,6 @@
 package com.walkd.dmzing.service;
 
+import com.walkd.dmzing.auth.UserDetailsImpl;
 import com.walkd.dmzing.domain.User;
 import com.walkd.dmzing.dto.user.UserDto;
 import com.walkd.dmzing.repository.UserRepository;
@@ -16,8 +17,8 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void create(UserDto userDto) {
-        userRepository.save(User.fromDto(userDto,passwordEncoder));
+    public UserDetailsImpl create(UserDto userDto) {
+       return userRepository.save(User.fromDto(userDto,passwordEncoder)).createUserDetails();
     }
 
     public void login(UserDto userDto) {

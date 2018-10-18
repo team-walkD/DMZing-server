@@ -1,13 +1,12 @@
 package com.walkd.dmzing.advice;
 
-import com.walkd.dmzing.dto.user.validation.ValidationExceptionDto;
+import com.walkd.dmzing.dto.validation.ValidationExceptionDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import java.util.ArrayList;
 import java.util.List;
 
