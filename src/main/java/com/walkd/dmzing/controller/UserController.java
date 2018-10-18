@@ -1,10 +1,16 @@
 package com.walkd.dmzing.controller;
 
-import com.walkd.dmzing.dto.UserDto;
+import com.walkd.dmzing.auth.jwt.JwtInfo;
+import com.walkd.dmzing.dto.user.JoinUser;
+import com.walkd.dmzing.dto.user.LoginUser;
+import com.walkd.dmzing.dto.user.UserDto;
 import com.walkd.dmzing.service.UserService;
+import com.walkd.dmzing.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,14 +21,16 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("")
-    public ResponseEntity<Void> create(@RequestBody UserDto userDto){
-        // TODO: 2018. 9. 20. 유저 비밀번호 암호화, 정규식 검사, jwt생성해서 자동로그인
-        userService.create(userDto);
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+    public ResponseEntity create(@Validated(JoinUser.class) @RequestBody UserDto userDto) {
+        String token = JwtUtil.createToken(userService.create(userDto));
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtInfo.HEADER_NAME,token);
+
+        return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody UserDto userDto){
+    public ResponseEntity<Void> login(@Validated(LoginUser.class) @RequestBody UserDto userDto) {
         userService.login(userDto);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
