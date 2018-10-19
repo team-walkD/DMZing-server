@@ -33,8 +33,8 @@ public class BaseSecurityHandler implements AuthenticationSuccessHandler, Authen
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
-                                        AuthenticationException exception) throws IOException {
+                                        AuthenticationException exception) {
         log.debug("[BadCredentialsException] credentials exception {}", exception.getMessage());
-        response.sendError(HttpServletResponse.SC_FORBIDDEN, exception.getMessage());
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
     }
 }
