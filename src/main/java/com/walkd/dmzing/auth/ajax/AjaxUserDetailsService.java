@@ -20,7 +20,7 @@ public class AjaxUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String email) {
 		User user = repository.findByEmail(email).orElse(null);
 		if (user == null) {
-			throw new UsernameNotFoundException(user.getEmail() + "라는 사용자가 없습니다.");
+			throw new UsernameNotFoundException(email + "라는 사용자가 없습니다.");
 		}
 
 		return user.createUserDetails();

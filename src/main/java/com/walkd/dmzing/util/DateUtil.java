@@ -10,7 +10,7 @@ public class DateUtil {
 		return Date.from(LocalDateTime.now().toInstant(ZoneOffset.ofHours(9)));
 	}
 
-	public static Date nowAfterDaysToDate(Long days) {
-		return Date.from(LocalDateTime.now().plusDays(days).toInstant(ZoneOffset.ofHours(9)));
+	public static Date nowAfterDaysToDate(Long hours) {
+		return Date.from(LocalDateTime.now().plusHours(hours).toInstant(ZoneOffset.ofHours(9)));
 	}
 }

@@ -22,13 +22,14 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    //todo 스웨거 시큐리티 정리
     @Autowired
     private JwtAuthenticationProvider jwtProvider;
 
@@ -42,15 +43,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private ObjectMapper objectMapper;
 
     private static final String USER_ENTRY_POINT = "/api/users/**";
-    private static final String SWAGGER_ENTRY_POINT = "/swagger-ui.html/**";
     private static final String H2_CONSOLE = "/h2-console/**";
     private static final String LOGIN_ENTRY_POINT = "/api/users/login";
     private static final String ERROR_ENTRY_POINT = "/error";
-
+    private static final List<String> swaggersConfig = new ArrayList<>(
+            Arrays.asList("/v2/api-docs", "/configuration/ui", "/swagger-resources",
+                    "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-resources/configuration/ui",
+                    "/swagger-resources/configuration/security")
+    );
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-resources/configuration/ui", "/swagger-resources/configuration/security");
+        web.ignoring().antMatchers(swaggersConfig.toArray(new String[swaggersConfig.size()]));
     }
 
     @Override
@@ -69,7 +73,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(USER_ENTRY_POINT).permitAll()
-                .antMatchers(SWAGGER_ENTRY_POINT).permitAll()
                 .antMatchers(ERROR_ENTRY_POINT).permitAll()
                 .antMatchers(H2_CONSOLE).permitAll()
                 .and()
@@ -92,11 +95,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public SkipPathRequestMatcher skipPathRequestMatcher() {
-        return new SkipPathRequestMatcher(Arrays.asList(LOGIN_ENTRY_POINT
-                , ERROR_ENTRY_POINT, USER_ENTRY_POINT, H2_CONSOLE, SWAGGER_ENTRY_POINT,
-                "/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security",
-                "/swagger-ui.html", "/webjars/**", "/swagger-resources/configuration/ui"
-                , "/swagger-resources/configuration/security"));
+        List<String> skipPathList = new ArrayList<>(Arrays.asList(USER_ENTRY_POINT,H2_CONSOLE,LOGIN_ENTRY_POINT,ERROR_ENTRY_POINT));
+        skipPathList.addAll(swaggersConfig);
+        return new SkipPathRequestMatcher(skipPathList);
     }
 
     @Bean

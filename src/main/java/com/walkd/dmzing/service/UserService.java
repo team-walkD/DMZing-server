@@ -3,6 +3,7 @@ package com.walkd.dmzing.service;
 import com.walkd.dmzing.auth.UserDetailsImpl;
 import com.walkd.dmzing.domain.User;
 import com.walkd.dmzing.dto.user.UserDto;
+import com.walkd.dmzing.exception.EmailAlreadyExistsException;
 import com.walkd.dmzing.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,10 +19,8 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public UserDetailsImpl create(UserDto userDto) {
-       return userRepository.save(User.fromDto(userDto,passwordEncoder)).createUserDetails();
-    }
+        if (userRepository.existsByEmail(userDto.getEmail())) throw new EmailAlreadyExistsException();
 
-    public void login(UserDto userDto) {
-        User user = userRepository.findByEmail(userDto.getEmail()).get();
+        return userRepository.save(User.fromDto(userDto, passwordEncoder)).createUserDetails();
     }
 }

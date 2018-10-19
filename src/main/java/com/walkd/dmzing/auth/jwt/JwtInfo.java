@@ -12,7 +12,11 @@ public class JwtInfo {
 
 	public static final String TOKEN_KEY = "cys";
 
-	public static final long EXPIRES_LIMIT = 3L;
+	public static final Long EXPIRES_LIMIT = 3L;
+
+	public static final String USER_EMAIL = "email";
+
+	public static final String USER_AUTHORITY = "authority";
 
 	public static Algorithm getAlgorithm() {
 		try {

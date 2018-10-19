@@ -1,6 +1,6 @@
 package com.walkd.dmzing.advice;
 
-import com.walkd.dmzing.dto.validation.ValidationExceptionDto;
+import com.walkd.dmzing.dto.exception.ExceptionDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +15,13 @@ import java.util.List;
 public class ValidationExceptionAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<ValidationExceptionDto>> invalidMethodArgument(MethodArgumentNotValidException exception) {
-        log.debug("[MethodArgumentNotValidException] validation exception {}", exception.getBindingResult().getAllErrors());
-        List<ValidationExceptionDto> validationExceptionDtos = new ArrayList<>();
+    public ResponseEntity<List<ExceptionDto>> invalidMethodArgument(MethodArgumentNotValidException exception) {
+        log.debug("[MethodArgumentNotValidException] methodArgument exception {}", exception.getBindingResult().getAllErrors());
+        List<ExceptionDto> exceptionDtos = new ArrayList<>();
 
         exception.getBindingResult().getAllErrors()
-                .forEach(validError -> validationExceptionDtos.add(ValidationExceptionDto.toDto(validError)));
+                .forEach(validError -> exceptionDtos.add(ExceptionDto.toDto(validError)));
 
-        return new ResponseEntity(validationExceptionDtos,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(exceptionDtos,HttpStatus.BAD_REQUEST);
     }
 }
