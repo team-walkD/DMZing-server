@@ -24,8 +24,8 @@ public class JwtUtil {
         try {
             return JWT.create()
                     .withIssuer(JwtInfo.ISSUER)
-                    .withClaim("email", userDetails.getUsername())
-                    .withClaim("role", userDetails.getAuthorities().toArray()[0].toString())
+                    .withClaim(JwtInfo.USER_EMAIL, userDetails.getUsername())
+                    .withClaim(JwtInfo.USER_AUTHORITY, userDetails.getAuthorities().toArray()[0].toString())
                     .withExpiresAt(date)
                     .sign(JwtInfo.getAlgorithm());
         } catch (JWTCreationException createEx) {
