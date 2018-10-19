@@ -14,5 +14,4 @@ public class UserDetailsImpl extends User {
 	public UserDetailsImpl(String email, String password ,List<GrantedAuthority> authorities) {
 		super(email, password, authorities);
 	}
-
 }

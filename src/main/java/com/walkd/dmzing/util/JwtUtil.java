@@ -22,7 +22,6 @@ public class JwtUtil {
 
     private static String createToken(UserDetails userDetails, Date date) {
         try {
-            log.info(userDetails.getUsername()+"@@@@@@@@@@@@@@@@@@@@@@@@@");
             return JWT.create()
                     .withIssuer(JwtInfo.ISSUER)
                     .withClaim("email", userDetails.getUsername())

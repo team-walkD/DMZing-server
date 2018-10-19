@@ -28,11 +28,4 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).build();
     }
-
-    @PostMapping("/login")
-    public ResponseEntity<Void> login(@Validated(LoginUser.class) @RequestBody UserDto userDto) {
-        userService.login(userDto);
-        return new ResponseEntity<Void>(HttpStatus.OK);
-    }
-
 }

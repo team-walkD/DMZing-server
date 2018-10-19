@@ -20,8 +20,4 @@ public class UserService {
     public UserDetailsImpl create(UserDto userDto) {
        return userRepository.save(User.fromDto(userDto,passwordEncoder)).createUserDetails();
     }
-
-    public void login(UserDto userDto) {
-        User user = userRepository.findByEmail(userDto.getEmail()).get();
-    }
 }
