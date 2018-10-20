@@ -95,7 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public SkipPathRequestMatcher skipPathRequestMatcher() {
-        List<String> skipPathList = new ArrayList<>(Arrays.asList(USER_ENTRY_POINT,H2_CONSOLE,LOGIN_ENTRY_POINT,ERROR_ENTRY_POINT));
+        List<String> skipPathList = new ArrayList<>(Arrays.asList(USER_ENTRY_POINT, H2_CONSOLE, LOGIN_ENTRY_POINT, ERROR_ENTRY_POINT));
         skipPathList.addAll(swaggersConfig);
         return new SkipPathRequestMatcher(skipPathList);
     }

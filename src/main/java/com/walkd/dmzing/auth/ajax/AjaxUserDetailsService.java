@@ -13,16 +13,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class AjaxUserDetailsService implements UserDetailsService {
 
-	@Autowired
-	private UserRepository repository;
+    @Autowired
+    private UserRepository repository;
 
-	@Override
-	public UserDetails loadUserByUsername(String email) {
-		User user = repository.findByEmail(email).orElse(null);
-		if (user == null) {
-			throw new UsernameNotFoundException(email + "라는 사용자가 없습니다.");
-		}
+    @Override
+    public UserDetails loadUserByUsername(String email) {
+        User user = repository.findByEmail(email).orElse(null);
+        if (user == null) {
+            throw new UsernameNotFoundException(email + "라는 사용자가 없습니다.");
+        }
 
-		return user.createUserDetails();
-	}
+        return user.createUserDetails();
+    }
 }

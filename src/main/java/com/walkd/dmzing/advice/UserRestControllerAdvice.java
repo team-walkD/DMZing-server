@@ -1,6 +1,5 @@
 package com.walkd.dmzing.advice;
 
-import com.walkd.dmzing.dto.exception.ExceptionDto;
 import com.walkd.dmzing.exception.EmailAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

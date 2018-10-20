@@ -7,11 +7,11 @@ import java.util.List;
 
 public class UserDetailsImpl extends User {
 
-	public UserDetailsImpl(String email ,List<GrantedAuthority> authorities) {
-		super(email, "", authorities);
-	}
+    public UserDetailsImpl(String email, List<GrantedAuthority> authorities) {
+        super(email, "", authorities);
+    }
 
-	public UserDetailsImpl(String email, String password ,List<GrantedAuthority> authorities) {
-		super(email, password, authorities);
-	}
+    public UserDetailsImpl(String email, String password, List<GrantedAuthority> authorities) {
+        super(email, password, authorities);
+    }
 }
