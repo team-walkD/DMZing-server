@@ -13,7 +13,22 @@ cache:
 
 script: "./gradlew clean build"
 
+deploy:
+- provider: s3
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  bucket: dmzing-s3
+  region: ap-northeast-2
+  skip_cleanup: true
+  acl: public_read
+  wait-until-deployed: true
+  on:
+    repo: team-walkD/DMZing-server
+    branch: master
+
 notifications:
   email:
     recipients:
     - chldbtjd2272@naver.com
+
+
