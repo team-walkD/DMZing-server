@@ -13,6 +13,11 @@ cache:
 
 script: "./gradlew clean build"
 
+before_deploy:
+- zip -r dmzing-server *
+- mkdir -p deploy
+- mv dmzing-server.zip deploy/dmzing-server.zip
+
 deploy:
 - provider: s3
   access_key_id: $AWS_ACCESS_KEY
