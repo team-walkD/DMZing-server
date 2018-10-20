@@ -12,27 +12,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
-	@Autowired
-	private JwtUserDetailsService userDetailsService;
+    @Autowired
+    private JwtUserDetailsService userDetailsService;
 
-	@Override
-	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		if (authentication.getCredentials() == null) {
-			throw new BadCredentialsException("Bad token");
-		}
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        if (authentication.getCredentials() == null) {
+            throw new BadCredentialsException("Bad token");
+        }
 
-		String token = authentication.getCredentials().toString();
+        String token = authentication.getCredentials().toString();
 
-		if (JwtUtil.verify(token)) {
-			UserDetails userDetails = userDetailsService.loadUserByUsername(token);
-			return new JwtAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
-		} else {
-			throw new BadCredentialsException("Bad token");
-		}
-	}
+        if (JwtUtil.verify(token)) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(token);
+            return new JwtAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+        } else {
+            throw new BadCredentialsException("Bad token");
+        }
+    }
 
-	@Override
-	public boolean supports(Class<?> authentication) {
-		return JwtAuthenticationToken.class.isAssignableFrom(authentication);
-	}
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return JwtAuthenticationToken.class.isAssignableFrom(authentication);
+    }
 }

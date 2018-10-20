@@ -27,7 +27,6 @@ public class User {
     private String phoneNumber;
 
 
-
     @Builder
     public User(String email, String password, String nickname, String authority, String phoneNumber) {
         this.email = email;
@@ -46,7 +45,7 @@ public class User {
                 .authority(UserDto.USER_AUTHORITY).build();
     }
 
-    public UserDetailsImpl createUserDetails(){
+    public UserDetailsImpl createUserDetails() {
         return new UserDetailsImpl(email, password, AuthorityUtils.createAuthorityList(authority));
     }
 }

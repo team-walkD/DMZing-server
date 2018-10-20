@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,6 @@ public class ValidationExceptionAdvice {
         exception.getBindingResult().getAllErrors()
                 .forEach(validError -> exceptionDtos.add(ExceptionDto.toDto(validError)));
 
-        return new ResponseEntity(exceptionDtos,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(exceptionDtos, HttpStatus.BAD_REQUEST);
     }
 }

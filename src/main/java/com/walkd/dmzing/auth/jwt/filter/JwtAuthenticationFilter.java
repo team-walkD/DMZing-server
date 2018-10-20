@@ -19,38 +19,38 @@ import java.io.IOException;
 
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-	public JwtAuthenticationFilter(RequestMatcher requestMatcher) {
-		super(requestMatcher);
-	}
+    public JwtAuthenticationFilter(RequestMatcher requestMatcher) {
+        super(requestMatcher);
+    }
 
-	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request,
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
-		String token = request.getHeader(JwtInfo.HEADER_NAME);
+        String token = request.getHeader(JwtInfo.HEADER_NAME);
 
-		if (StringUtils.isEmpty(token)) {
-			throw new AccessDeniedException("Not empty Token");
-		} else {
-			return getAuthenticationManager().authenticate(new JwtAuthenticationToken(token));
-		}
-	}
+        if (StringUtils.isEmpty(token)) {
+            throw new AccessDeniedException("Not empty Token");
+        } else {
+            return getAuthenticationManager().authenticate(new JwtAuthenticationToken(token));
+        }
+    }
 
-	@Override
-	protected void successfulAuthentication(HttpServletRequest request,
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
-		SecurityContext context = SecurityContextHolder.createEmptyContext();
-		context.setAuthentication(authResult);
-		SecurityContextHolder.setContext(context);
-		chain.doFilter(request, response);
-	}
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authResult);
+        SecurityContextHolder.setContext(context);
+        chain.doFilter(request, response);
+    }
 
-	@Override
-	protected void unsuccessfulAuthentication(HttpServletRequest request,
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request,
                                               HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
-		SecurityContextHolder.clearContext();
-		getFailureHandler().onAuthenticationFailure(request, response, failed);
-	}
+        SecurityContextHolder.clearContext();
+        getFailureHandler().onAuthenticationFailure(request, response, failed);
+    }
 }

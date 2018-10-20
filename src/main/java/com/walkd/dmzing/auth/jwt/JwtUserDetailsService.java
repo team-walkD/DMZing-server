@@ -12,17 +12,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtUserDetailsService implements UserDetailsService {
 
-	@Override
-	public UserDetails loadUserByUsername(String token) {
-		DecodedJWT decodedJWT = JwtUtil.tokenToJwt(token);
+    @Override
+    public UserDetails loadUserByUsername(String token) {
+        DecodedJWT decodedJWT = JwtUtil.tokenToJwt(token);
 
-		if (decodedJWT == null) {
-			throw new BadCredentialsException("Not used Token");
-		}
+        if (decodedJWT == null) {
+            throw new BadCredentialsException("Not used Token");
+        }
 
-		String id = decodedJWT.getClaim("email").asString();
-		String role = decodedJWT.getClaim("role").asString();
+        String id = decodedJWT.getClaim("email").asString();
+        String role = decodedJWT.getClaim("role").asString();
 
-		return new UserDetailsImpl(id, AuthorityUtils.createAuthorityList(role));
-	}
+        return new UserDetailsImpl(id, AuthorityUtils.createAuthorityList(role));
+    }
 }
