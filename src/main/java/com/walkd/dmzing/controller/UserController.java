@@ -30,7 +30,7 @@ public class UserController {
 
     @ApiOperation(value = "일반 유저 생성", notes = "일반 유저를 생성합니다. 성공시 jwt 토큰을 헤더에 넣어서 반환합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "생성 성공", response = void.class),
+            @ApiResponse(code = 201, message = "유저 생성 성공", response = void.class),
             @ApiResponse(code = 400, message = "유효성 체크 에러 or 이미 가입된 이메일(String 메세지만 출력됩니다.)", response = ExceptionDto.class),
             @ApiResponse(code = 500, message = "서버 에러")
     })
