@@ -1,14 +1,12 @@
 package com.walkd.dmzing.domain;
 
-import com.walkd.dmzing.dto.review.ReviewDto;
-import com.walkd.dmzing.util.DateUtil;
 import lombok.Builder;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Review extends DateUtil {
+public class Review extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

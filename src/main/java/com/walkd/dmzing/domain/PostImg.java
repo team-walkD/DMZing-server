@@ -13,4 +13,8 @@ public class PostImg {
     private Long id;
 
     private String imgUrl;
+
+    public PostImg(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 }

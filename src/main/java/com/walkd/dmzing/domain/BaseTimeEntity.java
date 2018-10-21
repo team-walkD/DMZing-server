@@ -1,4 +1,4 @@
-package com.walkd.dmzing.util;
+package com.walkd.dmzing.domain;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,7 +15,8 @@ import java.util.Date;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class DateUtil {
+//해당 클래스만으로 인스턴스 생성되지 않도록 abstract로 선언
+public abstract class BaseTimeEntity {
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate

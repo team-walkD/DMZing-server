@@ -1,12 +1,13 @@
 package com.walkd.dmzing.service;
 
-import com.walkd.dmzing.domain.Post;
 import com.walkd.dmzing.dto.review.ReviewDto;
 import com.walkd.dmzing.repository.PostImgRepository;
 import com.walkd.dmzing.repository.PostRepository;
 import com.walkd.dmzing.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 public class ReviewService {
@@ -20,8 +21,9 @@ public class ReviewService {
     @Autowired
     private PostImgRepository postImgRepository;
 
-    public void createReview(ReviewDto reviewDto){
-
+    @Transactional
+    public void createReview(ReviewDto reviewDto) {
+        reviewRepository.save(reviewDto.toEntity());
     }
 
 }

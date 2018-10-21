@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Getter
 @NoArgsConstructor
 public class ReviewDto {
     private String title;
@@ -14,8 +14,10 @@ public class ReviewDto {
     private Long courseId;
     private List<PostDto> postDto;
 
-    public Review toEntity(){
+    public Review toEntity() {
         return Review.builder().title(title)
-                .thumbnailUrl(thumbnailUrl).build();
+                .thumbnailUrl(thumbnailUrl)
+                .posts(postDto.stream().map(postInnerDto -> postInnerDto.toEntity()).collect(Collectors.toList()))
+                .build();
     }
 }
