@@ -1,9 +1,11 @@
 package com.walkd.dmzing.service;
 
+import com.walkd.dmzing.domain.Course;
+import com.walkd.dmzing.domain.User;
 import com.walkd.dmzing.dto.review.ReviewDto;
-import com.walkd.dmzing.repository.PostImgRepository;
-import com.walkd.dmzing.repository.PostRepository;
-import com.walkd.dmzing.repository.ReviewRepository;
+import com.walkd.dmzing.exception.NotFoundCourseException;
+import com.walkd.dmzing.exception.NotFoundUserException;
+import com.walkd.dmzing.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +18,17 @@ public class ReviewService {
     private ReviewRepository reviewRepository;
 
     @Autowired
-    private PostRepository postRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private PostImgRepository postImgRepository;
+    private CourseRepository courseRepository;
 
     @Transactional
-    public void createReview(ReviewDto reviewDto) {
-        reviewRepository.save(reviewDto.toEntity());
+    public void createReview(ReviewDto reviewDto,String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
+        Course course = courseRepository.findById(reviewDto.getCourseId()).orElseThrow(NotFoundCourseException::new);
+
+        reviewRepository.save(reviewDto.toEntity().setUser(user).setCourse(course));
     }
 
 }

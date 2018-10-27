@@ -1,5 +1,6 @@
 package com.walkd.dmzing.domain;
 
+
 import lombok.Builder;
 
 import javax.persistence.*;
@@ -22,14 +23,27 @@ public class Review extends BaseTimeEntity {
     @JoinColumn
     private Course course;
 
+    @ManyToOne
+    @JoinColumn
+    private User user;
+
     private String thumbnailUrl;
 
     @Builder
-    public Review(String title, List<Post> posts, Course course, String thumbnailUrl) {
+    public Review(String title, List<Post> posts, String thumbnailUrl) {
         this.title = title;
         this.posts = posts;
-        this.course = course;
         this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public Review setUser(User user){
+        this.user = user;
+        return this;
+    }
+
+    public Review setCourse(Course course){
+        this.course = course;
+        return this;
     }
 
 }
