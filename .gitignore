@@ -3,7 +3,7 @@
 !gradle/wrapper/gradle-wrapper.jar
 
 
-aws.properties
+/aws.properties
 ### STS ###
 .apt_generated
 .classpath
