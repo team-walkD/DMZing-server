@@ -1,12 +1,18 @@
 package com.walkd.dmzing.domain;
 
 
+import com.walkd.dmzing.dto.review.ReviewDto;
+import com.walkd.dmzing.dto.review.SimpleReviewDto;
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review extends BaseTimeEntity {
 
     @Id
@@ -36,14 +42,34 @@ public class Review extends BaseTimeEntity {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    public Review setUser(User user){
+    public Review setUser(User user) {
         this.user = user;
         return this;
     }
 
-    public Review setCourse(Course course){
+    public Review setCourse(Course course) {
         this.course = course;
         return this;
     }
 
+    public SimpleReviewDto toSimpleDto() {
+        return ReviewDto.builder()
+                .id(id)
+                .title(title)
+                .createdAt(getCreatedAt().getTime())
+                .thumbnailUrl(thumbnailUrl)
+                .courseId(course.getId())
+                .build();
+    }
+
+    public ReviewDto toDto() {
+        return ReviewDto.builder()
+                .id(id)
+                .title(title)
+                .createdAt(getCreatedAt().getTime())
+                .thumbnailUrl(thumbnailUrl)
+                .courseId(course.getId())
+                .postDto(posts.stream().map(post -> post.toDto()).collect(Collectors.toList()))
+                .build();
+    }
 }
