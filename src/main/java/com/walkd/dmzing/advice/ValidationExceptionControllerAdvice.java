@@ -13,11 +13,11 @@ import java.util.List;
 
 @Slf4j
 @RestControllerAdvice
-public class ValidationExceptionAdvice {
+public class ValidationExceptionControllerAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<ExceptionDto>> invalidMethodArgument(MethodArgumentNotValidException exception) {
-        log.debug("[MethodArgumentNotValidException] methodArgument exception {}", exception.getBindingResult().getAllErrors());
+        log.debug("[MethodArgumentNotValidException] {}", exception.getBindingResult().getAllErrors());
         List<ExceptionDto> exceptionDtos = new ArrayList<>();
 
         exception.getBindingResult().getAllErrors()

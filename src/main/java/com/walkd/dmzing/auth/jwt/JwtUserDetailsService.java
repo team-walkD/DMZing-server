@@ -3,12 +3,14 @@ package com.walkd.dmzing.auth.jwt;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.walkd.dmzing.auth.UserDetailsImpl;
 import com.walkd.dmzing.util.JwtUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class JwtUserDetailsService implements UserDetailsService {
 
@@ -21,7 +23,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         }
 
         String id = decodedJWT.getClaim("email").asString();
-        String role = decodedJWT.getClaim("role").asString();
+        String role = decodedJWT.getClaim("authority").asString();
 
         return new UserDetailsImpl(id, AuthorityUtils.createAuthorityList(role));
     }

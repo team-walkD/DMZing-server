@@ -8,6 +8,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.walkd.dmzing.auth.jwt.JwtInfo;
+import com.walkd.dmzing.domain.BaseTimeEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,7 +18,7 @@ import java.util.Date;
 public class JwtUtil {
 
     public static String createToken(UserDetails userDetails) {
-        return createToken(userDetails, DateUtil.nowAfterDaysToDate(JwtInfo.EXPIRES_LIMIT));
+        return createToken(userDetails, BaseTimeEntity.nowAfterDaysToDate(JwtInfo.EXPIRES_LIMIT));
     }
 
     private static String createToken(UserDetails userDetails, Date date) {
@@ -46,7 +47,7 @@ public class JwtUtil {
 
     public static String refreshToken(UserDetails userDetails) {
         //todo 토큰 만료시 리프레시 토큰 발급
-        return createToken(userDetails, DateUtil.nowAfterDaysToDate(JwtInfo.EXPIRES_LIMIT));
+        return createToken(userDetails, BaseTimeEntity.nowAfterDaysToDate(JwtInfo.EXPIRES_LIMIT));
     }
 
     public static DecodedJWT tokenToJwt(String token) {
