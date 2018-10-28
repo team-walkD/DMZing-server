@@ -19,8 +19,8 @@ public class UserExceptionControllerAdvice {
     }
 
     @ExceptionHandler(NotFoundUserException.class)
-    public ResponseEntity notFoundUser(NotFoundUserException exception){
-        log.debug("[NotFoundUserException] {}",exception.getMessage());
+    public ResponseEntity notFoundUser(NotFoundUserException exception) {
+        log.debug("[NotFoundUserException] {}", exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 }
