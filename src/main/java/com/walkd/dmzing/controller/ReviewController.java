@@ -1,5 +1,8 @@
 package com.walkd.dmzing.controller;
 
+import com.walkd.dmzing.domain.Type;
+import com.walkd.dmzing.dto.review.DetailReviewDto;
+import com.walkd.dmzing.dto.review.ReviewCountDto;
 import com.walkd.dmzing.dto.review.ReviewDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.service.ReviewService;
@@ -77,9 +80,9 @@ public class ReviewController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
-    @GetMapping("/last/{rid}")
-    public ResponseEntity<List<SimpleReviewDto>> showReviews(@PathVariable Long rid) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.showReviews(rid));
+    @GetMapping("/last/{rid}/course/{type}")
+    public ResponseEntity<List<SimpleReviewDto>> showReviews(@PathVariable Long rid, @PathVariable Type type) {
+        return ResponseEntity.ok().body(reviewService.showReviews(rid,type));
     }
 
 
@@ -93,8 +96,22 @@ public class ReviewController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @GetMapping("/{rid}")
-    public ResponseEntity<SimpleReviewDto> showReview(@PathVariable Long rid) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.showReview(rid));
+    public ResponseEntity<DetailReviewDto> showReview(@PathVariable Long rid) {
+        return ResponseEntity.ok().body(reviewService.showReview(rid));
+    }
+
+    @ApiOperation(value = "리뷰 수 보기", notes = "코스별 리뷰수를 보여줍니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "호출 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @GetMapping("/count")
+    public ResponseEntity<List<ReviewCountDto>> showReview() {
+        return ResponseEntity.ok().body(reviewService.showReviewCount());
     }
 
 }

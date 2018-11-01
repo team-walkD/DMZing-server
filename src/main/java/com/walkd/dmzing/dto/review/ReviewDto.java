@@ -1,5 +1,6 @@
 package com.walkd.dmzing.dto.review;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.walkd.dmzing.domain.Review;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -10,12 +11,15 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY;
+
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewDto implements SimpleReviewDto {
-    //todo id는 삽입할때 빼도록 적용
+public class ReviewDto implements SimpleReviewDto,DetailReviewDto{
+
+    @ApiModelProperty(hidden = true)
     private Long id;
 
     @ApiModelProperty(example = "dmzing 후기", position = 1)
@@ -27,14 +31,25 @@ public class ReviewDto implements SimpleReviewDto {
     @ApiModelProperty(example = "1", position = 3)
     private Long courseId;
 
+    @ApiModelProperty(hidden = true)
     private Long createdAt;
 
+    @ApiModelProperty(example = "1522222", position = 4)
+    private Long startAt;
+
+    @ApiModelProperty(example = "1533333", position = 5)
+    private Long endAt;
+
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<PostDto> postDto;
 
     public Review toEntity() {
         return Review.builder().title(title)
                 .thumbnailUrl(thumbnailUrl)
                 .posts(postDto.stream().map(postInnerDto -> postInnerDto.toEntity()).collect(Collectors.toList()))
+                .startAt(startAt)
+                .endAt(endAt)
                 .build();
     }
 }
