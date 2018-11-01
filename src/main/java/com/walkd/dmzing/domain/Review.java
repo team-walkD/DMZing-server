@@ -33,13 +33,19 @@ public class Review extends BaseTimeEntity {
     @JoinColumn
     private User user;
 
+    private Long startAt;
+
+    private Long endAt;
+
     private String thumbnailUrl;
 
     @Builder
-    public Review(String title, List<Post> posts, String thumbnailUrl) {
+    public Review(String title, List<Post> posts, String thumbnailUrl, Long startAt, Long endAt) {
         this.title = title;
         this.posts = posts;
         this.thumbnailUrl = thumbnailUrl;
+        this.startAt = startAt;
+        this.endAt = endAt;
     }
 
     public Review setUser(User user) {
@@ -59,6 +65,8 @@ public class Review extends BaseTimeEntity {
                 .createdAt(getCreatedAt().getTime())
                 .thumbnailUrl(thumbnailUrl)
                 .courseId(course.getId())
+                .startAt(startAt)
+                .endAt(endAt)
                 .build();
     }
 
@@ -68,6 +76,8 @@ public class Review extends BaseTimeEntity {
                 .title(title)
                 .createdAt(getCreatedAt().getTime())
                 .thumbnailUrl(thumbnailUrl)
+                .startAt(startAt)
+                .endAt(endAt)
                 .courseId(course.getId())
                 .postDto(posts.stream().map(post -> post.toDto()).collect(Collectors.toList()))
                 .build();

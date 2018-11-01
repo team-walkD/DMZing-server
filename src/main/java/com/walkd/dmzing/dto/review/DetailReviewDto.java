@@ -2,9 +2,10 @@ package com.walkd.dmzing.dto.review;
 
 import io.swagger.annotations.ApiModelProperty;
 
-public interface SimpleReviewDto {
-    //todo 직렬화시 여기 getter만 나가도록 적용
-    @ApiModelProperty(example = "1", position = 1)
+import java.util.List;
+
+public interface DetailReviewDto {
+    @ApiModelProperty(example = "1" , position = 1)
     Long getId();
 
     @ApiModelProperty(example = "dmzing 후기", position = 2)
@@ -24,4 +25,7 @@ public interface SimpleReviewDto {
 
     @ApiModelProperty(example = "1533333", position = 7)
     Long getEndAt();
+
+    @ApiModelProperty(position = 8)
+    List<PostDto> getPostDto();
 }
