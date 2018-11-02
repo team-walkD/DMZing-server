@@ -82,8 +82,8 @@ public class ReviewController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @GetMapping("/last/{rid}/course/{type}")
-    public ResponseEntity<List<SimpleReviewDto>> showReviews(@PathVariable Long rid, @PathVariable Type type) {
-        return ResponseEntity.ok().body(reviewService.showReviews(rid, type));
+    public ResponseEntity<List<SimpleReviewDto>> showReviews(@PathVariable Long rid, @PathVariable Type type, @ApiIgnore Authentication authentication) {
+        return ResponseEntity.ok().body(reviewService.showReviews(rid, type, authentication.getPrincipal().toString()));
     }
 
 
@@ -97,8 +97,8 @@ public class ReviewController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @GetMapping("/{rid}")
-    public ResponseEntity<DetailReviewDto> showReview(@PathVariable Long rid) {
-        return ResponseEntity.ok().body(reviewService.showReview(rid));
+    public ResponseEntity<DetailReviewDto> showReview(@PathVariable Long rid, @ApiIgnore Authentication authentication) {
+        return ResponseEntity.ok().body(reviewService.showReview(rid, authentication.getPrincipal().toString()));
     }
 
     @ApiOperation(value = "리뷰 수 보기", notes = "코스별 리뷰수를 보여줍니다.")
@@ -126,7 +126,7 @@ public class ReviewController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @PostMapping("/photo")
-    public ResponseEntity createPhotoReview(@RequestBody PhotoReviewDto photoReviewDto,@ApiIgnore Authentication authentication) {
+    public ResponseEntity createPhotoReview(@RequestBody PhotoReviewDto photoReviewDto, @ApiIgnore Authentication authentication) {
         photoReviewService.createPhotoReviewDto(photoReviewDto, authentication.getPrincipal().toString());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -143,6 +143,21 @@ public class ReviewController {
     })
     @PostMapping("/photo/last/{pid}/course/{type}")
     public ResponseEntity<List<PhotoReviewDto>> showPhotoReviews(@PathVariable Long pid, @PathVariable Type type) {
-        return ResponseEntity.ok(photoReviewService.showPhotoReviewDtos(pid,type));
+        return ResponseEntity.ok(photoReviewService.showPhotoReviewDtos(pid, type));
+    }
+
+    @ApiOperation(value = "좋아요", notes = "좋아요가 안 눌린 상태에서 누르면 좋아요(true), 좋아요가 눌린상태에서 누르면 취소된다(false)")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "좋아요 생성 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @PostMapping("/like/{rid}")
+    public ResponseEntity<Boolean> createLikeReviews(@PathVariable Long rid, @ApiIgnore Authentication authentication) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(reviewService.createReviewLike(rid, authentication.getPrincipal().toString()));
     }
 }

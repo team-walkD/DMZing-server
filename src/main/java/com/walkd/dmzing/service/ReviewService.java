@@ -1,8 +1,6 @@
 package com.walkd.dmzing.service;
 
-import com.walkd.dmzing.domain.Course;
-import com.walkd.dmzing.domain.Type;
-import com.walkd.dmzing.domain.User;
+import com.walkd.dmzing.domain.*;
 import com.walkd.dmzing.dto.review.ReviewCountDto;
 import com.walkd.dmzing.dto.review.ReviewDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
@@ -44,9 +42,10 @@ public class ReviewService {
     @Autowired
     private PhotoReviewRepository photoReviewRepository;
 
+    @Autowired
+    private ReviewLikeRepository reviewLikeRepository;
 
     private final S3Util s3Util;
-
 
     @Transactional
     public void createReview(ReviewDto reviewDto, String email) {
@@ -56,16 +55,16 @@ public class ReviewService {
         reviewRepository.save(reviewDto.toEntity().setUser(user).setCourse(course));
     }
 
-    public List<SimpleReviewDto> showReviews(Long id, Type type) {
+    public List<SimpleReviewDto> showReviews(Long id, Type type, String email) {
         if (id == 0) {
             return reviewRepository.findTop30ByCourse_TypeOrderByIdDesc(type)
                     .stream()
-                    .map(review -> review.toSimpleDto())
+                    .map(review -> review.toSimpleDto(userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new)))
                     .collect(Collectors.toList());
         }
         return reviewRepository.findTop30ByIdAndCourse_TypeLessThanOrderByIdDesc(id, type)
                 .stream()
-                .map(review -> review.toSimpleDto())
+                .map(review -> review.toSimpleDto(userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new)))
                 .collect(Collectors.toList());
     }
 
@@ -90,8 +89,9 @@ public class ReviewService {
         return s3Util.upload(multipartFile, s3Util.REVIEW_DIR);
     }
 
-    public ReviewDto showReview(Long rid) {
-        return reviewRepository.findById(rid).orElseThrow(NotFoundCourseException::new).toDto();
+    public ReviewDto showReview(Long rid, String email) {
+        return reviewRepository.findById(rid).orElseThrow(NotFoundCourseException::new)
+                .toDto(userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new));
     }
 
     public List<ReviewCountDto> showReviewCount() {
@@ -101,5 +101,19 @@ public class ReviewService {
                         .conut(reviewRepository.countByCourse_Type(type) + photoReviewRepository.countByCourse_Type(type))
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public Boolean createReviewLike(Long id, String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
+        Review review = reviewRepository.findById(id).orElseThrow(NotFoundCourseException::new);
+        ReviewLike reviewLike = reviewLikeRepository.findByReviewAndUser(review, user);
+
+        if (reviewLike == null) {
+            reviewLikeRepository.save(new ReviewLike(user, review));
+            return true;
+        }
+
+        reviewLikeRepository.delete(reviewLike);
+        return false;
     }
 }
