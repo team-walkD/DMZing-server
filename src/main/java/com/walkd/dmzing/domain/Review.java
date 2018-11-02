@@ -39,6 +39,9 @@ public class Review extends BaseTimeEntity {
 
     private String thumbnailUrl;
 
+    @OneToMany(mappedBy = "review",cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<ReviewLike> reviewLikes;
+
     @Builder
     public Review(String title, List<Post> posts, String thumbnailUrl, Long startAt, Long endAt) {
         this.title = title;
@@ -58,7 +61,7 @@ public class Review extends BaseTimeEntity {
         return this;
     }
 
-    public SimpleReviewDto toSimpleDto() {
+    public SimpleReviewDto toSimpleDto(User loginUser) {
         return ReviewDto.builder()
                 .id(id)
                 .title(title)
@@ -67,10 +70,12 @@ public class Review extends BaseTimeEntity {
                 .courseId(course.getId())
                 .startAt(startAt)
                 .endAt(endAt)
+                .likeCount(reviewLikes.stream().count())
+                .like(reviewLikes.stream().anyMatch(reviewLike -> reviewLike.isMyLike(loginUser.getId())))
                 .build();
     }
 
-    public ReviewDto toDto() {
+    public ReviewDto toDto(User loginUser) {
         return ReviewDto.builder()
                 .id(id)
                 .title(title)
@@ -80,6 +85,8 @@ public class Review extends BaseTimeEntity {
                 .endAt(endAt)
                 .courseId(course.getId())
                 .postDto(posts.stream().map(post -> post.toDto()).collect(Collectors.toList()))
+                .likeCount(reviewLikes.stream().count())
+                .like(reviewLikes.stream().anyMatch(reviewLike -> reviewLike.isMyLike(loginUser.getId())))
                 .build();
     }
 }

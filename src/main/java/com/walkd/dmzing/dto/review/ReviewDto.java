@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY;
-
 @Getter
 @Builder
 @NoArgsConstructor
@@ -40,9 +38,14 @@ public class ReviewDto implements SimpleReviewDto,DetailReviewDto{
     @ApiModelProperty(example = "1533333", position = 5)
     private Long endAt;
 
-
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<PostDto> postDto;
+
+    @ApiModelProperty(hidden = true)
+    private Boolean like;
+
+    @ApiModelProperty(hidden = true)
+    private Long likeCount;
 
     public Review toEntity() {
         return Review.builder().title(title)
