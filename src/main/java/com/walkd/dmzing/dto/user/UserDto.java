@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Getter
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserDto {
+public class UserDto implements LoginUser {
     private final static String EMAIL_REGEX = "^[_0-9a-zA-Z-]+@[0-9a-zA-Z]+[.[_0-9a-zA-Z-]+]*$";
     private final static String PASSWORD_REGEX = "^(?=.*?[a-zA-Z])(?=.*?[0-9]).{8,12}$";
     private final static String PHONE_NO_REGEX = "^01[0|1|6-9]-[0-9]{3,4}-[0-9]{4}$";

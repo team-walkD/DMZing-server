@@ -22,8 +22,8 @@ public abstract class BaseTimeEntity {
     @CreatedDate
     private Date createdAt;
 
-    public static Date nowToDate() {
-        return Date.from(LocalDateTime.now().toInstant(ZoneOffset.ofHours(9)));
+    public static Long nowToDate() {
+        return Date.from(LocalDateTime.now().toInstant(ZoneOffset.ofHours(9))).getTime();
     }
 
     public static Date nowAfterDaysToDate(Long days) {

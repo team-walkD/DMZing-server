@@ -3,6 +3,8 @@ package com.walkd.dmzing.dto.review;
 import com.walkd.dmzing.domain.Post;
 import com.walkd.dmzing.domain.PostImg;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class PostDto {
     @ApiModelProperty(example = "1", position = 1)
     private Long day;

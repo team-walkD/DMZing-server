@@ -51,7 +51,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 에러")
     })
     @PostMapping("/login")
-    public void login(@Validated(LoginUser.class) @RequestBody UserDto userDto) {
+    public void login(@Validated(LoginUser.class) @RequestBody LoginUser loginUser) {
     }
 
 }

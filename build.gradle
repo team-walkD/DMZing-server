@@ -21,6 +21,7 @@ sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/libs-milestone'}
 }
 
 
@@ -31,11 +32,17 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	runtime('org.springframework.boot:spring-boot-devtools')
-	runtime('com.h2database:h2')
-	compile('com.auth0:java-jwt:3.3.0')
 	compile('org.springframework.cloud:spring-cloud-starter-aws')
 
+	runtime('com.h2database:h2')
+	compile('com.auth0:java-jwt:3.3.0')
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
+}
+
+dependencyManagement {
+	imports {
+		mavenBom 'org.springframework.cloud:spring-cloud-aws:2.0.0.RC2'
+	}
 }
