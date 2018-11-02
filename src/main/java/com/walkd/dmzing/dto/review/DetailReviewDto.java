@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
 
 public interface DetailReviewDto {
-    @ApiModelProperty(example = "1" , position = 1)
+    @ApiModelProperty(example = "1", position = 1)
     Long getId();
 
     @ApiModelProperty(example = "dmzing 후기", position = 2)
@@ -26,6 +26,14 @@ public interface DetailReviewDto {
     @ApiModelProperty(example = "1533333", position = 7)
     Long getEndAt();
 
-    @ApiModelProperty(position = 8)
+    @ApiModelProperty(position = 10)
     List<PostDto> getPostDto();
+
+
+    @ApiModelProperty(example = "true", position = 8)
+    Boolean getLike();
+
+
+    @ApiModelProperty(example = "10", position = 9)
+    Long getLikeCount();
 }
