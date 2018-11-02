@@ -17,6 +17,8 @@ public class Post extends BaseTimeEntity {
     private Long id;
     private Long day;
     private String title;
+
+    @Lob
     private String content;
 
     @JoinColumn(name = "post_id")

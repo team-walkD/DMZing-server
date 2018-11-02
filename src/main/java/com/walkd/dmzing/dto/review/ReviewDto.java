@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.swagger.annotations.ApiModelProperty.AccessMode.READ_ONLY;
-
 @Getter
 @Builder
 @NoArgsConstructor

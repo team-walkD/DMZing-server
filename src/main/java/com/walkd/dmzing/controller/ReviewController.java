@@ -1,10 +1,8 @@
 package com.walkd.dmzing.controller;
 
 import com.walkd.dmzing.domain.Type;
-import com.walkd.dmzing.dto.review.DetailReviewDto;
-import com.walkd.dmzing.dto.review.ReviewCountDto;
-import com.walkd.dmzing.dto.review.ReviewDto;
-import com.walkd.dmzing.dto.review.SimpleReviewDto;
+import com.walkd.dmzing.dto.review.*;
+import com.walkd.dmzing.service.PhotoReviewService;
 import com.walkd.dmzing.service.ReviewService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +24,9 @@ public class ReviewController {
 
     @Autowired
     private ReviewService reviewService;
+
+    @Autowired
+    private PhotoReviewService photoReviewService;
 
     @ApiOperation(value = "리뷰작성", notes = "리뷰에 날짜별 글을 작성 후 저장합니다.")
     @ApiResponses(value = {
@@ -82,7 +83,7 @@ public class ReviewController {
     })
     @GetMapping("/last/{rid}/course/{type}")
     public ResponseEntity<List<SimpleReviewDto>> showReviews(@PathVariable Long rid, @PathVariable Type type) {
-        return ResponseEntity.ok().body(reviewService.showReviews(rid,type));
+        return ResponseEntity.ok().body(reviewService.showReviews(rid, type));
     }
 
 
@@ -114,4 +115,34 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewService.showReviewCount());
     }
 
+
+    @ApiOperation(value = "사진리뷰 작성", notes = "사진 리뷰를 작성합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "작성 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @PostMapping("/photo")
+    public ResponseEntity createPhotoReview(@RequestBody PhotoReviewDto photoReviewDto,@ApiIgnore Authentication authentication) {
+        photoReviewService.createPhotoReviewDto(photoReviewDto, authentication.getPrincipal().toString());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+
+    @ApiOperation(value = "사진리뷰 전체보기", notes = "사진리뷰를 최신순으로 30개씩 보여줍니다. * 마지막 인덱스를 넣어서 보내야합니다. 없을시 0을 넣어서 보냅니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "호출 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @PostMapping("/photo/last/{pid}/course/{type}")
+    public ResponseEntity<List<PhotoReviewDto>> showPhotoReviews(@PathVariable Long pid, @PathVariable Type type) {
+        return ResponseEntity.ok(photoReviewService.showPhotoReviewDtos(pid,type));
+    }
 }
