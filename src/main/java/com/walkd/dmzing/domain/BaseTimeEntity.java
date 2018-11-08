@@ -15,7 +15,6 @@ import java.util.Date;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-//해당 클래스만으로 인스턴스 생성되지 않도록 abstract로 선언
 public abstract class BaseTimeEntity {
 
     @Temporal(TemporalType.TIMESTAMP)
