@@ -13,5 +13,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     boolean existsByThumbnailUrl(String imageUrl);
 
-    Long  countByCourse_Type(Type type);
+    Long countByCourse_Type(Type type);
+
+    Long countById(Long id);
 }

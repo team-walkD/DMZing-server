@@ -12,7 +12,6 @@ import com.walkd.dmzing.repository.*;
 import com.walkd.dmzing.util.S3Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,23 +26,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    @Autowired
-    private ReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
 
-    @Autowired
-    private PostImgRepository postImgRepository;
+    private final PostImgRepository postImgRepository;
 
-    @Autowired
-    private PhotoReviewRepository photoReviewRepository;
+    private final PhotoReviewRepository photoReviewRepository;
 
-    @Autowired
-    private ReviewLikeRepository reviewLikeRepository;
+    private final ReviewLikeRepository reviewLikeRepository;
 
     private final S3Util s3Util;
 
