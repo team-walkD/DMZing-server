@@ -2,6 +2,7 @@ package com.walkd.dmzing.controller;
 
 import com.walkd.dmzing.auth.jwt.JwtInfo;
 import com.walkd.dmzing.dto.exception.ExceptionDto;
+import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.JoinUser;
 import com.walkd.dmzing.dto.user.LoginUser;
 import com.walkd.dmzing.dto.user.UserDto;
@@ -18,6 +19,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.List;
 
 
 @Slf4j
@@ -82,8 +85,11 @@ public class UserController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @GetMapping("/reviews")
-    public void showUserReview(@ApiIgnore Authentication authentication) {
+    public ResponseEntity<List<SimpleReviewDto>> showUserReview(@ApiIgnore Authentication authentication) {
+        // TODO authentication 수정
+        return ResponseEntity.ok().body(userService.showUserReview("example@gmail.com"));
     }
+
 
     @ApiOperation(value = "마이페이지 코스 조회", notes = "좋아요한 코스 조회")
     @ApiResponses(value = {
@@ -96,6 +102,8 @@ public class UserController {
     })
     @GetMapping("/course")
     public void showUserCourse(@ApiIgnore Authentication authentication) {
+        // TODO authentication 수정
+        
     }
 
 }

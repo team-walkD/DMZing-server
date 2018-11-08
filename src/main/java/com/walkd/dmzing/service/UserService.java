@@ -3,9 +3,12 @@ package com.walkd.dmzing.service;
 import com.walkd.dmzing.auth.UserDetailsImpl;
 import com.walkd.dmzing.domain.Review;
 import com.walkd.dmzing.domain.User;
+import com.walkd.dmzing.dto.review.ReviewDto;
+import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.UserDto;
 import com.walkd.dmzing.dto.user.UserInfoDto;
 import com.walkd.dmzing.exception.EmailAlreadyExistsException;
+import com.walkd.dmzing.exception.NotFoundReviewException;
 import com.walkd.dmzing.exception.NotFoundUserException;
 import com.walkd.dmzing.repository.CourseRepository;
 import com.walkd.dmzing.repository.ReviewLikeRepository;
@@ -15,6 +18,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,5 +58,24 @@ public class UserService {
         // TODO dto 수정
         UserInfoDto userInfoDto = new UserInfoDto(user.getEmail(), user.getNickname(), likedCourseCount, reviewCount, user.getDmzPoint());
         return userInfoDto;
+    }
+
+    @Transactional
+    public List<SimpleReviewDto> showUserReview(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
+        return reviewRepository.findAllByUserId(user.getId())
+                .stream()
+                .map(review -> review.toSimpleDto(userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new)))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void showUserCourse(String email) {
+
+    }
+
+    @Transactional
+    public void showUserDmzPoint(String email) {
+
     }
 }
