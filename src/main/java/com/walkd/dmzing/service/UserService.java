@@ -5,18 +5,17 @@ import com.walkd.dmzing.domain.User;
 import com.walkd.dmzing.dto.user.UserDto;
 import com.walkd.dmzing.exception.EmailAlreadyExistsException;
 import com.walkd.dmzing.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public UserDetailsImpl create(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) throw new EmailAlreadyExistsException();

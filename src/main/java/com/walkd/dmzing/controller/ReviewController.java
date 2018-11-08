@@ -5,8 +5,8 @@ import com.walkd.dmzing.dto.review.*;
 import com.walkd.dmzing.service.PhotoReviewService;
 import com.walkd.dmzing.service.ReviewService;
 import io.swagger.annotations.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,13 +20,12 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/reviews")
+@RequiredArgsConstructor
 public class ReviewController {
 
-    @Autowired
-    private ReviewService reviewService;
+    private final ReviewService reviewService;
 
-    @Autowired
-    private PhotoReviewService photoReviewService;
+    private final PhotoReviewService photoReviewService;
 
     @ApiOperation(value = "리뷰작성", notes = "리뷰에 날짜별 글을 작성 후 저장합니다.")
     @ApiResponses(value = {

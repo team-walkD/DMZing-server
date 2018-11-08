@@ -1,6 +1,5 @@
 package com.walkd.dmzing.service;
 
-import com.walkd.dmzing.domain.Course;
 import com.walkd.dmzing.domain.Type;
 import com.walkd.dmzing.dto.review.PhotoReviewDto;
 import com.walkd.dmzing.exception.NotFoundCourseException;
@@ -8,7 +7,7 @@ import com.walkd.dmzing.exception.NotFoundUserException;
 import com.walkd.dmzing.repository.CourseRepository;
 import com.walkd.dmzing.repository.PhotoReviewRepository;
 import com.walkd.dmzing.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,16 +15,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PhotoReviewService {
 
-    @Autowired
-    private PhotoReviewRepository photoReviewRepository;
+    private final PhotoReviewRepository photoReviewRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
 
     @Transactional
     public void createPhotoReviewDto(PhotoReviewDto photoReviewDto,String email){
