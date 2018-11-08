@@ -48,7 +48,7 @@ public class UserService {
         // TODO 유저가 좋아요 누른건지 유저가 픽한건지 확인 필요
         Long likedCourseCount = Long.parseLong("0");
 
-
+        // TODO dto 수정
         UserInfoDto userInfoDto = new UserInfoDto(user.getEmail(), user.getNickname(), likedCourseCount, reviewCount, user.getDmzPoint());
         return userInfoDto;
     }
