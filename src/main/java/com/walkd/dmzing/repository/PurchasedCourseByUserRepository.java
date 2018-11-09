@@ -1,9 +1,9 @@
 package com.walkd.dmzing.repository;
 
 import com.walkd.dmzing.domain.Type;
-import com.walkd.dmzing.domain.UserPickedMap;
+import com.walkd.dmzing.domain.PurchasedCourseByUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserPickedMapRepository extends JpaRepository<UserPickedMap, Long> {
+public interface PurchasedCourseByUserRepository extends JpaRepository<PurchasedCourseByUser, Long> {
     Long countByCourse_Type(Type type);
 }

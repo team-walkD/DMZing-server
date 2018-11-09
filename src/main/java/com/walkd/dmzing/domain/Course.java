@@ -26,16 +26,25 @@ public class Course {
     private String imageUrl;
 
     @OneToMany(mappedBy = "course",cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<UserPickedMap> userPickedMaps;
+    private List<PurchasedCourseByUser> purchasedCoursesByUser;
+
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Place> places;
+
+    private Level level;
+
+    private Integer estimatedTime;
+
+    //todo:좋아요
 
     @Builder
-    public Course(Type type, String mainDescription, String subDescription, String imageUrl){
+
+    public Course(Type type, String mainDescription, String subDescription, String imageUrl, Level level, Integer estimatedTime) {
         this.type = type;
         this.mainDescription = mainDescription;
         this.subDescription = subDescription;
         this.imageUrl = imageUrl;
+        this.level = level;
+        this.estimatedTime = estimatedTime;
     }
-
-    public void
-
 }

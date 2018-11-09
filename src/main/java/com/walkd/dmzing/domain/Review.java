@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Review extends BaseTimeEntity {
+public class Review extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

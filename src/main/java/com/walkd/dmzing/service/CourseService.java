@@ -1,8 +1,9 @@
 package com.walkd.dmzing.service;
 
+import com.walkd.dmzing.dto.course.CourseDetailResponseDto;
 import com.walkd.dmzing.dto.course.CourseMainResponseDto;
 import com.walkd.dmzing.repository.CourseRepository;
-import com.walkd.dmzing.repository.UserPickedMapRepository;
+import com.walkd.dmzing.repository.PurchasedCourseByUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class CourseService {
     private CourseRepository courseRepository;
 
     @Autowired
-    private UserPickedMapRepository userPickedMapRepository;
+    private PurchasedCourseByUserRepository purchasedCourseByUserRepository;
 
     @Transactional(readOnly = true)
     public List<CourseMainResponseDto> showCourses() {
