@@ -1,5 +1,6 @@
 package com.walkd.dmzing.domain;
 
+import com.walkd.dmzing.dto.course.CourseMainDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,26 +26,37 @@ public class Course {
 
     private String imageUrl;
 
-    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<PurchasedCourseByUser> purchasedCoursesByUser;
+    private String lineImageUrl;
 
-    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "course_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Place> places;
 
     private Level level;
 
-    private Integer estimatedTime;
-
-    //todo:좋아요
+    private Double estimatedTime;
 
     @Builder
-
-    public Course(Type type, String mainDescription, String subDescription, String imageUrl, Level level, Integer estimatedTime) {
+    public Course(Type type, String mainDescription, String subDescription, String imageUrl, String lineImageUrl, Level level, Double estimatedTime) {
         this.type = type;
         this.mainDescription = mainDescription;
         this.subDescription = subDescription;
         this.imageUrl = imageUrl;
+        this.lineImageUrl = lineImageUrl;
         this.level = level;
         this.estimatedTime = estimatedTime;
+    }
+
+    public CourseMainDto toCourseMainDto(User user) {
+        return CourseMainDto.builder()
+                .id(id)
+                .type(type)
+                .imageUrl(imageUrl)
+                .lineImageUrl(lineImageUrl)
+                .mainDescription(mainDescription)
+                .subDescription(subDescription)
+                .pickCount()
+                .isPurchased()
+                .build();
     }
 }
