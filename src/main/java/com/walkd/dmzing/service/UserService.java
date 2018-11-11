@@ -1,14 +1,11 @@
 package com.walkd.dmzing.service;
 
 import com.walkd.dmzing.auth.UserDetailsImpl;
-import com.walkd.dmzing.domain.Review;
 import com.walkd.dmzing.domain.User;
-import com.walkd.dmzing.dto.review.ReviewDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.UserDto;
 import com.walkd.dmzing.dto.user.UserInfoDto;
 import com.walkd.dmzing.exception.EmailAlreadyExistsException;
-import com.walkd.dmzing.exception.NotFoundReviewException;
 import com.walkd.dmzing.exception.NotFoundUserException;
 import com.walkd.dmzing.repository.CourseRepository;
 import com.walkd.dmzing.repository.ReviewLikeRepository;
@@ -20,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +28,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     private final ReviewRepository reviewRepository;
+
     private final ReviewLikeRepository reviewLikeRepository;
 
     private final CourseRepository courseRepository;
