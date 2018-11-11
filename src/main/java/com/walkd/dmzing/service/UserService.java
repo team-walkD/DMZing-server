@@ -10,11 +10,17 @@ import com.walkd.dmzing.dto.user.info.UserInfoDto;
 import com.walkd.dmzing.exception.EmailAlreadyExistsException;
 import com.walkd.dmzing.exception.NotFoundUserException;
 import com.walkd.dmzing.repository.*;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +40,6 @@ public class UserService {
     private final CourseRepository courseRepository;
 
     private final DpHistoryRepository dpHistoryRepository;
-
 
     public UserDetailsImpl create(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) throw new EmailAlreadyExistsException();

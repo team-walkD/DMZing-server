@@ -8,6 +8,7 @@ import com.walkd.dmzing.dto.user.LoginUser;
 import com.walkd.dmzing.dto.user.UserDto;
 import com.walkd.dmzing.dto.user.info.UserDpInfoDto;
 import com.walkd.dmzing.dto.user.info.UserInfoDto;
+
 import com.walkd.dmzing.service.UserService;
 import com.walkd.dmzing.util.JwtUtil;
 import io.swagger.annotations.*;
@@ -90,6 +91,7 @@ public class UserController {
     }
 
 
+
 //    @ApiOperation(value = "마이페이지 코스 조회", notes = "좋아요한 코스 조회")
 //    @ApiResponses(value = {
 //            @ApiResponse(code = 200, message = "조회 성공"),
@@ -103,6 +105,7 @@ public class UserController {
 //    public void showUserCourse(@ApiIgnore Authentication authentication) {
 //    }
 
+
     @ApiOperation(value = "마이페이지 DP 조회", notes = "DP 조회")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "조회 성공"),
@@ -113,6 +116,7 @@ public class UserController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @GetMapping("/dp")
+
     public ResponseEntity<UserDpInfoDto> showUserDmzPoint(@ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(userService.showUserDmzPoint(authentication.getPrincipal().toString()));
     }
