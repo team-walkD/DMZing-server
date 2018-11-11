@@ -1,5 +1,9 @@
 package com.walkd.dmzing.domain;
 
+import com.walkd.dmzing.dto.user.info.UserDpInfoDto;
+import com.walkd.dmzing.dto.user.info.UserInfoDto;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
