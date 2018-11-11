@@ -27,7 +27,7 @@ public class PhotoReviewDto {
     @ApiModelProperty(example = "#아아아#캬캬캬", position = 5)
     private String tag;
 
-    @ApiModelProperty(example = "1" , position = 6)
+    @ApiModelProperty(example = "1", position = 6)
     private Long courseId;
 
     public PhotoReview toEntity(User user, Course course) {

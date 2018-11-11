@@ -1,9 +1,13 @@
 package com.walkd.dmzing.domain;
 
+import com.walkd.dmzing.dto.user.info.UserDpInfoDto;
+import com.walkd.dmzing.dto.user.info.UserInfoDto;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
-public class DpHistory extends BaseTimeEntity {
+public class DpHistory extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

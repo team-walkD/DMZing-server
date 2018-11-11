@@ -15,7 +15,7 @@ import java.util.Date;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseTimeEntity {
+public abstract class BaseTime {
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate

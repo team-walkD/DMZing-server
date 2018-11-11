@@ -42,10 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static final String USER_ENTRY_POINT = "/api/users/**";
+    private static final String USER_ENTRY_POINT = "/api/users";
     private static final String H2_CONSOLE = "/h2-console/**";
     private static final String LOGIN_ENTRY_POINT = "/api/users/login";
-    private static final String COURSE_ENTRY_POINT = "/api/course/**";
     private static final String ERROR_ENTRY_POINT = "/error";
     private static final List<String> swaggersConfig = new ArrayList<>(
             Arrays.asList("/v2/api-docs", "/configuration/ui", "/swagger-resources",
@@ -76,7 +75,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(USER_ENTRY_POINT).permitAll()
                 .antMatchers(ERROR_ENTRY_POINT).permitAll()
                 .antMatchers(H2_CONSOLE).permitAll()
-                .antMatchers(COURSE_ENTRY_POINT).permitAll()
                 .and()
                 .headers().frameOptions().sameOrigin();
     }
@@ -97,7 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public SkipPathRequestMatcher skipPathRequestMatcher() {
-        List<String> skipPathList = new ArrayList<>(Arrays.asList(USER_ENTRY_POINT, H2_CONSOLE, LOGIN_ENTRY_POINT, ERROR_ENTRY_POINT, COURSE_ENTRY_POINT));
+        List<String> skipPathList = new ArrayList<>(Arrays.asList(USER_ENTRY_POINT, H2_CONSOLE, LOGIN_ENTRY_POINT, ERROR_ENTRY_POINT));
         skipPathList.addAll(swaggersConfig);
         return new SkipPathRequestMatcher(skipPathList);
     }

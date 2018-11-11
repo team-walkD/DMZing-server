@@ -5,6 +5,7 @@ import com.walkd.dmzing.domain.Type;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findTop30ByIdAndCourse_TypeLessThanOrderByIdDesc(Long id, Type type);
@@ -16,4 +17,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Long countByCourse_Type(Type type);
 
     Long countById(Long id);
+
+    Long countReviewByUserId(Long id);
+
+    List<Review> findAllByUserId(Long id);
 }

@@ -26,6 +26,9 @@ public class User {
     private String authority;
     private String phoneNumber;
 
+    private Long dmzPoint = 500L;
+
+
 
     @Builder
     public User(String email, String password, String nickname, String authority, String phoneNumber) {
