@@ -44,7 +44,6 @@ public class UserService {
 
     @Transactional
     public UserInfoDto showUserInfo(String email) {
-
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
 
         Long writtenReviewCount = reviewRepository.countReviewByUserId(user.getId());
@@ -62,10 +61,11 @@ public class UserService {
 
     @Transactional
     public List<SimpleReviewDto> showUserReview(String email) {
+        System.out.println(email);
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
         return reviewRepository.findAllByUserId(user.getId())
                 .stream()
-                .map(review -> review.toSimpleDto(userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new)))
+                .map(review -> review.toSimpleDto(user))
                 .collect(Collectors.toList());
     }
 
@@ -76,6 +76,7 @@ public class UserService {
 
     @Transactional
     public void showUserDmzPoint(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
 
     }
 }

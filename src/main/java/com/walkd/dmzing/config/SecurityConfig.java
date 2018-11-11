@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static final String USER_ENTRY_POINT = "/api/users/**";
+    private static final String USER_ENTRY_POINT = "/api/users";
     private static final String H2_CONSOLE = "/h2-console/**";
     private static final String LOGIN_ENTRY_POINT = "/api/users/login";
     private static final String ERROR_ENTRY_POINT = "/error";
