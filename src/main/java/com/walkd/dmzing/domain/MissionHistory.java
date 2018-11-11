@@ -27,4 +27,6 @@ public class MissionHistory extends BaseTime {
         this.place = place;
         this.purchasedCoursesByUser = purchasedCourseByUser;
     }
+
+
 }

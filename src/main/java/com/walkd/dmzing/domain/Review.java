@@ -39,7 +39,7 @@ public class Review extends BaseTime {
 
     private String thumbnailUrl;
 
-    @OneToMany(mappedBy = "review",cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ReviewLike> reviewLikes;
 
     @Builder
