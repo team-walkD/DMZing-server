@@ -1,9 +1,17 @@
 package com.walkd.dmzing.domain;
 
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DpHistory extends BaseTimeEntity {
+    //todo enum 추상화
+    public static final String INIT_DP = "시작 포인트";
+    public static final String FIND_LETTER =  "편지 찾기";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +23,13 @@ public class DpHistory extends BaseTimeEntity {
 
     private Long dp;
 
-    //todo 타입이 정해지면 enum으로 수정
-    private String type;
+    private String  dpType;
 
+
+    @Builder
+    public DpHistory(User user, Long dp, String dpType) {
+        this.user = user;
+        this.dp = dp;
+        this.dpType = dpType;
+    }
 }

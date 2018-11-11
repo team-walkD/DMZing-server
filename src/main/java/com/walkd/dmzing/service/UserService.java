@@ -1,17 +1,17 @@
 package com.walkd.dmzing.service;
 
 import com.walkd.dmzing.auth.UserDetailsImpl;
+import com.walkd.dmzing.domain.DpHistory;
 import com.walkd.dmzing.domain.User;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.UserDto;
-import com.walkd.dmzing.dto.user.UserInfoDto;
+import com.walkd.dmzing.dto.user.info.UserDpInfoDto;
+import com.walkd.dmzing.dto.user.info.UserInfoDto;
 import com.walkd.dmzing.exception.EmailAlreadyExistsException;
 import com.walkd.dmzing.exception.NotFoundUserException;
-import com.walkd.dmzing.repository.CourseRepository;
-import com.walkd.dmzing.repository.ReviewLikeRepository;
-import com.walkd.dmzing.repository.ReviewRepository;
-import com.walkd.dmzing.repository.UserRepository;
+import com.walkd.dmzing.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -33,10 +34,17 @@ public class UserService {
 
     private final CourseRepository courseRepository;
 
+    private final DpHistoryRepository dpHistoryRepository;
+
+    @Transactional
     public UserDetailsImpl create(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) throw new EmailAlreadyExistsException();
 
-        return userRepository.save(User.fromDto(userDto, passwordEncoder)).createUserDetails();
+        User user = userRepository.save(User.fromDto(userDto, passwordEncoder));
+
+        dpHistoryRepository.save(DpHistory.builder().dp(user.getDmzPoint()).dpType(DpHistory.INIT_DP).user(user).build());
+
+        return user.createUserDetails();
     }
 
     @Transactional
@@ -58,7 +66,6 @@ public class UserService {
 
     @Transactional
     public List<SimpleReviewDto> showUserReview(String email) {
-        System.out.println(email);
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
         return reviewRepository.findAllByUserId(user.getId())
                 .stream()
@@ -72,8 +79,13 @@ public class UserService {
     }
 
     @Transactional
-    public void showUserDmzPoint(String email) {
+    public UserDpInfoDto showUserDmzPoint(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
 
+        List<DpHistory> dpHistories = dpHistoryRepository.findAllByUserId(user.getId());
+
+        // TODO dto 수정
+        UserDpInfoDto userDpInfoDto = new UserDpInfoDto(user.getDmzPoint(), dpHistories);
+        return userDpInfoDto;
     }
 }
