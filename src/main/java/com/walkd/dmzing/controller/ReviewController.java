@@ -15,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -46,14 +48,14 @@ public class ReviewController {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "저장 성공"),
             @ApiResponse(code = 401, message = "권한 없음"),
-            @ApiResponse(code = 500, message = "서버 에러")
+            @ApiResponse(code = 500, message = "서버 에러"),
     })
     @ApiImplicitParams({
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @PostMapping("/images")
-    public ResponseEntity<String> uploadImage(@RequestParam("data") MultipartFile multipartFile) throws IOException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.uploadImg(multipartFile));
+    public ResponseEntity<ImageDto> uploadImage(@RequestParam("data") MultipartFile multipartFile) throws IOException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ImageDto(reviewService.uploadImg(multipartFile)));
     }
 
     @ApiOperation(value = "이미지 삭제", notes = "s3에 들어있는 이미지를 삭제합니다.")
@@ -155,8 +157,8 @@ public class ReviewController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @PostMapping("/like/{rid}")
-    public ResponseEntity<Boolean> createLikeReviews(@PathVariable Long rid, @ApiIgnore Authentication authentication) {
+    public ResponseEntity<ReviewLikeDto> createLikeReviews(@PathVariable Long rid, @ApiIgnore Authentication authentication) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(reviewService.createReviewLike(rid, authentication.getPrincipal().toString()));
+                .body(new ReviewLikeDto(reviewService.createReviewLike(rid, authentication.getPrincipal().toString())));
     }
 }
