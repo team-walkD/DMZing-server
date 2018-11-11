@@ -44,8 +44,6 @@ public class UserService {
 
     @Transactional
     public UserInfoDto showUserInfo(String email) {
-        System.out.println(email);
-
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
 
         Long writtenReviewCount = reviewRepository.countReviewByUserId(user.getId());
@@ -81,5 +79,4 @@ public class UserService {
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
 
     }
-
 }
