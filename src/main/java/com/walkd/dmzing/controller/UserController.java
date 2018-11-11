@@ -68,10 +68,9 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
-    @GetMapping("")
+    @GetMapping("/info")
     public ResponseEntity<UserInfoDto> showUserInfo(@ApiIgnore Authentication authentication) {
-        // TODO authentication 변경
-        return ResponseEntity.ok().body(userService.showUserInfo("example@gmail.com"));
+        return ResponseEntity.ok().body(userService.showUserInfo(authentication.getPrincipal().toString()));
     }
 
 
@@ -86,8 +85,7 @@ public class UserController {
     })
     @GetMapping("/reviews")
     public ResponseEntity<List<SimpleReviewDto>> showUserReview(@ApiIgnore Authentication authentication) {
-        // TODO authentication 수정
-        return ResponseEntity.ok().body(userService.showUserReview("example@gmail.com"));
+        return ResponseEntity.ok().body(userService.showUserReview(authentication.getPrincipal().toString()));
     }
 
 
@@ -102,8 +100,19 @@ public class UserController {
     })
     @GetMapping("/course")
     public void showUserCourse(@ApiIgnore Authentication authentication) {
-        // TODO authentication 수정
-        
+    }
+
+    @ApiOperation(value = "마이페이지 DP 조회", notes = "DP 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @GetMapping("/dp")
+    public void showUserDmzPoint(@ApiIgnore Authentication authentication) {
     }
 
 }
