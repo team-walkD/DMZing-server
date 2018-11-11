@@ -1,4 +1,4 @@
-package com.walkd.dmzing.dto.user;
+package com.walkd.dmzing.dto.user.info;
 
 
 import lombok.AllArgsConstructor;
@@ -16,6 +16,6 @@ public class UserInfoDto {
 
     private Long reviewCount;
 
-    private int dp;
+    private Long dp;
 
 }
