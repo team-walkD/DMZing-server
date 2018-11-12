@@ -20,6 +20,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -41,6 +46,7 @@ public class UserService {
 
     private final PurchasedCourseByUserRepository purchasedCourseByUserRepository;
 
+  
     public UserDetailsImpl create(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) throw new EmailAlreadyExistsException();
 
