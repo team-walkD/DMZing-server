@@ -1,13 +1,12 @@
 package com.walkd.dmzing.domain;
 
-import com.walkd.dmzing.dto.user.info.UserCourseInfoDto;
+import com.walkd.dmzing.dto.course.CourseMainDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(
@@ -42,8 +41,8 @@ public class PurchasedCourseByUser {
         this.isPicked = isPicked;
     }
 
-    public UserCourseInfoDto toUserCourseInfoDto(Course course) {
-        return UserCourseInfoDto.builder()
+    public CourseMainDto toUserCourseInfoDto(Course course) {
+        return CourseMainDto.builder()
                 .id(course.getId())
                 .title(course.getTitle())
                 .type(course.getType())

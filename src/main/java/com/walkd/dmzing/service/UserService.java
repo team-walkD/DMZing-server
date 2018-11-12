@@ -1,12 +1,11 @@
 package com.walkd.dmzing.service;
 
 import com.walkd.dmzing.auth.UserDetailsImpl;
-import com.walkd.dmzing.domain.DpHistory;
-import com.walkd.dmzing.domain.PurchasedCourseByUser;
-import com.walkd.dmzing.domain.User;
+import com.walkd.dmzing.domain.*;
+import com.walkd.dmzing.dto.course.CourseMainDto;
+import com.walkd.dmzing.dto.course.PlaceDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.UserDto;
-import com.walkd.dmzing.dto.user.info.UserCourseInfoDto;
 import com.walkd.dmzing.dto.user.info.UserDpInfoDto;
 import com.walkd.dmzing.dto.user.info.UserInfoDto;
 import com.walkd.dmzing.exception.EmailAlreadyExistsException;
@@ -26,6 +25,7 @@ import java.util.stream.Collectors;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Slf4j
@@ -45,6 +45,8 @@ public class UserService {
     private final DpHistoryRepository dpHistoryRepository;
 
     private final PurchasedCourseByUserRepository purchasedCourseByUserRepository;
+    private final MissionHistoryRepository missionHistoryRepository;
+    private final PlaceRepository placeRepository;
 
   
     public UserDetailsImpl create(UserDto userDto) {
@@ -80,7 +82,7 @@ public class UserService {
     }
 
     @Transactional
-    public List<UserCourseInfoDto> showUserCourse(String email) {
+    public List<CourseMainDto> showUserCourse(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
         return purchasedCourseByUserRepository.findAllByUserId(user.getId())
                 .stream()
@@ -97,5 +99,31 @@ public class UserService {
         // TODO dto 수정
         UserDpInfoDto userDpInfoDto = new UserDpInfoDto(user.getDmzPoint(), dpHistories);
         return userDpInfoDto;
+    }
+
+
+    @Transactional
+    public List<PlaceDto> showUserMailBox(Long cid, String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
+
+        // 유저 인덱스와 코스 인덱스를 통해 구매 테이블에서 구매 목록 인덱스 조회
+        List<PurchasedCourseByUser> purchasedCourseByUsers = purchasedCourseByUserRepository.findAllByUserIdAndCourseId(user.getId(), cid);
+
+        // 구매목록 인덱스를 통해 미션히스토리 조회
+        List<MissionHistory> missionHistories = purchasedCourseByUsers
+                .stream()
+                .map(purchasedCourseByUser ->
+                        missionHistoryRepository.findAllByPurchasedCoursesByUserId(purchasedCourseByUser.getId()))
+                .collect(Collectors.toList());
+
+        // 미션히스토리를 통해 place 조회
+        List<Place> places = missionHistories
+                .stream()
+                .map(missionHistory -> placeRepository.findAllById(missionHistory.getPlace().getId()))
+                .collect(Collectors.toList());
+
+        return places.stream().map(place -> place.toPlaceDto(place))
+                .collect(Collectors.toList());
+
     }
 }

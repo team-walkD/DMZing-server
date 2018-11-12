@@ -77,4 +77,21 @@ public class Place {
                 .sequence(sequence)
                 .build();
     }
+
+    public PlaceDto toPlaceDto(Place place) {
+        return PlaceDto.builder()
+                .id(place.getId())
+                .name(place.getName())
+                .latitude(place.getLatitude())
+                .longitude(place.getLongitude())
+                .hint(place.getHint())
+                .letterContent(place.getLetterContent())
+                .letterTitle(place.getLetterTitle())
+                .letterImageUrl(place.getLetterImageUrl())
+                .reward(place.getReward())
+                .contentId(place.getContentId())
+                .tourTypeId(place.getTourTypeId())
+                .sequence(place.getSequence())
+                .build();
+    }
 }

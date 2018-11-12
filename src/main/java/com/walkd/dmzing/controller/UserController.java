@@ -1,12 +1,13 @@
 package com.walkd.dmzing.controller;
 
 import com.walkd.dmzing.auth.jwt.JwtInfo;
+import com.walkd.dmzing.dto.course.CourseMainDto;
+import com.walkd.dmzing.dto.course.PlaceDto;
 import com.walkd.dmzing.dto.exception.ExceptionDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.JoinUser;
 import com.walkd.dmzing.dto.user.LoginUser;
 import com.walkd.dmzing.dto.user.UserDto;
-import com.walkd.dmzing.dto.user.info.UserCourseInfoDto;
 import com.walkd.dmzing.dto.user.info.UserDpInfoDto;
 import com.walkd.dmzing.dto.user.info.UserInfoDto;
 
@@ -104,7 +105,7 @@ public class UserController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @GetMapping("/course")
-    public ResponseEntity<List<UserCourseInfoDto>> showUserCourse(@ApiIgnore Authentication authentication) {
+    public ResponseEntity<List<CourseMainDto>> showUserCourse(@ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(userService.showUserCourse(authentication.getPrincipal().toString()));
     }
 
@@ -122,6 +123,20 @@ public class UserController {
 
     public ResponseEntity<UserDpInfoDto> showUserDmzPoint(@ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(userService.showUserDmzPoint(authentication.getPrincipal().toString()));
+    }
+
+    @ApiOperation(value = "마이페이지 편지함 조회", notes = "편지함 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @GetMapping("/{cid}/mail")
+    public ResponseEntity<List<PlaceDto>> showUserMailBox(@PathVariable Long cid, @ApiIgnore Authentication authentication) {
+        return ResponseEntity.ok().body(userService.showUserMailBox(cid, authentication.getPrincipal().toString()));
     }
 
 }
