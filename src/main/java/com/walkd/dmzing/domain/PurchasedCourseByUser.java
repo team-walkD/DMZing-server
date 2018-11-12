@@ -1,14 +1,12 @@
 package com.walkd.dmzing.domain;
 
 import com.walkd.dmzing.dto.course.CourseMainDto;
-import com.walkd.dmzing.dto.user.info.UserCourseInfoDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(

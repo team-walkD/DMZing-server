@@ -2,12 +2,10 @@ package com.walkd.dmzing.service;
 
 import com.walkd.dmzing.auth.UserDetailsImpl;
 import com.walkd.dmzing.domain.DpHistory;
-import com.walkd.dmzing.domain.PurchasedCourseByUser;
 import com.walkd.dmzing.domain.User;
 import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.UserDto;
-import com.walkd.dmzing.dto.user.info.UserCourseInfoDto;
 import com.walkd.dmzing.dto.user.info.UserDpInfoDto;
 import com.walkd.dmzing.dto.user.info.UserInfoDto;
 import com.walkd.dmzing.exception.EmailAlreadyExistsException;
