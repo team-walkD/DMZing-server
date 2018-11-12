@@ -6,6 +6,7 @@ import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.JoinUser;
 import com.walkd.dmzing.dto.user.LoginUser;
 import com.walkd.dmzing.dto.user.UserDto;
+import com.walkd.dmzing.dto.user.info.UserCourseInfoDto;
 import com.walkd.dmzing.dto.user.info.UserDpInfoDto;
 import com.walkd.dmzing.dto.user.info.UserInfoDto;
 
@@ -92,18 +93,20 @@ public class UserController {
 
 
 
-//    @ApiOperation(value = "마이페이지 코스 조회", notes = "좋아요한 코스 조회")
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "조회 성공"),
-//            @ApiResponse(code = 401, message = "권한 없음"),
-//            @ApiResponse(code = 500, message = "서버 에러")
-//    })
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
-//    })
-//    @GetMapping("/course")
-//    public void showUserCourse(@ApiIgnore Authentication authentication) {
-//    }
+
+    @ApiOperation(value = "마이페이지 코스 조회", notes = "구매한 코스 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @GetMapping("/course")
+    public ResponseEntity<List<UserCourseInfoDto>> showUserCourse(@ApiIgnore Authentication authentication) {
+        return ResponseEntity.ok().body(userService.showUserCourse(authentication.getPrincipal().toString()));
+    }
 
 
     @ApiOperation(value = "마이페이지 DP 조회", notes = "DP 조회")
