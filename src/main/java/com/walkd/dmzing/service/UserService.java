@@ -4,6 +4,7 @@ import com.walkd.dmzing.auth.UserDetailsImpl;
 import com.walkd.dmzing.domain.DpHistory;
 import com.walkd.dmzing.domain.PurchasedCourseByUser;
 import com.walkd.dmzing.domain.User;
+import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.UserDto;
 import com.walkd.dmzing.dto.user.info.UserCourseInfoDto;
@@ -74,7 +75,7 @@ public class UserService {
     }
 
     @Transactional
-    public List<UserCourseInfoDto> showUserCourse(String email) {
+    public List<CourseMainDto> showUserCourse(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
         return purchasedCourseByUserRepository.findAllByUserId(user.getId())
                 .stream()
@@ -91,5 +92,11 @@ public class UserService {
         // TODO dto 수정
         UserDpInfoDto userDpInfoDto = new UserDpInfoDto(user.getDmzPoint(), dpHistories);
         return userDpInfoDto;
+    }
+
+
+    @Transactional
+    public void showMailBox(String email) {
+
     }
 }

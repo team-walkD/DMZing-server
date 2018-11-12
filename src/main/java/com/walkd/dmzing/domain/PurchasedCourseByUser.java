@@ -1,5 +1,6 @@
 package com.walkd.dmzing.domain;
 
+import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.user.info.UserCourseInfoDto;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -42,8 +43,8 @@ public class PurchasedCourseByUser {
         this.isPicked = isPicked;
     }
 
-    public UserCourseInfoDto toUserCourseInfoDto(Course course) {
-        return UserCourseInfoDto.builder()
+    public CourseMainDto toUserCourseInfoDto(Course course) {
+        return CourseMainDto.builder()
                 .id(course.getId())
                 .title(course.getTitle())
                 .type(course.getType())

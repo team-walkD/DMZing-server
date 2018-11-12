@@ -1,6 +1,7 @@
 package com.walkd.dmzing.controller;
 
 import com.walkd.dmzing.auth.jwt.JwtInfo;
+import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.exception.ExceptionDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.JoinUser;
@@ -103,7 +104,7 @@ public class UserController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @GetMapping("/course")
-    public ResponseEntity<List<UserCourseInfoDto>> showUserCourse(@ApiIgnore Authentication authentication) {
+    public ResponseEntity<List<CourseMainDto>> showUserCourse(@ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(userService.showUserCourse(authentication.getPrincipal().toString()));
     }
 
