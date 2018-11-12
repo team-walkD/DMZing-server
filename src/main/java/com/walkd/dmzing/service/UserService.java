@@ -2,9 +2,11 @@ package com.walkd.dmzing.service;
 
 import com.walkd.dmzing.auth.UserDetailsImpl;
 import com.walkd.dmzing.domain.DpHistory;
+import com.walkd.dmzing.domain.PurchasedCourseByUser;
 import com.walkd.dmzing.domain.User;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.UserDto;
+import com.walkd.dmzing.dto.user.info.UserCourseInfoDto;
 import com.walkd.dmzing.dto.user.info.UserDpInfoDto;
 import com.walkd.dmzing.dto.user.info.UserInfoDto;
 import com.walkd.dmzing.exception.EmailAlreadyExistsException;
@@ -36,7 +38,9 @@ public class UserService {
     private final CourseRepository courseRepository;
 
     private final DpHistoryRepository dpHistoryRepository;
-    
+
+    private final PurchasedCourseByUserRepository purchasedCourseByUserRepository;
+
     public UserDetailsImpl create(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) throw new EmailAlreadyExistsException();
 
@@ -70,8 +74,12 @@ public class UserService {
     }
 
     @Transactional
-    public void showUserCourse(String email) {
-
+    public List<UserCourseInfoDto> showUserCourse(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
+        return purchasedCourseByUserRepository.findAllByUserId(user.getId())
+                .stream()
+                .map(purchasedCourseByUser -> purchasedCourseByUser.toUserCourseInfoDto(courseRepository.findAllById(purchasedCourseByUser.getCourse().getId())))
+                .collect(Collectors.toList());
     }
 
     @Transactional
