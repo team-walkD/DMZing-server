@@ -94,6 +94,7 @@ public class UserController {
 
 
 
+
     @ApiOperation(value = "마이페이지 코스 조회", notes = "구매한 코스 조회")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "조회 성공"),
@@ -119,6 +120,7 @@ public class UserController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @GetMapping("/dp")
+
     public ResponseEntity<UserDpInfoDto> showUserDmzPoint(@ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(userService.showUserDmzPoint(authentication.getPrincipal().toString()));
     }

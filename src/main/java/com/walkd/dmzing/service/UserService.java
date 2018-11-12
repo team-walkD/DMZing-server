@@ -19,6 +19,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,6 +48,7 @@ public class UserService {
     private final MissionHistoryRepository missionHistoryRepository;
     private final PlaceRepository placeRepository;
 
+  
     public UserDetailsImpl create(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) throw new EmailAlreadyExistsException();
 
