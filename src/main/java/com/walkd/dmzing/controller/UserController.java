@@ -2,6 +2,7 @@ package com.walkd.dmzing.controller;
 
 import com.walkd.dmzing.auth.jwt.JwtInfo;
 import com.walkd.dmzing.dto.course.CourseMainDto;
+import com.walkd.dmzing.dto.course.PlaceDto;
 import com.walkd.dmzing.dto.exception.ExceptionDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.JoinUser;
@@ -120,6 +121,20 @@ public class UserController {
     @GetMapping("/dp")
     public ResponseEntity<UserDpInfoDto> showUserDmzPoint(@ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(userService.showUserDmzPoint(authentication.getPrincipal().toString()));
+    }
+
+    @ApiOperation(value = "마이페이지 편지함 조회", notes = "편지함 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @GetMapping("/{cid}/mail")
+    public ResponseEntity<List<PlaceDto>> showUserMailBox(@PathVariable Long cid, @ApiIgnore Authentication authentication) {
+        return ResponseEntity.ok().body(userService.showUserMailBox(cid, authentication.getPrincipal().toString()));
     }
 
 }

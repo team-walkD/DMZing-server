@@ -17,4 +17,5 @@ public interface PurchasedCourseByUserRepository extends JpaRepository<Purchased
 
     List<PurchasedCourseByUser> findAllByUserId(Long uid);
 
+    List<PurchasedCourseByUser> findAllByUserIdAndCourseId(Long uid, Long cid);
 }
