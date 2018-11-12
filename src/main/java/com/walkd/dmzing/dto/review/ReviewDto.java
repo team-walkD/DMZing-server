@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewDto implements SimpleReviewDto,DetailReviewDto{
+public class ReviewDto implements SimpleReviewDto, DetailReviewDto {
 
     @ApiModelProperty(hidden = true)
     private Long id;
