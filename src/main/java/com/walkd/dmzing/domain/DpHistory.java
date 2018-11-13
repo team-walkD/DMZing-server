@@ -8,8 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DpHistory extends BaseTimeEntity {
-    //todo enum 추상화
+public class DpHistory extends BaseTime {
     public static final String INIT_DP = "시작 포인트";
     public static final String FIND_LETTER =  "편지 찾기";
 

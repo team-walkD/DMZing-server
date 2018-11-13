@@ -25,20 +25,20 @@ public class PhotoReviewService {
     private final CourseRepository courseRepository;
 
     @Transactional
-    public void createPhotoReviewDto(PhotoReviewDto photoReviewDto,String email){
+    public void createPhotoReviewDto(PhotoReviewDto photoReviewDto, String email) {
         photoReviewRepository.save(photoReviewDto
                 .toEntity(userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new),
                         courseRepository.findById(photoReviewDto.getCourseId()).orElseThrow(NotFoundCourseException::new)));
     }
 
-    public List<PhotoReviewDto> showPhotoReviewDtos(Long id, Type type){
-        if(id == 0){
+    public List<PhotoReviewDto> showPhotoReviewDtos(Long id, Type type) {
+        if (id == 0) {
             return photoReviewRepository.findTop30ByCourse_TypeOrderByIdDesc(type)
                     .stream()
                     .map(photoReview -> photoReview.toDto())
                     .collect(Collectors.toList());
         }
-        return photoReviewRepository.findTop30ByIdAndCourse_TypeLessThanOrderByIdDesc(id,type)
+        return photoReviewRepository.findTop30ByIdAndCourse_TypeLessThanOrderByIdDesc(id, type)
                 .stream()
                 .map(photoReview -> photoReview.toDto())
                 .collect(Collectors.toList());

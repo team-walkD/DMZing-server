@@ -51,4 +51,8 @@ public class User {
     public UserDetailsImpl createUserDetails() {
         return new UserDetailsImpl(email, password, AuthorityUtils.createAuthorityList(authority));
     }
+
+    public void buyCourse(Course course) {
+        this.dmzPoint = course.isEnoughMoney(this.dmzPoint);
+    }
 }

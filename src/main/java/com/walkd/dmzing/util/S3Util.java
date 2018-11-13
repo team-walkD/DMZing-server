@@ -3,7 +3,7 @@ package com.walkd.dmzing.util;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.walkd.dmzing.domain.BaseTimeEntity;
+import com.walkd.dmzing.domain.BaseTime;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class S3Util {
 
     private String upload(File uploadFile, String dirName) {
         String fileName = new StringBuilder().append(dirName)
-                .append("/").append(BaseTimeEntity.nowToDate())
+                .append("/").append(BaseTime.nowToDate())
                 .append("_").append(uploadFile.getName()).toString();
         String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile);
