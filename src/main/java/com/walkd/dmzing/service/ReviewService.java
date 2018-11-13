@@ -92,6 +92,7 @@ public class ReviewService {
         return Arrays.stream(Type.values())
                 .map(type -> ReviewCountDto.builder().typeName(type.getTypeName())
                         .conut(reviewRepository.countByCourse_Type(type) + photoReviewRepository.countByCourse_Type(type))
+                        .imageUrl(courseRepository.findByType(type).orElseThrow(NotFoundCourseException::new).getImageUrl())
                         .build())
                 .collect(Collectors.toList());
     }

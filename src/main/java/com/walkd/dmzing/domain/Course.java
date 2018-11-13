@@ -79,7 +79,18 @@ public class Course {
                 .mainDescription(mainDescription)
                 .subDescription(subDescription)
                 .price(price)
+                .level(level)
+                .estimatedTime(estimatedTime)
                 .places(places.stream().map(place -> place.toPlaceDto()).collect(Collectors.toList()))
                 .build();
+    }
+
+    public Long isEnoughMoney(Long dp) {
+       Long money = dp - price;
+
+       //todo 커스텀 익셉션.
+       if(money < 0) throw new RuntimeException();
+
+       return money;
     }
 }

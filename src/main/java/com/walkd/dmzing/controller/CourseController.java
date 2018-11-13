@@ -1,19 +1,15 @@
 package com.walkd.dmzing.controller;
 
-import com.walkd.dmzing.domain.Type;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
-import com.walkd.dmzing.dto.course.CourseStatusDto;
+import com.walkd.dmzing.dto.course.PlaceDto;
 import com.walkd.dmzing.service.CourseService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
@@ -51,8 +47,36 @@ public class CourseController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @GetMapping("/{cid}")
-    public ResponseEntity<CourseDetailDto> showCourseDetail(Long cid, @ApiIgnore Authentication authentication) {
+    public ResponseEntity<CourseDetailDto> showCourseDetail(@PathVariable Long cid, @ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(courseService.showCourseDetail(cid, authentication.getPrincipal().toString()));
     }
 
+
+    @ApiOperation(value = "코스 내 장소 보기", notes = "코스 아이디를 보내면 해당 코스의 장소들을 볼 수 있습니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "호출 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @GetMapping("/{cid}/places")
+    public ResponseEntity<List<PlaceDto>> showPlacesInCourse(@PathVariable Long cid){
+        return ResponseEntity.ok().body(courseService.showPlacesInCourse(cid));
+    }
+
+    @ApiOperation(value = "코스 픽하기", notes = "코스 아이디를 보내면 해당 코스기 픽되고 코스에 대한 정보를 받을 수 있습니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "픽 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @PutMapping("/pick/{cid}")
+    public ResponseEntity<CourseDetailDto> pickCourse(@PathVariable Long cid, @ApiIgnore Authentication authentication) {
+        return ResponseEntity.ok().body(courseService.pickCourse(cid, authentication.getPrincipal().toString()));
+    }
 }

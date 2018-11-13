@@ -47,7 +47,7 @@ public class Place {
 
 
     @Builder
-    public Place(String name, Double latitude, Double longitude, String hint, String letterContent, String letterTitle, String letterImageUrl, Long reward, Long contentId, Long tourTypeId, Integer order) {
+    public Place(String name, Double latitude, Double longitude, String hint, String letterContent, String letterTitle, String letterImageUrl, Long reward, Long contentId, Long tourTypeId, Integer sequence) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -75,6 +75,23 @@ public class Place {
                 .contentId(contentId)
                 .tourTypeId(tourTypeId)
                 .sequence(sequence)
+                .build();
+    }
+
+    public PlaceDto toPlaceDto(Place place) {
+        return PlaceDto.builder()
+                .id(place.getId())
+                .name(place.getName())
+                .latitude(place.getLatitude())
+                .longitude(place.getLongitude())
+                .hint(place.getHint())
+                .letterContent(place.getLetterContent())
+                .letterTitle(place.getLetterTitle())
+                .letterImageUrl(place.getLetterImageUrl())
+                .reward(place.getReward())
+                .contentId(place.getContentId())
+                .tourTypeId(place.getTourTypeId())
+                .sequence(place.getSequence())
                 .build();
     }
 }

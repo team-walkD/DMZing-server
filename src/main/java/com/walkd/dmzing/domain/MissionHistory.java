@@ -2,10 +2,12 @@ package com.walkd.dmzing.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MissionHistory extends BaseTime {
@@ -28,5 +30,7 @@ public class MissionHistory extends BaseTime {
         this.purchasedCoursesByUser = purchasedCourseByUser;
     }
 
-
+    public boolean isSuccess(Long uid) {
+        return this.purchasedCoursesByUser.getUser().getId() == uid;
+    }
 }
