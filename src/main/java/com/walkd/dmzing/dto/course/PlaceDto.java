@@ -3,6 +3,8 @@ package com.walkd.dmzing.dto.course;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Objects;
+
 @Getter
 @Builder
 public class PlaceDto {
@@ -27,5 +29,33 @@ public class PlaceDto {
         letterTitle = null;
         letterImageUrl = null;
         return this;
+    }
+
+    public PlaceDto deleteInfo(){
+        latitude = null;
+        longitude = null;
+        letterContent = null;
+        letterTitle = null;
+        letterImageUrl = null;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlaceDto placeDto = (PlaceDto) o;
+        return Objects.equals(id, placeDto.id) &&
+                Objects.equals(name, placeDto.name) &&
+                Objects.equals(latitude, placeDto.latitude) &&
+                Objects.equals(longitude, placeDto.longitude) &&
+                Objects.equals(hint, placeDto.hint) &&
+                Objects.equals(letterContent, placeDto.letterContent) &&
+                Objects.equals(letterTitle, placeDto.letterTitle) &&
+                Objects.equals(letterImageUrl, placeDto.letterImageUrl) &&
+                Objects.equals(reward, placeDto.reward) &&
+                Objects.equals(contentId, placeDto.contentId) &&
+                Objects.equals(tourTypeId, placeDto.tourTypeId) &&
+                Objects.equals(sequence, placeDto.sequence);
     }
 }

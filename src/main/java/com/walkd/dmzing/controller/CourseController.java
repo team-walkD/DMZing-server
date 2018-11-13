@@ -22,7 +22,6 @@ public class CourseController {
 
     private final CourseService courseService;
 
-
     @ApiOperation(value = "전체 코스 종류 및 정보 보기", notes = "모든 코스 각각에 대한 몇 가지 정보, 픽 개수, 유저의 구매여부를 확인할 수 있습니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "호출 성공"),
@@ -79,4 +78,5 @@ public class CourseController {
     public ResponseEntity<CourseDetailDto> pickCourse(@PathVariable Long cid, @ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(courseService.pickCourse(cid, authentication.getPrincipal().toString()));
     }
+
 }

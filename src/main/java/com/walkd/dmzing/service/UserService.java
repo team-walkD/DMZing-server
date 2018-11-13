@@ -3,12 +3,14 @@ package com.walkd.dmzing.service;
 import com.walkd.dmzing.auth.UserDetailsImpl;
 import com.walkd.dmzing.domain.*;
 import com.walkd.dmzing.dto.course.CourseMainDto;
+import com.walkd.dmzing.dto.course.CourseSimpleDto;
 import com.walkd.dmzing.dto.course.PlaceDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.UserDto;
 import com.walkd.dmzing.dto.user.info.UserDpInfoDto;
 import com.walkd.dmzing.dto.user.info.UserInfoDto;
 import com.walkd.dmzing.exception.EmailAlreadyExistsException;
+import com.walkd.dmzing.exception.NotFoundCourseException;
 import com.walkd.dmzing.exception.NotFoundUserException;
 import com.walkd.dmzing.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +52,9 @@ public class UserService {
 
         User user = userRepository.save(User.fromDto(userDto, passwordEncoder));
 
+        purchasedCourseByUserRepository.save(PurchasedCourseByUser.builder()
+                .course(courseRepository.findById(Course.DEFAULT_COURSE_ID).orElseThrow(NotFoundCourseException::new))
+                .user(user).isPicked(true).build());
         dpHistoryRepository.save(DpHistory.builder().dp(user.getDmzPoint()).dpType(DpHistory.INIT_DP).user(user).build());
 
         return user.createUserDetails();
@@ -82,11 +87,16 @@ public class UserService {
     }
 
     @Transactional
-    public List<CourseMainDto> showUserCourse(String email) {
+    public List<CourseSimpleDto> showUserCourse(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
         return purchasedCourseByUserRepository.findAllByUserId(user.getId())
                 .stream()
-                .map(purchasedCourseByUser -> purchasedCourseByUser.toUserCourseInfoDto(courseRepository.findAllById(purchasedCourseByUser.getCourse().getId())))
+                .map(purchasedCourseByUser ->
+                        CourseSimpleDto.builder()
+                                .title(purchasedCourseByUser.getCourse().getType().getTypeName())
+                                .id(purchasedCourseByUser.getCourse().getId())
+                                .isPicked(purchasedCourseByUser.getIsPicked())
+                                .build())
                 .collect(Collectors.toList());
     }
 
@@ -100,7 +110,6 @@ public class UserService {
         UserDpInfoDto userDpInfoDto = new UserDpInfoDto(user.getDmzPoint(), dpHistories);
         return userDpInfoDto;
     }
-
 
     @Transactional
     public List<PlaceDto> showUserMailBox(Long cid, String email) {
