@@ -92,7 +92,7 @@ public class CourseService {
         return courseRepository.findById(cid).orElseThrow(NotFoundCourseException::new)
                 .getPlaces()
                 .stream()
-                .map(place -> place.toPlaceDto())
+                .map(place -> place.toPlaceDto().deleteDetailInfo())
                 .collect(Collectors.toList());
     }
 }

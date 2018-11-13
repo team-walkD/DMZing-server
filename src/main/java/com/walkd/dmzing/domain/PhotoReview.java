@@ -44,10 +44,11 @@ public class PhotoReview extends BaseTime {
     public PhotoReviewDto toDto() {
         return PhotoReviewDto.builder()
                 .imageUrl(imageUrl)
-                .courseId(course.getId())
+                .id(id)
                 .placeName(placeName)
                 .startAt(startAt)
                 .tag(tag)
+                .courseId(course.getId())
                 .build();
     }
 }

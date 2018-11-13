@@ -88,11 +88,12 @@ public class ReviewService {
     }
 
     public List<ReviewCountDto> showReviewCount() {
-        //todo group by로 리펙토링 하고싶다.......
+        //todo group by로 리펙토링 하고싶다....... 여기 무조건 바꿔야함....
         return Arrays.stream(Type.values())
                 .map(type -> ReviewCountDto.builder().typeName(type.getTypeName())
                         .conut(reviewRepository.countByCourse_Type(type) + photoReviewRepository.countByCourse_Type(type))
                         .imageUrl(courseRepository.findByType(type).orElseThrow(NotFoundCourseException::new).getImageUrl())
+                        .courseId(courseRepository.findByType(type).orElseThrow(NotFoundCourseException::new).getId())
                         .build())
                 .collect(Collectors.toList());
     }
