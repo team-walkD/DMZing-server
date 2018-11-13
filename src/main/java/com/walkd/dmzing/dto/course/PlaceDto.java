@@ -20,5 +20,4 @@ public class PlaceDto {
     private Long tourTypeId;
     private Integer sequence;
 
-    private Boolean isSuccessed;
 }

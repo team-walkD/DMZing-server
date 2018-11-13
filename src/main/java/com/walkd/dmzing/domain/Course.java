@@ -2,6 +2,7 @@ package com.walkd.dmzing.domain;
 
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
+import com.walkd.dmzing.dto.course.PlaceDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -79,7 +80,25 @@ public class Course {
                 .mainDescription(mainDescription)
                 .subDescription(subDescription)
                 .price(price)
+                .level(level)
+                .estimatedTime(estimatedTime)
                 .places(places.stream().map(place -> place.toPlaceDto()).collect(Collectors.toList()))
                 .build();
     }
+
+//    public CourseDetailDto toCourseDetailDto(List<PlaceDto>) {
+//        return CourseDetailDto.builder()
+//                .id(id)
+//                .type(type)
+//                .title(title)
+//                .imageUrl(imageUrl)
+//                .lineImageUrl(lineImageUrl)
+//                .mainDescription(mainDescription)
+//                .subDescription(subDescription)
+//                .price(price)
+//                .level(level)
+//                .estimatedTime(estimatedTime)
+//                .places(places.stream().filter(place -> place.toPlaceDto()).collect(Collectors.toList()))
+//                .build();
+//    }
 }

@@ -1,12 +1,18 @@
 package com.walkd.dmzing.service;
 
+import com.walkd.dmzing.domain.Course;
 import com.walkd.dmzing.domain.PurchasedCourseByUser;
+import com.walkd.dmzing.domain.User;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
+import com.walkd.dmzing.dto.course.PlaceDto;
 import com.walkd.dmzing.exception.NotFoundCourseException;
+import com.walkd.dmzing.exception.NotFoundPurchaseHistoryException;
+import com.walkd.dmzing.exception.NotFoundUserException;
 import com.walkd.dmzing.repository.CourseRepository;
 import com.walkd.dmzing.repository.MissionHistoryRepository;
 import com.walkd.dmzing.repository.PurchasedCourseByUserRepository;
+import com.walkd.dmzing.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,9 +34,12 @@ public class CourseService {
 
     private final MissionHistoryRepository missionHistoryRepository;
 
+    private final UserRepository userRepository;
+
     @Transactional(readOnly = true)
     public List<CourseMainDto> showCourses(String email) {
 
+        //todo: 픽 수 중복??????
         return courseRepository.findAll()
                 .stream()
                 .map(course -> course.toCourseMainDto(
@@ -49,5 +58,29 @@ public class CourseService {
         throw new NotFoundCourseException();
     }
 
+    @Transactional
+    public CourseDetailDto pickCourse(Long cid, String email) {
+        List<PurchasedCourseByUser> purchasedCourseList = purchasedCourseByUserRepository.findByUser_Email(email);
+        PurchasedCourseByUser purchasedCourse = purchasedCourseByUserRepository.findByCourse_IdAndUser_Email(cid, email).orElseThrow(NotFoundCourseException::new);
 
+        if(!purchasedCourseList.isEmpty()) {
+            purchasedCourseList
+                    .stream()
+                    .forEach(purchasedCourseByUser -> purchasedCourseByUser.setPicked(Boolean.FALSE));
+            purchasedCourse.setPicked(true);
+            // todo: 어디까지 성공 했는지 인자값 넘겨야 함.
+            return purchasedCourse.getCourse().toCourseDetailDto();
+        } else {
+            throw new NotFoundPurchaseHistoryException();
+        }
+
+    }
+
+    public List<PlaceDto> showPlacesInCourse(Long cid) {
+        return courseRepository.findById(cid).orElseThrow(NotFoundCourseException::new)
+                .getPlaces()
+                .stream()
+                .map(place -> place.toPlaceDto())
+                .collect(Collectors.toList());
+    }
 }

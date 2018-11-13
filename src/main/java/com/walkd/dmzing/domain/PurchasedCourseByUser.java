@@ -1,8 +1,6 @@
 package com.walkd.dmzing.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -36,5 +34,25 @@ public class PurchasedCourseByUser {
         this.user = user;
         this.course = course;
         this.isPicked = isPicked;
+    }
+
+    public void setPicked(Boolean picked) {
+        isPicked = picked;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public Boolean getPicked() {
+        return isPicked;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

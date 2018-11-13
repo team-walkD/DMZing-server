@@ -47,7 +47,7 @@ public class Place {
 
 
     @Builder
-    public Place(String name, Double latitude, Double longitude, String hint, String letterContent, String letterTitle, String letterImageUrl, Long reward, Long contentId, Long tourTypeId, Integer order) {
+    public Place(String name, Double latitude, Double longitude, String hint, String letterContent, String letterTitle, String letterImageUrl, Long reward, Long contentId, Long tourTypeId, Integer sequence) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
