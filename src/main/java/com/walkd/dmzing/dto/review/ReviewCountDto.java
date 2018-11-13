@@ -17,4 +17,7 @@ public class ReviewCountDto {
 
     @ApiModelProperty(example = "312", position = 2)
     private Long conut;
+
+    @ApiModelProperty(example = "dmzing.png", position = 3)
+    private String imageUrl;
 }

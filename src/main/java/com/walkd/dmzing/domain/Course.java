@@ -79,6 +79,8 @@ public class Course {
                 .mainDescription(mainDescription)
                 .subDescription(subDescription)
                 .price(price)
+                .level(level)
+                .estimatedTime(estimatedTime)
                 .places(places.stream().map(place -> place.toPlaceDto()).collect(Collectors.toList()))
                 .build();
     }

@@ -2,10 +2,8 @@ package com.walkd.dmzing.dto.course;
 
 import com.walkd.dmzing.domain.Course;
 import com.walkd.dmzing.domain.Type;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder

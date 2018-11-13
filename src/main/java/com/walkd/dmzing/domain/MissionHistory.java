@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @Getter
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MissionHistory extends BaseTime {
 
@@ -30,5 +30,7 @@ public class MissionHistory extends BaseTime {
         this.purchasedCoursesByUser = purchasedCourseByUser;
     }
 
-
+    public boolean isSuccess(Long uid) {
+        return this.purchasedCoursesByUser.getUser().getId() == uid;
+    }
 }

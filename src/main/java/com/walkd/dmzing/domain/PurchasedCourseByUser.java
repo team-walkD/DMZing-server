@@ -41,6 +41,10 @@ public class PurchasedCourseByUser {
         this.isPicked = isPicked;
     }
 
+    public void setPicked(Boolean picked) {
+        isPicked = picked;
+    }
+
     public CourseMainDto toUserCourseInfoDto(Course course) {
         return CourseMainDto.builder()
                 .id(course.getId())
@@ -51,6 +55,5 @@ public class PurchasedCourseByUser {
                 .imageUrl(course.getImageUrl())
                 .price(course.getPrice())
                 .build();
-
     }
 }

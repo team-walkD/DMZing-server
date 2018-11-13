@@ -142,7 +142,7 @@ public class ReviewController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
-    @PostMapping("/photo/last/{pid}/course/{type}")
+    @GetMapping("/photo/last/{pid}/course/{type}")
     public ResponseEntity<List<PhotoReviewDto>> showPhotoReviews(@PathVariable Long pid, @PathVariable Type type) {
         return ResponseEntity.ok(photoReviewService.showPhotoReviewDtos(pid, type));
     }
