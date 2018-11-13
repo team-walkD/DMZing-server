@@ -1,7 +1,9 @@
 package com.walkd.dmzing.domain;
 
+import com.walkd.dmzing.dto.course.CourseMainDto;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -15,6 +17,7 @@ import javax.persistence.*;
                 )
         }
 )
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PurchasedCourseByUser {
     @Id
@@ -36,5 +39,18 @@ public class PurchasedCourseByUser {
         this.user = user;
         this.course = course;
         this.isPicked = isPicked;
+    }
+
+    public CourseMainDto toUserCourseInfoDto(Course course) {
+        return CourseMainDto.builder()
+                .id(course.getId())
+                .title(course.getTitle())
+                .type(course.getType())
+                .mainDescription(course.getMainDescription())
+                .subDescription(course.getSubDescription())
+                .imageUrl(course.getImageUrl())
+                .price(course.getPrice())
+                .build();
+
     }
 }
