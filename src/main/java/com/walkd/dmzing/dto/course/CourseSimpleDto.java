@@ -9,6 +9,6 @@ import lombok.Setter;
 @Builder
 public class CourseSimpleDto {
     private Long id;
-    private Type type;
+    private String title;
     private Boolean isPicked;
 }

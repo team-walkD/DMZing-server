@@ -10,7 +10,6 @@ import lombok.Getter;
 public class CourseMainDto {
 
     private Long id;
-    private Type type;
     private String title;
     private String mainDescription;
     private String subDescription;
@@ -24,7 +23,7 @@ public class CourseMainDto {
     // toEntity로 만들면 어떻게 하나?
     public Course toEntity() {
         return Course.builder()
-                .type(type)
+                .type(Type.valueOf(title))
                 .title(title)
                 .mainDescription(mainDescription)
                 .subDescription(subDescription)
