@@ -81,7 +81,7 @@ public class Course {
                 .price(price)
                 .level(level)
                 .estimatedTime(estimatedTime)
-                .places(places.stream().map(place -> place.toPlaceDto()).collect(Collectors.toList()))
+                .places(places.stream().map(place -> place.toPlaceDto().deleteDetailInfo()).collect(Collectors.toList()))
                 .build();
     }
 

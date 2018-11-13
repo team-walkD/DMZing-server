@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PlaceDto {
-
     private Long id;
     private String name;
     private Double latitude;
@@ -19,4 +18,14 @@ public class PlaceDto {
     private Long contentId;
     private Long tourTypeId;
     private Integer sequence;
+
+    public PlaceDto deleteDetailInfo(){
+        latitude = null;
+        longitude = null;
+        hint = null;
+        letterContent = null;
+        letterTitle = null;
+        letterImageUrl = null;
+        return this;
+    }
 }
