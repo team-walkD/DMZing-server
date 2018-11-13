@@ -15,10 +15,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PhotoReviewDto {
 
+    @ApiModelProperty(readOnly = true)
+    private Long id;
+
     @ApiModelProperty(example = "1511122", position = 2)
     private Long startAt;
 
-    @ApiModelProperty(example = "dmzing.png", position = 1)
+    @ApiModelProperty(example = "dmzing.png", position = 7)
     private String imageUrl;
 
     @ApiModelProperty(example = "평화전망대", position = 4)

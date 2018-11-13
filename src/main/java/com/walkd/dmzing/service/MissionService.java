@@ -6,7 +6,6 @@ import com.walkd.dmzing.dto.course.CourseSimpleDto;
 import com.walkd.dmzing.dto.course.PlaceDto;
 import com.walkd.dmzing.dto.course.PurchaseListAndPickCourseDto;
 import com.walkd.dmzing.exception.NotFoundCourseException;
-import com.walkd.dmzing.exception.NotFoundPurchaseHistoryException;
 import com.walkd.dmzing.repository.CourseRepository;
 import com.walkd.dmzing.repository.MissionHistoryRepository;
 import com.walkd.dmzing.repository.PlaceRepository;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -63,8 +61,6 @@ public class MissionService {
             throw new RuntimeException("픽한 코스가 아닙니다.");
         }
     }
-
-
     //편지 찾기
 
 }
