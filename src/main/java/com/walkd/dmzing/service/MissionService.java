@@ -61,6 +61,5 @@ public class MissionService {
             throw new RuntimeException("픽한 코스가 아닙니다.");
         }
     }
-    //편지 찾기
 
 }
