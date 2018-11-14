@@ -1,5 +1,7 @@
 package com.walkd.dmzing.domain;
 
+import com.walkd.dmzing.dto.course.LetterDto;
+import com.walkd.dmzing.dto.course.PlaceDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,5 +34,9 @@ public class MissionHistory extends BaseTime {
 
     public boolean isSuccess(Long uid) {
         return this.purchasedCoursesByUser.getUser().getId() == uid;
+    }
+
+    public LetterDto toLetterDto() {
+        return place.toLetterDto();
     }
 }

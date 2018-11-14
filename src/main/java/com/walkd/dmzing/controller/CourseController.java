@@ -54,7 +54,6 @@ public class CourseController {
         return ResponseEntity.ok().body(courseService.showCourseDetail(cid, authentication.getPrincipal().toString()));
     }
 
-
     @ApiOperation(value = "코스 내 장소 보기", notes = "코스 아이디를 보내면 해당 코스의 장소들을 볼 수 있습니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "호출 성공"),

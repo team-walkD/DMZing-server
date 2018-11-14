@@ -1,5 +1,6 @@
 package com.walkd.dmzing.domain;
 
+import com.walkd.dmzing.dto.course.LetterDto;
 import com.walkd.dmzing.dto.course.PlaceDto;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,9 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Getter
@@ -29,11 +32,6 @@ public class Place {
 
     private String hint;
 
-    @Lob
-    private String letterContent;
-
-    private String letterTitle;
-
     private String letterImageUrl;
 
     private Long reward;
@@ -46,13 +44,11 @@ public class Place {
 
 
     @Builder
-    public Place(String name, Double latitude, Double longitude, String hint, String letterContent, String letterTitle, String letterImageUrl, Long reward, Long contentId, Long tourTypeId, Integer sequence) {
+    public Place(String name, Double latitude, Double longitude, String hint, String letterImageUrl, Long reward, Long contentId, Long tourTypeId, Integer sequence) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.hint = hint;
-        this.letterContent = letterContent;
-        this.letterTitle = letterTitle;
         this.letterImageUrl = letterImageUrl;
         this.reward = reward;
         this.contentId = contentId;
@@ -67,8 +63,6 @@ public class Place {
                 .latitude(latitude)
                 .longitude(longitude)
                 .hint(hint)
-                .letterContent(letterContent)
-                .letterTitle(letterTitle)
                 .letterImageUrl(letterImageUrl)
                 .reward(reward)
                 .contentId(contentId)
@@ -77,21 +71,8 @@ public class Place {
                 .build();
     }
 
-    public PlaceDto toPlaceDto(Place place) {
-        return PlaceDto.builder()
-                .id(place.getId())
-                .name(place.getName())
-                .latitude(place.getLatitude())
-                .longitude(place.getLongitude())
-                .hint(place.getHint())
-                .letterContent(place.getLetterContent())
-                .letterTitle(place.getLetterTitle())
-                .letterImageUrl(place.getLetterImageUrl())
-                .reward(place.getReward())
-                .contentId(place.getContentId())
-                .tourTypeId(place.getTourTypeId())
-                .sequence(place.getSequence())
-                .build();
+    public LetterDto toLetterDto() {
+        return LetterDto.builder().letterImageUrl(letterImageUrl).build();
     }
 
     public List<PlaceDto> toPlaceDtos(List<PlaceDto> sorted) {

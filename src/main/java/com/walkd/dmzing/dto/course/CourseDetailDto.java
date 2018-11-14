@@ -18,6 +18,7 @@ public class CourseDetailDto {
     private String level;
     private Double estimatedTime;
     private Long price;
+    private String backgroundImageUrl;
 
     private List<PlaceDto> places;
     private Long reviewCount;
