@@ -1,10 +1,7 @@
 package com.walkd.dmzing.service;
 
 import com.walkd.dmzing.auth.UserDetailsImpl;
-import com.walkd.dmzing.domain.Course;
-import com.walkd.dmzing.domain.DpHistory;
-import com.walkd.dmzing.domain.PurchasedCourseByUser;
-import com.walkd.dmzing.domain.User;
+import com.walkd.dmzing.domain.*;
 import com.walkd.dmzing.dto.course.CourseSimpleDto;
 import com.walkd.dmzing.dto.course.LetterDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
@@ -13,7 +10,6 @@ import com.walkd.dmzing.dto.user.UserDto;
 import com.walkd.dmzing.dto.user.UserInfoDto;
 import com.walkd.dmzing.exception.EmailAlreadyExistsException;
 import com.walkd.dmzing.exception.NotFoundCourseException;
-import com.walkd.dmzing.exception.NotFoundPurchaseHistoryException;
 import com.walkd.dmzing.exception.NotFoundUserException;
 import com.walkd.dmzing.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Slf4j
 @Service
@@ -94,15 +90,19 @@ public class UserService {
         return user.toUserDpDto(dpHistories);
     }
 
+
     @Transactional
     public List<LetterDto> showUserMailBox(Long cid, String email) {
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
-
         Course course = courseRepository.findById(cid).orElseThrow(NotFoundCourseException::new);
-        return missionHistoryRepository
-                .findAllByPurchasedCoursesByUser_CourseAndPurchasedCoursesByUser_User(course,user)
-                .orElseThrow(NotFoundPurchaseHistoryException::new)
-                .stream()
+
+        List<MissionHistory> missionHistories = missionHistoryRepository
+                .findAllByPurchasedCoursesByUser_CourseAndPurchasedCoursesByUser_User(course, user)
+                .orElse(null);
+
+        if (missionHistories == null) return new ArrayList<>();
+
+        return missionHistories.stream()
                 .map(missionHistory -> missionHistory.toLetterDto())
                 .collect(Collectors.toList());
     }
