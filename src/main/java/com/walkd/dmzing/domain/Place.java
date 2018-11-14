@@ -71,7 +71,6 @@ public class Place {
                 .build();
     }
 
-
     public LetterDto toLetterDto() {
         return LetterDto.builder().letterImageUrl(letterImageUrl).build();
     }

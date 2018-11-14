@@ -1,5 +1,6 @@
 package com.walkd.dmzing.controller;
 
+import com.walkd.dmzing.domain.MissionHistory;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.course.PlaceDto;
