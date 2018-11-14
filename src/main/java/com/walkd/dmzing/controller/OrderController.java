@@ -34,6 +34,6 @@ public class OrderController {
     })
     @PostMapping("/course/{cid}")
     public ResponseEntity<CourseDetailDto> showCourses(@PathVariable Long cid, @ApiIgnore Authentication authentication) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(courseService.buyCourse(cid,authentication.getPrincipal().toString()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(courseService.buyCourse(cid, authentication.getPrincipal().toString()));
     }
 }

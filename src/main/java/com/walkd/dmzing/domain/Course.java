@@ -3,6 +3,7 @@ package com.walkd.dmzing.domain;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.course.PlaceDto;
+import com.walkd.dmzing.exception.NotEnoughMoneyException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -94,7 +95,7 @@ public class Course {
                 .build();
     }
 
-    public CourseDetailDto toCourseDetailDto(Long count,MissionHistory missionHistory) {
+    public CourseDetailDto toCourseDetailDto(Long count, MissionHistory missionHistory) {
         return CourseDetailDto.builder()
                 .id(id)
                 .title(type.getTypeName())
@@ -110,10 +111,11 @@ public class Course {
                 .build();
     }
 
-    private List<PlaceDto> makePlaceList(MissionHistory missionHistory){
+    private List<PlaceDto> makePlaceList(MissionHistory missionHistory) {
         List<Place> sortedPlaces = places.stream().sorted(Comparator.comparing(Place::getSequence)).collect(Collectors.toList());
 
-        if(missionHistory == null) return new ArrayList<PlaceDto>(Arrays.asList(sortedPlaces.get(0).toPlaceDto().deleteInfo()));
+        if (missionHistory == null)
+            return new ArrayList<PlaceDto>(Arrays.asList(sortedPlaces.get(0).toPlaceDto().deleteInfo()));
 
         Place currentPlace = sortedPlaces.stream()
                 .filter(place -> place.equals(missionHistory.getPlace()))
@@ -123,11 +125,10 @@ public class Course {
     }
 
     public Long isEnoughMoney(Long dp) {
-       Long money = dp - price;
+        Long money = dp - price;
 
-       //todo 커스텀 익셉션.
-       if(money < 0) throw new RuntimeException();
+        if (money < 0) throw new NotEnoughMoneyException();
 
-       return money;
+        return money;
     }
 }

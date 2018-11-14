@@ -61,8 +61,8 @@ public class UserService {
     public UserInfoDto showUserInfo(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
 
-         return user.toUserInfoDto(purchasedCourseByUserRepository.countByUser_Email(email)
-                 ,reviewRepository.countReviewByUserId(user.getId()));
+        return user.toUserInfoDto(purchasedCourseByUserRepository.countByUser_Email(email)
+                , reviewRepository.countReviewByUserId(user.getId()));
     }
 
     @Transactional

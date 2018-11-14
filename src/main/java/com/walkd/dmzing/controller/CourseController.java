@@ -65,7 +65,7 @@ public class CourseController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @GetMapping("/{cid}/places")
-    public ResponseEntity<List<PlaceDto>> showPlacesInCourse(@PathVariable Long cid){
+    public ResponseEntity<List<PlaceDto>> showPlacesInCourse(@PathVariable Long cid) {
         return ResponseEntity.ok().body(courseService.showPlacesInCourse(cid));
     }
 

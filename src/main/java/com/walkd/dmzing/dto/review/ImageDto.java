@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ImageDto {
     @ApiModelProperty(example = "dmzing.png")
-   private String image;
+    private String image;
 }

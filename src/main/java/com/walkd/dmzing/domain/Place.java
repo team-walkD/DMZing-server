@@ -23,11 +23,6 @@ public class Place {
 
     private String name;
 
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn
-//    private Course course;
-
     private Double latitude;
 
     private Double longitude;
@@ -99,15 +94,6 @@ public class Place {
                 .build();
     }
 
-    public PlaceDto toPlaceDto(List<MissionHistory> missionHistories) {
-        return missionHistories.stream()
-                .filter(missionHistory -> missionHistory.getPlace().equals(this))
-                .collect(Collectors.toList())
-                .get(0)
-                .getPlace()
-                .toPlaceDto();
-    }
-
     public List<PlaceDto> toPlaceDtos(List<PlaceDto> sorted) {
         int count = 0;
         int len = sorted.size();
@@ -120,7 +106,7 @@ public class Place {
             }
         }
 
-        for (int i = count; i < len ; i++) {
+        for (int i = count; i < len; i++) {
             sorted.remove(count);
         }
 

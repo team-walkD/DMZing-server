@@ -21,7 +21,7 @@ public class PlaceDto {
     private Long tourTypeId;
     private Integer sequence;
 
-    public PlaceDto deleteDetailInfo(){
+    public PlaceDto deleteDetailInfo() {
         latitude = null;
         longitude = null;
         hint = null;
@@ -31,7 +31,7 @@ public class PlaceDto {
         return this;
     }
 
-    public PlaceDto deleteInfo(){
+    public PlaceDto deleteInfo() {
         latitude = null;
         longitude = null;
         letterContent = null;
