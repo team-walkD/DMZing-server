@@ -1,11 +1,11 @@
 package com.walkd.dmzing.dto.user;
 
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class UserInfoDto {
 
     private String email;
@@ -16,6 +16,6 @@ public class UserInfoDto {
 
     private Long reviewCount;
 
-    private int dp;
+    private Long dp;
 
 }

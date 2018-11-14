@@ -7,8 +7,8 @@ import com.walkd.dmzing.domain.User;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.course.PlaceDto;
+import com.walkd.dmzing.exception.AlreadyBuyCourseException;
 import com.walkd.dmzing.exception.NotFoundCourseException;
-import com.walkd.dmzing.exception.NotFoundPurchaseHistoryException;
 import com.walkd.dmzing.exception.NotFoundUserException;
 import com.walkd.dmzing.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +27,6 @@ public class CourseService {
     private final CourseRepository courseRepository;
 
     private final PurchasedCourseByUserRepository purchasedCourseByUserRepository;
-
-    private final MissionHistoryRepository missionHistoryRepository;
 
     private final DpHistoryRepository dpHistoryRepository;
 
@@ -66,7 +64,7 @@ public class CourseService {
         //todo 커스텀 익셉션 생성
         //todo QueryDSL을 활용한 한방쿼리 작성
         if (purchasedCourseByUserRepository.findByCourse_IdAndUser_Email(cid, email).isPresent())
-            throw new RuntimeException();
+            throw new AlreadyBuyCourseException();
 
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
         Course course = courseRepository.findById(cid).orElseThrow(NotFoundCourseException::new);
@@ -74,30 +72,10 @@ public class CourseService {
         user.buyCourse(course);
 
         purchasedCourseByUserRepository.save(PurchasedCourseByUser.builder().course(course).user(user).isPicked(false).build());
-        dpHistoryRepository.save(DpHistory.builder().dpType(course.getType().getTypeName()).user(user).dp(course.getPrice()).build());
+        dpHistoryRepository.save(DpHistory.builder().dpType(course.getType().getTypeName()).user(user).dp(-course.getPrice()).build());
 
         return course.toCourseDetailDto(reviewRepository.countByCourse_Type(course.getType())
                 + photoReviewRepository.countByCourse_Type(course.getType()));
-    }
-
-    @Transactional
-    public CourseDetailDto pickCourse(Long cid, String email) {
-        List<PurchasedCourseByUser> purchasedCourseList = purchasedCourseByUserRepository.findByUser_Email(email).orElseThrow(RuntimeException::new);
-        PurchasedCourseByUser purchasedCourse = purchasedCourseByUserRepository.findByCourse_IdAndUser_Email(cid, email).orElseThrow(NotFoundCourseException::new);
-
-        if(!purchasedCourseList.isEmpty()) {
-            purchasedCourseList
-                    .stream()
-                    .forEach(purchasedCourseByUser -> purchasedCourseByUser.setPicked(Boolean.FALSE));
-            purchasedCourse.setPicked(true);
-            // todo: 어디까지 성공 했는지 인자값 넘겨야 함.
-            Course course = purchasedCourse.getCourse();
-            return course.toCourseDetailDto(reviewRepository.countByCourse_Type(course.getType())
-                    + photoReviewRepository.countByCourse_Type(course.getType()));
-        } else {
-            throw new NotFoundPurchaseHistoryException();
-        }
-
     }
 
     public List<PlaceDto> showPlacesInCourse(Long cid) {

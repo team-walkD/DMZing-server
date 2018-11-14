@@ -3,10 +3,12 @@ package com.walkd.dmzing.service;
 import com.walkd.dmzing.domain.Course;
 import com.walkd.dmzing.domain.MissionHistory;
 import com.walkd.dmzing.domain.PurchasedCourseByUser;
+import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseSimpleDto;
 import com.walkd.dmzing.dto.course.PlaceDto;
 import com.walkd.dmzing.dto.course.PurchaseListAndPickCourseDto;
 import com.walkd.dmzing.exception.NotFoundCourseException;
+import com.walkd.dmzing.exception.NotFoundPurchaseHistoryException;
 import com.walkd.dmzing.repository.MissionHistoryRepository;
 import com.walkd.dmzing.repository.PhotoReviewRepository;
 import com.walkd.dmzing.repository.PurchasedCourseByUserRepository;
@@ -35,7 +37,7 @@ public class MissionService {
     @Transactional
     public PurchaseListAndPickCourseDto showPurchaseListAndPickCourse(String email) {
         //todo 구매내역 익셉
-        List<PurchasedCourseByUser> purchasedCourseByUsers = purchasedCourseByUserRepository.findByUser_Email(email).orElseThrow(RuntimeException::new);
+        List<PurchasedCourseByUser> purchasedCourseByUsers = purchasedCourseByUserRepository.findByUser_Email(email).orElseThrow(NotFoundPurchaseHistoryException::new);
 
         List<CourseSimpleDto> purchaseList = purchasedCourseByUsers.stream()
                 .map(purchasedCourseByUser ->
@@ -55,13 +57,13 @@ public class MissionService {
         MissionHistory missionHistory = missionHistoryRepository.findTopByPurchasedCoursesByUserOrderByIdDesc(pickPurchasedCourse);
 
         return PurchaseListAndPickCourseDto.builder().pickCourse(pickPurchasedCourse.getCourse().toCourseDetailDto(reviewRepository.countByCourse_Type(course.getType())
-                + photoReviewRepository.countByCourse_Type(course.getType()),missionHistory))
+                + photoReviewRepository.countByCourse_Type(course.getType()), missionHistory))
                 .purchaseList(purchaseList).build();
     }
 
     @Transactional
     public List<PlaceDto> filterSuccessPlaces(String email, Long cid) {
-        PurchasedCourseByUser purchasedCourse = purchasedCourseByUserRepository.findByCourse_IdAndUser_Email(cid, email).orElseThrow(NotFoundCourseException::new);
+        PurchasedCourseByUser purchasedCourse = purchasedCourseByUserRepository.findByCourse_IdAndUser_Email(cid, email).orElseThrow(NotFoundPurchaseHistoryException::new);
         if (purchasedCourse.getIsPicked()) {
             return missionHistoryRepository.findByPurchasedCoursesByUser_Id(purchasedCourse.getId())
                     .stream()
@@ -72,4 +74,24 @@ public class MissionService {
         }
     }
 
+    @Transactional
+    public CourseDetailDto pickCourse(Long cid, String email) {
+        List<PurchasedCourseByUser> purchasedCourseList = purchasedCourseByUserRepository.findByUser_Email(email).orElseThrow(NotFoundPurchaseHistoryException::new);
+        PurchasedCourseByUser purchasedCourse = purchasedCourseByUserRepository.findByCourse_IdAndUser_Email(cid, email).orElseThrow(NotFoundCourseException::new);
+
+        if (!purchasedCourseList.isEmpty()) {
+            purchasedCourseList
+                    .stream()
+                    .forEach(purchasedCourseByUser -> purchasedCourseByUser.setPicked(Boolean.FALSE));
+            purchasedCourse.setPicked(true);
+
+            Course course = purchasedCourse.getCourse();
+
+            MissionHistory missionHistory = missionHistoryRepository.findTopByPurchasedCoursesByUserOrderByIdDesc(purchasedCourse);
+
+            return course.toCourseDetailDto(reviewRepository.countByCourse_Type(course.getType())
+                    + photoReviewRepository.countByCourse_Type(course.getType()), missionHistory);
+        }
+        throw new NotFoundPurchaseHistoryException();
+    }
 }

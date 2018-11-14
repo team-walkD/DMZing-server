@@ -8,8 +8,8 @@ import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.JoinUser;
 import com.walkd.dmzing.dto.user.LoginUser;
 import com.walkd.dmzing.dto.user.UserDto;
-import com.walkd.dmzing.dto.user.info.UserDpInfoDto;
-import com.walkd.dmzing.dto.user.info.UserInfoDto;
+import com.walkd.dmzing.dto.user.UserInfoDto;
+import com.walkd.dmzing.dto.user.UserDpInfoDto;
 import com.walkd.dmzing.service.UserService;
 import com.walkd.dmzing.util.JwtUtil;
 import io.swagger.annotations.*;
@@ -90,8 +90,6 @@ public class UserController {
     public ResponseEntity<List<SimpleReviewDto>> showUserReview(@ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(userService.showUserReview(authentication.getPrincipal().toString()));
     }
-
-
 
 
     @ApiOperation(value = "마이페이지 코스 조회", notes = "구매한 코스 조회")
