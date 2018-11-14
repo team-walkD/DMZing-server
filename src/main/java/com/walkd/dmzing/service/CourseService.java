@@ -1,9 +1,6 @@
 package com.walkd.dmzing.service;
 
-import com.walkd.dmzing.domain.Course;
-import com.walkd.dmzing.domain.DpHistory;
-import com.walkd.dmzing.domain.PurchasedCourseByUser;
-import com.walkd.dmzing.domain.User;
+import com.walkd.dmzing.domain.*;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.course.PlaceDto;
@@ -27,8 +24,6 @@ public class CourseService {
     private final CourseRepository courseRepository;
 
     private final PurchasedCourseByUserRepository purchasedCourseByUserRepository;
-
-    private final MissionHistoryRepository missionHistoryRepository;
 
     private final DpHistoryRepository dpHistoryRepository;
 
@@ -78,26 +73,6 @@ public class CourseService {
 
         return course.toCourseDetailDto(reviewRepository.countByCourse_Type(course.getType())
                 + photoReviewRepository.countByCourse_Type(course.getType()));
-    }
-
-    @Transactional
-    public CourseDetailDto pickCourse(Long cid, String email) {
-        List<PurchasedCourseByUser> purchasedCourseList = purchasedCourseByUserRepository.findByUser_Email(email).orElseThrow(RuntimeException::new);
-        PurchasedCourseByUser purchasedCourse = purchasedCourseByUserRepository.findByCourse_IdAndUser_Email(cid, email).orElseThrow(NotFoundCourseException::new);
-
-        if(!purchasedCourseList.isEmpty()) {
-            purchasedCourseList
-                    .stream()
-                    .forEach(purchasedCourseByUser -> purchasedCourseByUser.setPicked(Boolean.FALSE));
-            purchasedCourse.setPicked(true);
-            // todo: 어디까지 성공 했는지 인자값 넘겨야 함.
-            Course course = purchasedCourse.getCourse();
-            return course.toCourseDetailDto(reviewRepository.countByCourse_Type(course.getType())
-                    + photoReviewRepository.countByCourse_Type(course.getType()));
-        } else {
-            throw new NotFoundPurchaseHistoryException();
-        }
-
     }
 
     public List<PlaceDto> showPlacesInCourse(Long cid) {
