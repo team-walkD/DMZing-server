@@ -13,8 +13,6 @@ public class PlaceDto {
     private Double latitude;
     private Double longitude;
     private String hint;
-    private String letterContent;
-    private String letterTitle;
     private String letterImageUrl;
     private Long reward;
     private Long contentId;
@@ -25,8 +23,6 @@ public class PlaceDto {
         latitude = null;
         longitude = null;
         hint = null;
-        letterContent = null;
-        letterTitle = null;
         letterImageUrl = null;
         return this;
     }
@@ -34,8 +30,6 @@ public class PlaceDto {
     public PlaceDto deleteInfo() {
         latitude = null;
         longitude = null;
-        letterContent = null;
-        letterTitle = null;
         letterImageUrl = null;
         return this;
     }
@@ -50,8 +44,6 @@ public class PlaceDto {
                 Objects.equals(latitude, placeDto.latitude) &&
                 Objects.equals(longitude, placeDto.longitude) &&
                 Objects.equals(hint, placeDto.hint) &&
-                Objects.equals(letterContent, placeDto.letterContent) &&
-                Objects.equals(letterTitle, placeDto.letterTitle) &&
                 Objects.equals(letterImageUrl, placeDto.letterImageUrl) &&
                 Objects.equals(reward, placeDto.reward) &&
                 Objects.equals(contentId, placeDto.contentId) &&

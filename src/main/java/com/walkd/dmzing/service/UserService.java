@@ -3,6 +3,7 @@ package com.walkd.dmzing.service;
 import com.walkd.dmzing.auth.UserDetailsImpl;
 import com.walkd.dmzing.domain.*;
 import com.walkd.dmzing.dto.course.CourseSimpleDto;
+import com.walkd.dmzing.dto.course.LetterDto;
 import com.walkd.dmzing.dto.course.PlaceDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.UserDto;
@@ -10,6 +11,7 @@ import com.walkd.dmzing.dto.user.UserInfoDto;
 import com.walkd.dmzing.dto.user.UserDpInfoDto;
 import com.walkd.dmzing.exception.EmailAlreadyExistsException;
 import com.walkd.dmzing.exception.NotFoundCourseException;
+import com.walkd.dmzing.exception.NotFoundPurchaseHistoryException;
 import com.walkd.dmzing.exception.NotFoundUserException;
 import com.walkd.dmzing.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,8 +43,6 @@ public class UserService {
     private final PurchasedCourseByUserRepository purchasedCourseByUserRepository;
 
     private final MissionHistoryRepository missionHistoryRepository;
-
-    private final PlaceRepository placeRepository;
 
     @Transactional
     public UserDetailsImpl create(UserDto userDto) {
@@ -79,12 +80,7 @@ public class UserService {
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
         return purchasedCourseByUserRepository.findAllByUserId(user.getId())
                 .stream()
-                .map(purchasedCourseByUser ->
-                        CourseSimpleDto.builder()
-                                .title(purchasedCourseByUser.getCourse().getType().getTypeName())
-                                .id(purchasedCourseByUser.getCourse().getId())
-                                .isPicked(purchasedCourseByUser.getIsPicked())
-                                .build())
+                .map(purchasedCourseByUser -> purchasedCourseByUser.toCourseSimpleDto())
                 .collect(Collectors.toList());
     }
 
@@ -98,26 +94,16 @@ public class UserService {
     }
 
     @Transactional
-    public List<PlaceDto> showUserMailBox(Long cid, String email) {
+    public List<LetterDto> showUserMailBox(Long cid, String email) {
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
 
-        // 유저 인덱스와 코스 인덱스를 통해 구매 테이블에서 구매 목록 인덱스 조회
-        List<PurchasedCourseByUser> purchasedCourseByUsers = purchasedCourseByUserRepository.findAllByUserIdAndCourseId(user.getId(), cid);
-
-        // 구매목록 인덱스를 통해 미션히스토리 조회
-        List<MissionHistory> missionHistories = purchasedCourseByUsers
+        log.info(new Date()+"@@@@@@@@@@@@@@@@@@@@@");
+        Course course = courseRepository.findById(cid).orElseThrow(NotFoundCourseException::new);
+        return missionHistoryRepository
+                .findAllByPurchasedCoursesByUser_CourseAndPurchasedCoursesByUser_User(course,user)
+                .orElseThrow(NotFoundPurchaseHistoryException::new)
                 .stream()
-                .map(purchasedCourseByUser ->
-                        missionHistoryRepository.findAllByPurchasedCoursesByUserId(purchasedCourseByUser.getId()))
-                .collect(Collectors.toList());
-
-        // 미션히스토리를 통해 place 조회
-        List<Place> places = missionHistories
-                .stream()
-                .map(missionHistory -> placeRepository.findAllById(missionHistory.getPlace().getId()))
-                .collect(Collectors.toList());
-
-        return places.stream().map(place -> place.toPlaceDto(place))
+                .map(missionHistory -> missionHistory.toLetterDto())
                 .collect(Collectors.toList());
     }
 }

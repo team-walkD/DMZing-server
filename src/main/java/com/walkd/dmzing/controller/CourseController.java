@@ -1,6 +1,5 @@
 package com.walkd.dmzing.controller;
 
-import com.walkd.dmzing.domain.MissionHistory;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.course.PlaceDto;
@@ -53,7 +52,6 @@ public class CourseController {
     public ResponseEntity<CourseDetailDto> showCourseDetail(@PathVariable Long cid, @ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(courseService.showCourseDetail(cid, authentication.getPrincipal().toString()));
     }
-
 
     @ApiOperation(value = "코스 내 장소 보기", notes = "코스 아이디를 보내면 해당 코스의 장소들을 볼 수 있습니다.")
     @ApiResponses(value = {

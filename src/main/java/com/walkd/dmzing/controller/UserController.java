@@ -2,14 +2,10 @@ package com.walkd.dmzing.controller;
 
 import com.walkd.dmzing.auth.jwt.JwtInfo;
 import com.walkd.dmzing.dto.course.CourseSimpleDto;
-import com.walkd.dmzing.dto.course.PlaceDto;
+import com.walkd.dmzing.dto.course.LetterDto;
 import com.walkd.dmzing.dto.exception.ExceptionDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
-import com.walkd.dmzing.dto.user.JoinUser;
-import com.walkd.dmzing.dto.user.LoginUser;
-import com.walkd.dmzing.dto.user.UserDto;
-import com.walkd.dmzing.dto.user.UserInfoDto;
-import com.walkd.dmzing.dto.user.UserDpInfoDto;
+import com.walkd.dmzing.dto.user.*;
 import com.walkd.dmzing.service.UserService;
 import com.walkd.dmzing.util.JwtUtil;
 import io.swagger.annotations.*;
@@ -132,7 +128,7 @@ public class UserController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @GetMapping("/{cid}/mail")
-    public ResponseEntity<List<PlaceDto>> showUserMailBox(@PathVariable Long cid, @ApiIgnore Authentication authentication) {
+    public ResponseEntity<List<LetterDto>> showUserMailBox(@PathVariable Long cid, @ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(userService.showUserMailBox(cid, authentication.getPrincipal().toString()));
     }
 
