@@ -90,6 +90,7 @@ public class UserService {
         return user.toUserDpDto(dpHistories);
     }
 
+
     @Transactional
     public List<LetterDto> showUserMailBox(Long cid, String email) {
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
