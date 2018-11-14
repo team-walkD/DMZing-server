@@ -1,7 +1,7 @@
 package com.walkd.dmzing.controller;
 
 import com.walkd.dmzing.auth.jwt.JwtInfo;
-import com.walkd.dmzing.dto.course.CourseMainDto;
+import com.walkd.dmzing.dto.course.CourseSimpleDto;
 import com.walkd.dmzing.dto.course.PlaceDto;
 import com.walkd.dmzing.dto.exception.ExceptionDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
@@ -10,7 +10,6 @@ import com.walkd.dmzing.dto.user.LoginUser;
 import com.walkd.dmzing.dto.user.UserDto;
 import com.walkd.dmzing.dto.user.info.UserDpInfoDto;
 import com.walkd.dmzing.dto.user.info.UserInfoDto;
-
 import com.walkd.dmzing.service.UserService;
 import com.walkd.dmzing.util.JwtUtil;
 import io.swagger.annotations.*;
@@ -105,7 +104,7 @@ public class UserController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @GetMapping("/course")
-    public ResponseEntity<List<CourseMainDto>> showUserCourse(@ApiIgnore Authentication authentication) {
+    public ResponseEntity<List<CourseSimpleDto>> showUserCourse(@ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(userService.showUserCourse(authentication.getPrincipal().toString()));
     }
 

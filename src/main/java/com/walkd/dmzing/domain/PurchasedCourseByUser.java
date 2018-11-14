@@ -48,8 +48,7 @@ public class PurchasedCourseByUser {
     public CourseMainDto toUserCourseInfoDto(Course course) {
         return CourseMainDto.builder()
                 .id(course.getId())
-                .title(course.getTitle())
-                .type(course.getType())
+                .title(course.getType().getTypeName())
                 .mainDescription(course.getMainDescription())
                 .subDescription(course.getSubDescription())
                 .imageUrl(course.getImageUrl())
