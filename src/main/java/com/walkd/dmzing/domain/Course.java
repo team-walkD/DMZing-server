@@ -2,25 +2,36 @@ package com.walkd.dmzing.domain;
 
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
+import com.walkd.dmzing.dto.course.PlaceDto;
+import com.walkd.dmzing.exception.NotEnoughMoneyException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Course {
+
+    public static final Long DEFAULT_COURSE_ID = 1l;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Type type;
+
     private String title;
 
     private String mainDescription;
@@ -57,8 +68,7 @@ public class Course {
     public CourseMainDto toCourseMainDto(Long pickCount, Boolean isPurchased) {
         return CourseMainDto.builder()
                 .id(id)
-                .type(type)
-                .title(title)
+                .title(type.getTypeName())
                 .imageUrl(imageUrl)
                 .lineImageUrl(lineImageUrl)
                 .mainDescription(mainDescription)
@@ -69,28 +79,56 @@ public class Course {
                 .build();
     }
 
-    public CourseDetailDto toCourseDetailDto() {
+    public CourseDetailDto toCourseDetailDto(Long count) {
         return CourseDetailDto.builder()
                 .id(id)
-                .type(type)
-                .title(title)
+                .title(type.getTypeName())
                 .imageUrl(imageUrl)
                 .lineImageUrl(lineImageUrl)
                 .mainDescription(mainDescription)
                 .subDescription(subDescription)
                 .price(price)
-                .level(level)
+                .level(level.getLevelName())
                 .estimatedTime(estimatedTime)
                 .places(places.stream().map(place -> place.toPlaceDto().deleteDetailInfo()).collect(Collectors.toList()))
+                .reviewCount(count)
                 .build();
     }
 
+    public CourseDetailDto toCourseDetailDto(Long count, MissionHistory missionHistory) {
+        return CourseDetailDto.builder()
+                .id(id)
+                .title(type.getTypeName())
+                .imageUrl(imageUrl)
+                .lineImageUrl(lineImageUrl)
+                .mainDescription(mainDescription)
+                .subDescription(subDescription)
+                .price(price)
+                .level(level.getLevelName())
+                .estimatedTime(estimatedTime)
+                .places(makePlaceList(missionHistory))
+                .reviewCount(count)
+                .build();
+    }
+
+    private List<PlaceDto> makePlaceList(MissionHistory missionHistory) {
+        List<Place> sortedPlaces = places.stream().sorted(Comparator.comparing(Place::getSequence)).collect(Collectors.toList());
+
+        if (missionHistory == null)
+            return new ArrayList<PlaceDto>(Arrays.asList(sortedPlaces.get(0).toPlaceDto().deleteInfo()));
+
+        Place currentPlace = sortedPlaces.stream()
+                .filter(place -> place.equals(missionHistory.getPlace()))
+                .collect(Collectors.toList()).get(0);
+
+        return currentPlace.toPlaceDtos(sortedPlaces.stream().map(place -> place.toPlaceDto()).collect(Collectors.toList()));
+    }
+
     public Long isEnoughMoney(Long dp) {
-       Long money = dp - price;
+        Long money = dp - price;
 
-       //todo 커스텀 익셉션.
-       if(money < 0) throw new RuntimeException();
+        if (money < 0) throw new NotEnoughMoneyException();
 
-       return money;
+        return money;
     }
 }

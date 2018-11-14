@@ -5,9 +5,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,11 +22,6 @@ public class Place {
     private Long id;
 
     private String name;
-
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn
-//    private Course course;
 
     private Double latitude;
 
@@ -93,5 +92,24 @@ public class Place {
                 .tourTypeId(place.getTourTypeId())
                 .sequence(place.getSequence())
                 .build();
+    }
+
+    public List<PlaceDto> toPlaceDtos(List<PlaceDto> sorted) {
+        int count = 0;
+        int len = sorted.size();
+
+        for (int i = 0; i < sorted.size(); i++) {
+            if (sorted.get(i).equals(this.toPlaceDto())) {
+                count = i + 1;
+                sorted.get(count).deleteInfo();
+                count++;
+            }
+        }
+
+        for (int i = count; i < len; i++) {
+            sorted.remove(count);
+        }
+
+        return sorted;
     }
 }

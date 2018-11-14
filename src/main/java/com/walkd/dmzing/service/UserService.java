@@ -2,13 +2,14 @@ package com.walkd.dmzing.service;
 
 import com.walkd.dmzing.auth.UserDetailsImpl;
 import com.walkd.dmzing.domain.*;
-import com.walkd.dmzing.dto.course.CourseMainDto;
+import com.walkd.dmzing.dto.course.CourseSimpleDto;
 import com.walkd.dmzing.dto.course.PlaceDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.UserDto;
-import com.walkd.dmzing.dto.user.info.UserDpInfoDto;
-import com.walkd.dmzing.dto.user.info.UserInfoDto;
+import com.walkd.dmzing.dto.user.UserInfoDto;
+import com.walkd.dmzing.dto.user.UserDpInfoDto;
 import com.walkd.dmzing.exception.EmailAlreadyExistsException;
+import com.walkd.dmzing.exception.NotFoundCourseException;
 import com.walkd.dmzing.exception.NotFoundUserException;
 import com.walkd.dmzing.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,6 @@ public class UserService {
 
     private final ReviewRepository reviewRepository;
 
-    private final ReviewLikeRepository reviewLikeRepository;
-
     private final CourseRepository courseRepository;
 
     private final DpHistoryRepository dpHistoryRepository;
@@ -50,6 +49,9 @@ public class UserService {
 
         User user = userRepository.save(User.fromDto(userDto, passwordEncoder));
 
+        purchasedCourseByUserRepository.save(PurchasedCourseByUser.builder()
+                .course(courseRepository.findById(Course.DEFAULT_COURSE_ID).orElseThrow(NotFoundCourseException::new))
+                .user(user).isPicked(true).build());
         dpHistoryRepository.save(DpHistory.builder().dp(user.getDmzPoint()).dpType(DpHistory.INIT_DP).user(user).build());
 
         return user.createUserDetails();
@@ -59,17 +61,8 @@ public class UserService {
     public UserInfoDto showUserInfo(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
 
-        Long writtenReviewCount = reviewRepository.countReviewByUserId(user.getId());
-        Long likedReviewCount = reviewLikeRepository.countReviewLikesByUserId(user.getId());
-
-        Long reviewCount = writtenReviewCount + likedReviewCount;
-
-        // TODO 유저가 좋아요 누른건지 유저가 픽한건지 확인 필요
-        Long likedCourseCount = Long.parseLong("0");
-
-        // TODO dto 수정
-        UserInfoDto userInfoDto = new UserInfoDto(user.getEmail(), user.getNickname(), likedCourseCount, reviewCount, user.getDmzPoint());
-        return userInfoDto;
+        return user.toUserInfoDto(purchasedCourseByUserRepository.countByUser_Email(email)
+                , reviewRepository.countReviewByUserId(user.getId()));
     }
 
     @Transactional
@@ -82,11 +75,16 @@ public class UserService {
     }
 
     @Transactional
-    public List<CourseMainDto> showUserCourse(String email) {
+    public List<CourseSimpleDto> showUserCourse(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
         return purchasedCourseByUserRepository.findAllByUserId(user.getId())
                 .stream()
-                .map(purchasedCourseByUser -> purchasedCourseByUser.toUserCourseInfoDto(courseRepository.findAllById(purchasedCourseByUser.getCourse().getId())))
+                .map(purchasedCourseByUser ->
+                        CourseSimpleDto.builder()
+                                .title(purchasedCourseByUser.getCourse().getType().getTypeName())
+                                .id(purchasedCourseByUser.getCourse().getId())
+                                .isPicked(purchasedCourseByUser.getIsPicked())
+                                .build())
                 .collect(Collectors.toList());
     }
 
@@ -96,11 +94,8 @@ public class UserService {
 
         List<DpHistory> dpHistories = dpHistoryRepository.findAllByUserId(user.getId());
 
-        // TODO dto 수정
-        UserDpInfoDto userDpInfoDto = new UserDpInfoDto(user.getDmzPoint(), dpHistories);
-        return userDpInfoDto;
+        return user.toUserDpDto(dpHistories);
     }
-
 
     @Transactional
     public List<PlaceDto> showUserMailBox(Long cid, String email) {
@@ -124,6 +119,5 @@ public class UserService {
 
         return places.stream().map(place -> place.toPlaceDto(place))
                 .collect(Collectors.toList());
-
     }
 }

@@ -1,9 +1,11 @@
 package com.walkd.dmzing.controller;
 
+import com.walkd.dmzing.domain.MissionHistory;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.course.PlaceDto;
 import com.walkd.dmzing.service.CourseService;
+import com.walkd.dmzing.service.MissionService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ public class CourseController {
 
     private final CourseService courseService;
 
+    private final MissionService missionService;
 
     @ApiOperation(value = "전체 코스 종류 및 정보 보기", notes = "모든 코스 각각에 대한 몇 가지 정보, 픽 개수, 유저의 구매여부를 확인할 수 있습니다.")
     @ApiResponses(value = {
@@ -62,7 +65,7 @@ public class CourseController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @GetMapping("/{cid}/places")
-    public ResponseEntity<List<PlaceDto>> showPlacesInCourse(@PathVariable Long cid){
+    public ResponseEntity<List<PlaceDto>> showPlacesInCourse(@PathVariable Long cid) {
         return ResponseEntity.ok().body(courseService.showPlacesInCourse(cid));
     }
 
@@ -77,6 +80,7 @@ public class CourseController {
     })
     @PutMapping("/pick/{cid}")
     public ResponseEntity<CourseDetailDto> pickCourse(@PathVariable Long cid, @ApiIgnore Authentication authentication) {
-        return ResponseEntity.ok().body(courseService.pickCourse(cid, authentication.getPrincipal().toString()));
+        return ResponseEntity.ok().body(missionService.pickCourse(cid, authentication.getPrincipal().toString()));
     }
+
 }
