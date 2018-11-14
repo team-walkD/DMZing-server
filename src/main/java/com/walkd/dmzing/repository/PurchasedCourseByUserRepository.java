@@ -17,9 +17,9 @@ public interface PurchasedCourseByUserRepository extends JpaRepository<Purchased
 
     Optional<List<PurchasedCourseByUser>> findByUser_Email(String email);
 
-    PurchasedCourseByUser findByUser_EmailAndIsPickedTrue(String email);
-
     List<PurchasedCourseByUser> findAllByUserId(Long uid);
 
     List<PurchasedCourseByUser> findAllByUserIdAndCourseId(Long uid, Long cid);
+
+    Long countByUser_Email(String email);
 }

@@ -1,11 +1,13 @@
 package com.walkd.dmzing.service;
 
-import com.walkd.dmzing.domain.*;
+import com.walkd.dmzing.domain.Course;
+import com.walkd.dmzing.domain.DpHistory;
+import com.walkd.dmzing.domain.PurchasedCourseByUser;
+import com.walkd.dmzing.domain.User;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.course.PlaceDto;
 import com.walkd.dmzing.exception.NotFoundCourseException;
-import com.walkd.dmzing.exception.NotFoundPurchaseHistoryException;
 import com.walkd.dmzing.exception.NotFoundUserException;
 import com.walkd.dmzing.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +71,7 @@ public class CourseService {
         user.buyCourse(course);
 
         purchasedCourseByUserRepository.save(PurchasedCourseByUser.builder().course(course).user(user).isPicked(false).build());
-        dpHistoryRepository.save(DpHistory.builder().dpType(course.getType().getTypeName()).user(user).dp(course.getPrice()).build());
+        dpHistoryRepository.save(DpHistory.builder().dpType(course.getType().getTypeName()).user(user).dp(-course.getPrice()).build());
 
         return course.toCourseDetailDto(reviewRepository.countByCourse_Type(course.getType())
                 + photoReviewRepository.countByCourse_Type(course.getType()));
