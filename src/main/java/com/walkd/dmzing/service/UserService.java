@@ -99,6 +99,7 @@ public class UserService {
         List<MissionHistory> missionHistories = missionHistoryRepository
                 .findAllByPurchasedCoursesByUser_CourseAndPurchasedCoursesByUser_User(course, user);
 
+
         if (missionHistories == null) return new ArrayList<>();
 
         return missionHistories.stream()
