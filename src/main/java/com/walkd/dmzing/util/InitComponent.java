@@ -5,11 +5,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.walkd.dmzing.domain.*;
 import com.walkd.dmzing.dto.course.place.*;
+import com.walkd.dmzing.dto.user.UserDto;
 import com.walkd.dmzing.exception.NotFoundCourseException;
-import com.walkd.dmzing.repository.CourseRepository;
-import com.walkd.dmzing.repository.MissionHistoryRepository;
-import com.walkd.dmzing.repository.PlaceRepository;
-import com.walkd.dmzing.repository.PurchasedCourseByUserRepository;
+import com.walkd.dmzing.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +25,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class InitComponent implements ApplicationRunner {
+
+    private final UserRepository userRepository;
 
     private final CourseRepository courseRepository;
 
@@ -48,7 +48,8 @@ public class InitComponent implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) {
-        if (!apiKey.equals("test")) {
+        userRepository.save(User.builder().authority("USER").email("a").nickname("cys").password("a").phoneNumber("010").build());
+          if (!apiKey.equals("test")) {
             courseRepository.findByType(Type.DATE).orElseThrow(NotFoundCourseException::new)
                     .setPlaces(updatePeripheryDto(createPlaces(InitData.datePlaceDtos)));
 
