@@ -3,7 +3,7 @@ package com.walkd.dmzing.service;
 import com.walkd.dmzing.auth.UserDetailsImpl;
 import com.walkd.dmzing.domain.*;
 import com.walkd.dmzing.dto.course.CourseSimpleDto;
-import com.walkd.dmzing.dto.course.LetterDto;
+import com.walkd.dmzing.dto.exception.LetterDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.UserDpInfoDto;
 import com.walkd.dmzing.dto.user.UserDto;
@@ -97,8 +97,8 @@ public class UserService {
         Course course = courseRepository.findById(cid).orElseThrow(NotFoundCourseException::new);
 
         List<MissionHistory> missionHistories = missionHistoryRepository
-                .findAllByPurchasedCoursesByUser_CourseAndPurchasedCoursesByUser_User(course, user)
-                .orElse(null);
+                .findAllByPurchasedCoursesByUser_CourseAndPurchasedCoursesByUser_User(course, user);
+
 
         if (missionHistories == null) return new ArrayList<>();
 

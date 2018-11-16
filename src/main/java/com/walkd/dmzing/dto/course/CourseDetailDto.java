@@ -1,5 +1,6 @@
 package com.walkd.dmzing.dto.course;
 
+import com.walkd.dmzing.dto.course.place.PlaceDto;
 import lombok.Builder;
 import lombok.Getter;
 

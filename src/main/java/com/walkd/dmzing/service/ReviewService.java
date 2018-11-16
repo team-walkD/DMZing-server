@@ -48,6 +48,7 @@ public class ReviewService {
         reviewRepository.save(reviewDto.toEntity().setUser(user).setCourse(course));
     }
 
+    @Transactional
     public List<SimpleReviewDto> showReviews(Long id, Type type, String email) {
         if (id == 0) {
             return reviewRepository.findTop30ByCourse_TypeOrderByIdDesc(type)
@@ -61,6 +62,7 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void removeImage(String imageUrl) {
         //todo 나중에 이미지 db 다 합쳐야한다.
         if (!reviewRepository.existsByThumbnailUrl(imageUrl) &&
@@ -82,11 +84,13 @@ public class ReviewService {
         return s3Util.upload(multipartFile, s3Util.REVIEW_DIR);
     }
 
+    @Transactional
     public ReviewDto showReview(Long rid, String email) {
         return reviewRepository.findById(rid).orElseThrow(NotFoundCourseException::new)
                 .toDto(userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new));
     }
 
+    @Transactional
     public List<ReviewCountDto> showReviewCount() {
         //todo group by로 리펙토링 하고싶다....... 여기 무조건 바꿔야함....
         return Arrays.stream(Type.values())
@@ -98,6 +102,7 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public Boolean createReviewLike(Long id, String email) {
         User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
         Review review = reviewRepository.findById(id).orElseThrow(NotFoundCourseException::new);

@@ -1,18 +1,19 @@
 package com.walkd.dmzing.domain;
 
-import com.walkd.dmzing.dto.course.LetterDto;
-import com.walkd.dmzing.dto.course.PlaceDto;
+import com.walkd.dmzing.dto.course.place.PeripheryDto;
+import com.walkd.dmzing.dto.exception.LetterDto;
+import com.walkd.dmzing.dto.course.place.PlaceDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.net.URI;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Getter
@@ -23,51 +24,73 @@ public class Place {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String name;
-
-    private Double latitude;
-
-    private Double longitude;
-
     private String hint;
-
     private String letterImageUrl;
-
     private Long reward;
-
-    private Long contentId;
-
-    private Long tourTypeId;
-
     private Integer sequence;
 
+    private String mainImageUrl;
+    private String subImageUrl;
+    private String title;
+    private Double latitude;
+    private Double longitude;
+    private String address;
+
+    @Lob
+    private String description;
+
+    private String parking;
+    private String restDate;
+    private String infoCenter;
+
+    @JoinColumn(name = "place_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
+    private List<Periphery> peripheries;
 
     @Builder
-    public Place(String name, Double latitude, Double longitude, String hint, String letterImageUrl, Long reward, Long contentId, Long tourTypeId, Integer sequence) {
-        this.name = name;
-        this.latitude = latitude;
-        this.longitude = longitude;
+    public Place(String hint, String letterImageUrl, Long reward, Integer sequence,
+                 String mainImageUrl, String subImageUrl, String title, Double latitude,
+                 Double longitude, String address, String description, String parking,
+                 String restDate, String infoCenter) {
         this.hint = hint;
         this.letterImageUrl = letterImageUrl;
         this.reward = reward;
-        this.contentId = contentId;
-        this.tourTypeId = tourTypeId;
         this.sequence = sequence;
+        this.mainImageUrl = mainImageUrl;
+        this.subImageUrl = subImageUrl;
+        this.title = title;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.address = address;
+        this.description = description;
+        this.parking = parking;
+        this.restDate = restDate;
+        this.infoCenter = infoCenter;
+    }
+
+    public Place setPeripheries(List<Periphery> peripheries) {
+        this.peripheries = peripheries;
+        return this;
     }
 
     public PlaceDto toPlaceDto() {
         return PlaceDto.builder()
                 .id(id)
-                .name(name)
                 .latitude(latitude)
                 .longitude(longitude)
                 .hint(hint)
                 .letterImageUrl(letterImageUrl)
                 .reward(reward)
-                .contentId(contentId)
-                .tourTypeId(tourTypeId)
                 .sequence(sequence)
+                .mainImageUrl(mainImageUrl)
+                .subImageUrl(subImageUrl)
+                .title(title)
+                .address(address)
+                .description(description)
+                .parking(parking)
+                .restDate(restDate)
+                .infoCenter(infoCenter)
+                .peripheries(peripheries.stream().map(periphery -> periphery.toPeripheryDto()).collect(Collectors.toList()))
                 .build();
     }
 
@@ -81,6 +104,7 @@ public class Place {
 
         for (int i = 0; i < sorted.size(); i++) {
             if (sorted.get(i).equals(this.toPlaceDto())) {
+                log.info(sorted.get(0).getAddress()+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                 count = i + 1;
                 sorted.get(count).deleteInfo();
                 count++;
@@ -92,5 +116,10 @@ public class Place {
         }
 
         return sorted;
+    }
+
+    public URI getNearByUri(Integer contentTypeId, String apiKey) {
+        return java.net.URI
+                .create(String.format(PeripheryDto.URI, apiKey, contentTypeId, this.latitude.toString(), this.longitude.toString()));
     }
 }

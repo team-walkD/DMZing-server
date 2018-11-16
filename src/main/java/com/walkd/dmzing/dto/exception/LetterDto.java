@@ -1,4 +1,4 @@
-package com.walkd.dmzing.dto.course;
+package com.walkd.dmzing.dto.exception;
 
 import lombok.Builder;
 import lombok.Getter;

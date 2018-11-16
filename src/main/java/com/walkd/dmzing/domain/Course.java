@@ -3,7 +3,7 @@ package com.walkd.dmzing.domain;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.course.CourseSimpleDto;
-import com.walkd.dmzing.dto.course.PlaceDto;
+import com.walkd.dmzing.dto.course.place.PlaceDto;
 import com.walkd.dmzing.exception.NotEnoughMoneyException;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,7 +26,6 @@ public class Course {
 
     public static final Long DEFAULT_COURSE_ID = 1l;
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,7 +45,7 @@ public class Course {
     private String backgroundImageUrl;
 
     @JoinColumn(name = "course_id")
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
     private List<Place> places;
 
     private Level level;
@@ -70,11 +69,15 @@ public class Course {
         this.price = price;
     }
 
+    public void setPlaces(List<Place> places) {
+        this.places = places;
+    }
+
     private List<PlaceDto> makePlaceList(MissionHistory missionHistory) {
         List<Place> sortedPlaces = places.stream().sorted(Comparator.comparing(Place::getSequence)).collect(Collectors.toList());
 
         if (missionHistory == null)
-            return new ArrayList<PlaceDto>(Arrays.asList(sortedPlaces.get(0).toPlaceDto().deleteInfo()));
+            return new ArrayList<>(Arrays.asList(sortedPlaces.get(0).toPlaceDto().deleteInfo()));
 
         Place currentPlace = sortedPlaces.stream()
                 .filter(place -> place.equals(missionHistory.getPlace()))
@@ -90,8 +93,6 @@ public class Course {
 
         return money;
     }
-
-
 
     public CourseMainDto toCourseMainDto(Long pickCount, Boolean isPurchased) {
         return CourseMainDto.builder()

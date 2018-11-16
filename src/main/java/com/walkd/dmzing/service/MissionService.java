@@ -5,7 +5,7 @@ import com.walkd.dmzing.domain.MissionHistory;
 import com.walkd.dmzing.domain.PurchasedCourseByUser;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseSimpleDto;
-import com.walkd.dmzing.dto.course.PlaceDto;
+import com.walkd.dmzing.dto.course.place.PlaceDto;
 import com.walkd.dmzing.dto.course.PurchaseListAndPickCourseDto;
 import com.walkd.dmzing.exception.NotFoundCourseException;
 import com.walkd.dmzing.exception.NotFoundPurchaseHistoryException;
