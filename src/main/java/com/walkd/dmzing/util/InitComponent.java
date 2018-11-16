@@ -48,7 +48,6 @@ public class InitComponent implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) {
-        userRepository.save(User.builder().authority("USER").email("a").nickname("cys").password("a").phoneNumber("010").build());
           if (!apiKey.equals("test")) {
             courseRepository.findByType(Type.DATE).orElseThrow(NotFoundCourseException::new)
                     .setPlaces(updatePeripheryDto(createPlaces(InitData.datePlaceDtos)));
