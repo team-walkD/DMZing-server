@@ -53,19 +53,19 @@ public class CourseController {
         return ResponseEntity.ok().body(courseService.showCourseDetail(cid, authentication.getPrincipal().toString()));
     }
 
-//    @ApiOperation(value = "코스 내 장소 보기", notes = "코스 아이디를 보내면 해당 코스의 장소들을 볼 수 있습니다.")
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "호출 성공"),
-//            @ApiResponse(code = 401, message = "권한 없음"),
-//            @ApiResponse(code = 500, message = "서버 에러")
-//    })
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
-//    })
-//    @GetMapping("/{cid}/places")
-//    public ResponseEntity<List<PlaceDto>> showPlacesInCourse(@PathVariable Long cid) {
-//        return ResponseEntity.ok().body(courseService.showPlacesInCourse(cid));
-//    }
+    @ApiOperation(value = "코스 내 장소 보기", notes = "코스 아이디를 보내면 해당 코스의 장소들을 볼 수 있습니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "호출 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @GetMapping("/{cid}/places")
+    public ResponseEntity<List<PlaceDto>> showPlacesInCourse(@PathVariable Long cid) {
+        return ResponseEntity.ok().body(courseService.showPlacesInCourse(cid));
+    }
 
     @ApiOperation(value = "코스 픽하기", notes = "코스 아이디를 보내면 해당 코스기 픽되고 코스에 대한 정보를 받을 수 있습니다.")
     @ApiResponses(value = {
