@@ -3,6 +3,7 @@ package com.walkd.dmzing.dto.course.place;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -26,10 +27,10 @@ public class PlaceDto {
     private String restDate;
     private String infoCenter;
 
+    private List<PeripheryDto> peripheries;
+
 
     public PlaceDto deleteDetailInfo() {
-        latitude = null;
-        longitude = null;
         hint = null;
         letterImageUrl = null;
         return this;
@@ -48,12 +49,20 @@ public class PlaceDto {
         if (o == null || getClass() != o.getClass()) return false;
         PlaceDto placeDto = (PlaceDto) o;
         return Objects.equals(id, placeDto.id) &&
-                Objects.equals(title, placeDto.title) &&
-                Objects.equals(latitude, placeDto.latitude) &&
-                Objects.equals(longitude, placeDto.longitude) &&
                 Objects.equals(hint, placeDto.hint) &&
                 Objects.equals(letterImageUrl, placeDto.letterImageUrl) &&
                 Objects.equals(reward, placeDto.reward) &&
-                Objects.equals(sequence, placeDto.sequence);
+                Objects.equals(sequence, placeDto.sequence) &&
+                Objects.equals(mainImageUrl, placeDto.mainImageUrl) &&
+                Objects.equals(subImageUrl, placeDto.subImageUrl) &&
+                Objects.equals(title, placeDto.title) &&
+                Objects.equals(latitude, placeDto.latitude) &&
+                Objects.equals(longitude, placeDto.longitude) &&
+                Objects.equals(address, placeDto.address) &&
+                Objects.equals(description, placeDto.description) &&
+                Objects.equals(parking, placeDto.parking) &&
+                Objects.equals(restDate, placeDto.restDate) &&
+                Objects.equals(infoCenter, placeDto.infoCenter) &&
+                Objects.equals(peripheries, placeDto.peripheries);
     }
 }

@@ -30,22 +30,27 @@ public class PlaceApiDto {
     private Double mapy;
     private String overview;
     private String addr1;
-    private PlaceInfoApiDto placeInfoApiDto;
-
-    public void setPlaceInfoApiDto(PlaceInfoApiDto placeInfoApiDto) {
-        this.placeInfoApiDto = placeInfoApiDto;
-    }
 
     public static PlaceApiDto createDto(JsonElement jsonElement, Gson gson){
         return gson.fromJson(CommonConfig.getJsonString(jsonElement), PlaceApiDto.class);
     }
 
-    public URI getNearByUri(Integer contentTypeId,String apiKey){
-        return java.net.URI
-                .create(String.format(NearbyPlace.URI, apiKey, contentTypeId,this.mapx.toString(),this.mapy.toString()));
-    }
-
-    public Place toEntity(){
-        return Place.builder().build();
+    public Place toEntity(PlaceInfoApiDto placeInfoApiDto,PlaceSubDto placeSubDto){
+        return Place.builder()
+                .title(title)
+                .mainImageUrl(firstimage)
+                .subImageUrl(firstimage2)
+                .latitude(mapx)
+                .longitude(mapy)
+                .description(overview.replace("<br>",""))
+                .address(addr1)
+                .parking(placeInfoApiDto.getParkingculture())
+                .infoCenter(placeInfoApiDto.getInfocenterculture())
+                .restDate(placeInfoApiDto.getRestdateculture())
+                .letterImageUrl(placeSubDto.getLetterImageUrl())
+                .hint(placeSubDto.getHint())
+                .sequence(placeSubDto.getSequence())
+                .reward(placeSubDto.getReward())
+                .build();
     }
 }
