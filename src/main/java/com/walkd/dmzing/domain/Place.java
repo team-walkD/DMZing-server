@@ -1,8 +1,8 @@
 package com.walkd.dmzing.domain;
 
 import com.walkd.dmzing.dto.course.place.PeripheryDto;
-import com.walkd.dmzing.dto.exception.LetterDto;
 import com.walkd.dmzing.dto.course.place.PlaceDto;
+import com.walkd.dmzing.dto.exception.LetterDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import javax.persistence.*;
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -104,7 +103,6 @@ public class Place {
 
         for (int i = 0; i < sorted.size(); i++) {
             if (sorted.get(i).equals(this.toPlaceDto())) {
-                log.info(sorted.get(0).getAddress()+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                 count = i + 1;
                 sorted.get(count).deleteInfo();
                 count++;
@@ -120,6 +118,6 @@ public class Place {
 
     public URI getNearByUri(Integer contentTypeId, String apiKey) {
         return java.net.URI
-                .create(String.format(PeripheryDto.URI, apiKey, contentTypeId, this.latitude.toString(), this.longitude.toString()));
+                .create(String.format(PeripheryDto.URI, apiKey, contentTypeId, this.longitude.toString(), this.latitude.toString()));
     }
 }
