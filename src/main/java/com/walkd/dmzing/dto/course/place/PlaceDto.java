@@ -1,4 +1,4 @@
-package com.walkd.dmzing.dto.course;
+package com.walkd.dmzing.dto.course.place;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,15 +9,23 @@ import java.util.Objects;
 @Builder
 public class PlaceDto {
     private Long id;
-    private String name;
-    private Double latitude;
-    private Double longitude;
     private String hint;
     private String letterImageUrl;
     private Long reward;
-    private Long contentId;
-    private Long tourTypeId;
     private Integer sequence;
+
+    private String mainImageUrl;
+    private String subImageUrl;
+    private String title;
+    private Double latitude;
+    private Double longitude;
+    private String address;
+    private String description;
+
+    private String parking;
+    private String restDate;
+    private String infoCenter;
+
 
     public PlaceDto deleteDetailInfo() {
         latitude = null;
@@ -40,14 +48,12 @@ public class PlaceDto {
         if (o == null || getClass() != o.getClass()) return false;
         PlaceDto placeDto = (PlaceDto) o;
         return Objects.equals(id, placeDto.id) &&
-                Objects.equals(name, placeDto.name) &&
+                Objects.equals(title, placeDto.title) &&
                 Objects.equals(latitude, placeDto.latitude) &&
                 Objects.equals(longitude, placeDto.longitude) &&
                 Objects.equals(hint, placeDto.hint) &&
                 Objects.equals(letterImageUrl, placeDto.letterImageUrl) &&
                 Objects.equals(reward, placeDto.reward) &&
-                Objects.equals(contentId, placeDto.contentId) &&
-                Objects.equals(tourTypeId, placeDto.tourTypeId) &&
                 Objects.equals(sequence, placeDto.sequence);
     }
 }

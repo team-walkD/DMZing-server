@@ -1,7 +1,7 @@
 package com.walkd.dmzing.domain;
 
-import com.walkd.dmzing.dto.course.LetterDto;
-import com.walkd.dmzing.dto.course.PlaceDto;
+import com.walkd.dmzing.dto.exception.LetterDto;
+import com.walkd.dmzing.dto.course.place.PlaceDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +24,7 @@ public class Place {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String title;
 
     private Double latitude;
 
@@ -36,37 +36,28 @@ public class Place {
 
     private Long reward;
 
-    private Long contentId;
-
-    private Long tourTypeId;
-
     private Integer sequence;
 
 
     @Builder
-    public Place(String name, Double latitude, Double longitude, String hint, String letterImageUrl, Long reward, Long contentId, Long tourTypeId, Integer sequence) {
-        this.name = name;
+    public Place(String title, Double latitude, Double longitude, String hint, String letterImageUrl, Long reward, Integer sequence) {
+        this.title = title;
         this.latitude = latitude;
         this.longitude = longitude;
         this.hint = hint;
         this.letterImageUrl = letterImageUrl;
         this.reward = reward;
-        this.contentId = contentId;
-        this.tourTypeId = tourTypeId;
         this.sequence = sequence;
     }
 
     public PlaceDto toPlaceDto() {
         return PlaceDto.builder()
                 .id(id)
-                .name(name)
                 .latitude(latitude)
                 .longitude(longitude)
                 .hint(hint)
                 .letterImageUrl(letterImageUrl)
                 .reward(reward)
-                .contentId(contentId)
-                .tourTypeId(tourTypeId)
                 .sequence(sequence)
                 .build();
     }

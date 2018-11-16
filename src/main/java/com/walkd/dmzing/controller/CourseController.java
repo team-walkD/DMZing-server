@@ -1,9 +1,8 @@
 package com.walkd.dmzing.controller;
 
-import com.walkd.dmzing.domain.MissionHistory;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
-import com.walkd.dmzing.dto.course.PlaceDto;
+import com.walkd.dmzing.dto.course.place.PlaceDto;
 import com.walkd.dmzing.service.CourseService;
 import com.walkd.dmzing.service.MissionService;
 import io.swagger.annotations.*;

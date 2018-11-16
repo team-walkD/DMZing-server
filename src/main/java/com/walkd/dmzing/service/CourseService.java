@@ -6,7 +6,7 @@ import com.walkd.dmzing.domain.PurchasedCourseByUser;
 import com.walkd.dmzing.domain.User;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
-import com.walkd.dmzing.dto.course.PlaceDto;
+import com.walkd.dmzing.dto.course.place.PlaceDto;
 import com.walkd.dmzing.exception.AlreadyBuyCourseException;
 import com.walkd.dmzing.exception.NotFoundCourseException;
 import com.walkd.dmzing.exception.NotFoundUserException;
@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CourseService {
-
     private final CourseRepository courseRepository;
 
     private final PurchasedCourseByUserRepository purchasedCourseByUserRepository;
@@ -38,7 +37,6 @@ public class CourseService {
 
     @Transactional(readOnly = true)
     public List<CourseMainDto> showCourses(String email) {
-        //todo: 픽 수 중복??????
         return courseRepository.findAll()
                 .stream()
                 .map(course -> course.toCourseMainDto(
@@ -61,7 +59,6 @@ public class CourseService {
 
     @Transactional
     public CourseDetailDto buyCourse(Long cid, String email) {
-        //todo 커스텀 익셉션 생성
         //todo QueryDSL을 활용한 한방쿼리 작성
         if (purchasedCourseByUserRepository.findByCourse_IdAndUser_Email(cid, email).isPresent())
             throw new AlreadyBuyCourseException();

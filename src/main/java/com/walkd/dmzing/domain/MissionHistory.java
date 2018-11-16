@@ -1,7 +1,6 @@
 package com.walkd.dmzing.domain;
 
-import com.walkd.dmzing.dto.course.LetterDto;
-import com.walkd.dmzing.dto.course.PlaceDto;
+import com.walkd.dmzing.dto.exception.LetterDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -14,7 +14,7 @@ public interface MissionHistoryRepository extends JpaRepository<MissionHistory, 
 
     MissionHistory findAllByPurchasedCoursesByUserId(Long id);
 
-    Optional<List<MissionHistory>> findAllByPurchasedCoursesByUser_CourseAndPurchasedCoursesByUser_User(Course course, User user);
+    List<MissionHistory> findAllByPurchasedCoursesByUser_CourseAndPurchasedCoursesByUser_User(Course course, User user);
 
     MissionHistory findTopByPurchasedCoursesByUserOrderByIdDesc(PurchasedCourseByUser purchasedCourseByUser);
 }

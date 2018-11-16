@@ -3,7 +3,7 @@ package com.walkd.dmzing.domain;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.course.CourseSimpleDto;
-import com.walkd.dmzing.dto.course.PlaceDto;
+import com.walkd.dmzing.dto.course.place.PlaceDto;
 import com.walkd.dmzing.exception.NotEnoughMoneyException;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 public class Course {
 
     public static final Long DEFAULT_COURSE_ID = 1l;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
