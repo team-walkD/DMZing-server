@@ -14,7 +14,6 @@ public class DmzingApplication {
             + "classpath:aws.properties,"
             + "./app/config/secret.properties";
 
-
     public static void main(String[] args) {
         new SpringApplicationBuilder(DmzingApplication.class)
                 .properties(APPLICATION_LOCATIONS)
