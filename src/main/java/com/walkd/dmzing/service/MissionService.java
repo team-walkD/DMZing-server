@@ -1,18 +1,16 @@
 package com.walkd.dmzing.service;
 
-import com.walkd.dmzing.domain.Course;
-import com.walkd.dmzing.domain.MissionHistory;
-import com.walkd.dmzing.domain.PurchasedCourseByUser;
+import com.walkd.dmzing.domain.*;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseSimpleDto;
-import com.walkd.dmzing.dto.course.place.PlaceDto;
 import com.walkd.dmzing.dto.course.PurchaseListAndPickCourseDto;
+import com.walkd.dmzing.dto.course.place.PlaceDto;
+import com.walkd.dmzing.dto.mission.MissionDto;
+import com.walkd.dmzing.exception.AlreadySuccessedException;
 import com.walkd.dmzing.exception.NotFoundCourseException;
 import com.walkd.dmzing.exception.NotFoundPurchaseHistoryException;
-import com.walkd.dmzing.repository.MissionHistoryRepository;
-import com.walkd.dmzing.repository.PhotoReviewRepository;
-import com.walkd.dmzing.repository.PurchasedCourseByUserRepository;
-import com.walkd.dmzing.repository.ReviewRepository;
+import com.walkd.dmzing.exception.NotFoundUserException;
+import com.walkd.dmzing.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class MissionService {
-
     private final PurchasedCourseByUserRepository purchasedCourseByUserRepository;
 
     private final MissionHistoryRepository missionHistoryRepository;
@@ -34,9 +31,12 @@ public class MissionService {
 
     private final PhotoReviewRepository photoReviewRepository;
 
+    private final UserRepository userRepository;
+
+    private final DpHistoryRepository dpHistoryRepository;
+
     @Transactional
     public PurchaseListAndPickCourseDto showPurchaseListAndPickCourse(String email) {
-        //todo 구매내역 익셉
         List<PurchasedCourseByUser> purchasedCourseByUsers = purchasedCourseByUserRepository.findByUser_Email(email).orElseThrow(NotFoundPurchaseHistoryException::new);
 
         List<CourseSimpleDto> purchaseList = purchasedCourseByUsers.stream()
@@ -51,22 +51,29 @@ public class MissionService {
 
         MissionHistory missionHistory = missionHistoryRepository.findTopByPurchasedCoursesByUserOrderByIdDesc(pickPurchasedCourse);
 
-        return PurchaseListAndPickCourseDto.builder().pickCourse(pickPurchasedCourse.getCourse().toCourseDetailDto(reviewRepository.countByCourse_Type(course.getType())
+        return PurchaseListAndPickCourseDto.builder().pickCourse(pickPurchasedCourse.getCourse()
+                .toCourseDetailDto(reviewRepository.countByCourse_Type(course.getType())
                 + photoReviewRepository.countByCourse_Type(course.getType()), missionHistory))
                 .purchaseList(purchaseList).build();
     }
 
     @Transactional
-    public List<PlaceDto> filterSuccessPlaces(String email, Long cid) {
-        PurchasedCourseByUser purchasedCourse = purchasedCourseByUserRepository.findByCourse_IdAndUser_Email(cid, email).orElseThrow(NotFoundPurchaseHistoryException::new);
-        if (purchasedCourse.getIsPicked()) {
-            return missionHistoryRepository.findByPurchasedCoursesByUser_Id(purchasedCourse.getId())
-                    .stream()
-                    .map(missionHistory -> missionHistory.getPlace().toPlaceDto())
-                    .collect(Collectors.toList());
-        } else {
-            throw new RuntimeException("픽한 코스가 아닙니다.");
+    public List<PlaceDto> filterSuccessPlaces(String email, MissionDto missionDto) {
+        User user= userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
+        PurchasedCourseByUser purchasedCourse = purchasedCourseByUserRepository.findByCourse_IdAndUser_Email(missionDto.getCid(), email)
+                .orElseThrow(NotFoundPurchaseHistoryException::new);
+        Place checkPlace = purchasedCourse.getPlace(missionDto.getPid());
+
+        if(!missionHistoryRepository.existsByPlaceAndPurchasedCoursesByUser(checkPlace,purchasedCourse)){
+            Long reward = checkPlace.checkSuccessed(missionDto.getLatitude(),missionDto.getLongitude());
+            user.addDmzPoint(reward);
+            dpHistoryRepository.save(DpHistory.builder().dpType(DpHistory.FIND_LETTER).user(user).dp(reward).build());
+            List<PlaceDto> placeDtos = checkPlace.toPlaceDtos(purchasedCourse.getCourse()
+                    .makePlaceList(missionHistoryRepository
+                            .save(MissionHistory.builder().purchasedCourseByUser(purchasedCourse).place(checkPlace).build())));
+            return checkPlace.getRemovedPlaceDtos(placeDtos);
         }
+        throw new AlreadySuccessedException();
     }
 
     @Transactional
@@ -89,4 +96,5 @@ public class MissionService {
         }
         throw new NotFoundPurchaseHistoryException();
     }
+
 }

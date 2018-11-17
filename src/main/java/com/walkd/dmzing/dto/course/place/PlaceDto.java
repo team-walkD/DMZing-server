@@ -43,6 +43,10 @@ public class PlaceDto {
         return this;
     }
 
+    public boolean isLatePlace(Integer sequence) {
+        return sequence <= this.sequence;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,4 +69,5 @@ public class PlaceDto {
                 Objects.equals(infoCenter, placeDto.infoCenter) &&
                 Objects.equals(peripheries, placeDto.peripheries);
     }
+
 }

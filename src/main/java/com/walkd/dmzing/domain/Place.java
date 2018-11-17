@@ -3,6 +3,7 @@ package com.walkd.dmzing.domain;
 import com.walkd.dmzing.dto.course.place.PeripheryDto;
 import com.walkd.dmzing.dto.course.place.PlaceDto;
 import com.walkd.dmzing.dto.exception.LetterDto;
+import com.walkd.dmzing.exception.NotMatchedCourseException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +20,6 @@ import java.util.stream.Collectors;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Place {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -116,8 +116,41 @@ public class Place {
         return sorted;
     }
 
+    public List<PlaceDto> getRemovedPlaceDtos(List<PlaceDto> placeDtos) {
+        return placeDtos.stream().filter(placeDto -> placeDto.isLatePlace(sequence)).collect(Collectors.toList());
+    }
+
     public URI getNearByUri(Integer contentTypeId, String apiKey) {
         return java.net.URI
                 .create(String.format(PeripheryDto.URI, apiKey, contentTypeId, this.longitude.toString(), this.latitude.toString()));
+    }
+
+    public boolean isEqualToId(Long pid) {
+        return pid == this.id;
+    }
+
+    public Long checkSuccessed(Double latitude, Double longitude) {
+        if(500 > distance(latitude,longitude)) return reward;
+        throw new NotMatchedCourseException();
+    }
+
+    private  double distance(double latitude, double longitude) {
+        double theta = this.longitude - longitude;
+
+        double dist = Math.sin(deg2rad(this.latitude)) * Math.sin(deg2rad(latitude))
+                + Math.cos(deg2rad(this.latitude)) * Math.cos(deg2rad(latitude)) * Math.cos(deg2rad(theta));
+
+        dist = rad2deg(Math.acos(dist));
+        dist = dist * 60 * 1.1515;
+
+        return (dist * 1609.344);
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180 / Math.PI);
     }
 }

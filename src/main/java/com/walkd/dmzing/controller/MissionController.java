@@ -1,16 +1,19 @@
 package com.walkd.dmzing.controller;
 
 import com.walkd.dmzing.dto.course.PurchaseListAndPickCourseDto;
+import com.walkd.dmzing.dto.course.place.PlaceApiDto;
+import com.walkd.dmzing.dto.course.place.PlaceDto;
+import com.walkd.dmzing.dto.mission.MissionDto;
 import com.walkd.dmzing.service.MissionService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -32,5 +35,19 @@ public class MissionController {
     @GetMapping
     public ResponseEntity<PurchaseListAndPickCourseDto> showPurchaseListAndPickedCourse(@ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(missionService.showPurchaseListAndPickCourse(authentication.getPrincipal().toString()));
+    }
+
+    @ApiOperation(value = "미션 시도", notes = "미션 성공시, 보상 및 코스 정보를 내려준다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "호출 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @PostMapping
+    public ResponseEntity<List<PlaceDto>> findLetter(@ApiIgnore Authentication authentication,@RequestBody MissionDto missionDto) {
+        return ResponseEntity.ok().body(missionService.filterSuccessPlaces(authentication.getPrincipal().toString(),missionDto));
     }
 }
