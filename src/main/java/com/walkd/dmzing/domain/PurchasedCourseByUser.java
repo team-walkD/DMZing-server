@@ -49,4 +49,10 @@ public class PurchasedCourseByUser {
     public CourseSimpleDto toCourseSimpleDto(){
         return course.toCourseSimpleDto(isPicked);
     }
+
+    public Place getPlace(Long pid) {
+        if(isPicked) return course.getCheckPlace(pid);
+        //todo 사용자 에러
+        throw new  RuntimeException();
+    }
 }

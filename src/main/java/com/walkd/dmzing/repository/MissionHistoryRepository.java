@@ -1,20 +1,16 @@
 package com.walkd.dmzing.repository;
 
-import com.walkd.dmzing.domain.Course;
-import com.walkd.dmzing.domain.MissionHistory;
-import com.walkd.dmzing.domain.PurchasedCourseByUser;
-import com.walkd.dmzing.domain.User;
+import com.walkd.dmzing.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface MissionHistoryRepository extends JpaRepository<MissionHistory, Long> {
-    List<MissionHistory> findByPurchasedCoursesByUser_Id(Long pcid);
-
-    MissionHistory findAllByPurchasedCoursesByUserId(Long id);
-
     List<MissionHistory> findAllByPurchasedCoursesByUser_CourseAndPurchasedCoursesByUser_User(Course course, User user);
 
     MissionHistory findTopByPurchasedCoursesByUserOrderByIdDesc(PurchasedCourseByUser purchasedCourseByUser);
+
+    Boolean existsByPlaceAndPurchasedCoursesByUser(Place place,PurchasedCourseByUser purchasedCourseByUser);
 }

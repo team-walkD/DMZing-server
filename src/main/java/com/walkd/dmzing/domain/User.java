@@ -75,4 +75,7 @@ public class User {
                 .authority(UserDto.USER_AUTHORITY).build();
     }
 
+    public void addDmzPoint(Long reward) {
+        dmzPoint += reward;
+    }
 }

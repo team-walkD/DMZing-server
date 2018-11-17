@@ -73,7 +73,7 @@ public class Course {
         this.places = places;
     }
 
-    private List<PlaceDto> makePlaceList(MissionHistory missionHistory) {
+    public List<PlaceDto> makePlaceList(MissionHistory missionHistory) {
         List<Place> sortedPlaces = places.stream().sorted(Comparator.comparing(Place::getSequence)).collect(Collectors.toList());
 
         if (missionHistory == null)
@@ -149,5 +149,14 @@ public class Course {
                 .mainDescription(mainDescription)
                 .isPicked(pick)
                 .build();
+    }
+
+    public Place getCheckPlace(Long pid) {
+        List<Place> checkPlaces = places.stream().filter(place -> place.isEqualToId(pid)).collect(Collectors.toList());
+        if(checkPlaces != null) {
+            return checkPlaces.get(0);
+        }
+        //todo 사용자 에러 발생
+        throw new RuntimeException();
     }
 }
