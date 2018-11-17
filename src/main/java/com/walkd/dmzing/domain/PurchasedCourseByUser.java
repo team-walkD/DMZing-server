@@ -2,6 +2,7 @@ package com.walkd.dmzing.domain;
 
 import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.course.CourseSimpleDto;
+import com.walkd.dmzing.exception.NotFoundPickException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,7 +53,6 @@ public class PurchasedCourseByUser {
 
     public Place getPlace(Long pid) {
         if(isPicked) return course.getCheckPlace(pid);
-        //todo 사용자 에러
-        throw new  RuntimeException();
+        throw new NotFoundPickException();
     }
 }

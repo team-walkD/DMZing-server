@@ -6,6 +6,7 @@ import com.walkd.dmzing.dto.course.CourseSimpleDto;
 import com.walkd.dmzing.dto.course.PurchaseListAndPickCourseDto;
 import com.walkd.dmzing.dto.course.place.PlaceDto;
 import com.walkd.dmzing.dto.mission.MissionDto;
+import com.walkd.dmzing.exception.AlreadySuccessedException;
 import com.walkd.dmzing.exception.NotFoundCourseException;
 import com.walkd.dmzing.exception.NotFoundPurchaseHistoryException;
 import com.walkd.dmzing.exception.NotFoundUserException;
@@ -36,7 +37,6 @@ public class MissionService {
 
     @Transactional
     public PurchaseListAndPickCourseDto showPurchaseListAndPickCourse(String email) {
-        //todo 구매내역 익셉
         List<PurchasedCourseByUser> purchasedCourseByUsers = purchasedCourseByUserRepository.findByUser_Email(email).orElseThrow(NotFoundPurchaseHistoryException::new);
 
         List<CourseSimpleDto> purchaseList = purchasedCourseByUsers.stream()
@@ -62,7 +62,6 @@ public class MissionService {
         User user= userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
         PurchasedCourseByUser purchasedCourse = purchasedCourseByUserRepository.findByCourse_IdAndUser_Email(missionDto.getCid(), email)
                 .orElseThrow(NotFoundPurchaseHistoryException::new);
-        //todo 구매목록 찾고 픽된건지 보고 픽 되어있으면 장소 반환 장소와 구매아이디로 미션목록 조회 -> 없으면 위경도 조회 통과시 유저 디피 올리고 미션 저장 히스토리저장
         Place checkPlace = purchasedCourse.getPlace(missionDto.getPid());
 
         if(!missionHistoryRepository.existsByPlaceAndPurchasedCoursesByUser(checkPlace,purchasedCourse)){
@@ -74,8 +73,7 @@ public class MissionService {
                             .save(MissionHistory.builder().purchasedCourseByUser(purchasedCourse).place(checkPlace).build())));
             return checkPlace.getRemovedPlaceDtos(placeDtos);
         }
-        //todo 사용자에러발생
-        throw new RuntimeException();
+        throw new AlreadySuccessedException();
     }
 
     @Transactional

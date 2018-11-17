@@ -5,6 +5,7 @@ import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.course.CourseSimpleDto;
 import com.walkd.dmzing.dto.course.place.PlaceDto;
 import com.walkd.dmzing.exception.NotEnoughMoneyException;
+import com.walkd.dmzing.exception.NotMatchedCourseException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -156,7 +157,6 @@ public class Course {
         if(checkPlaces != null) {
             return checkPlaces.get(0);
         }
-        //todo 사용자 에러 발생
-        throw new RuntimeException();
+        throw new NotMatchedCourseException();
     }
 }

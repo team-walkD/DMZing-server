@@ -1,10 +1,7 @@
 package com.walkd.dmzing.advice;
 
 import com.walkd.dmzing.dto.exception.ExceptionDto;
-import com.walkd.dmzing.exception.AlreadyBuyCourseException;
-import com.walkd.dmzing.exception.EmailAlreadyExistsException;
-import com.walkd.dmzing.exception.NotFoundCourseException;
-import com.walkd.dmzing.exception.NotFoundPurchaseHistoryException;
+import com.walkd.dmzing.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +36,24 @@ public class CourseExceptionControllerAdvice {
     @ExceptionHandler(AlreadyBuyCourseException.class)
     public ResponseEntity<ExceptionDto> alreadyBuyCourseException(AlreadyBuyCourseException exception) {
         log.debug("[AlreadyBuyCourseException] {}", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ExceptionDto.builder()
+                        .field(FIELD)
+                        .message(exception.getMessage()).build());
+    }
+
+    @ExceptionHandler(NotFoundPickException.class)
+    public ResponseEntity<ExceptionDto> notFoundPickException(NotFoundPickException exception) {
+        log.debug("[NotFoundPickException] {}", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ExceptionDto.builder()
+                        .field(FIELD)
+                        .message(exception.getMessage()).build());
+    }
+
+    @ExceptionHandler(NotMatchedCourseException.class)
+    public ResponseEntity<ExceptionDto> notMatchedCourseException(NotMatchedCourseException exception) {
+        log.debug("[NotFoundPickException] {}", exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ExceptionDto.builder()
                         .field(FIELD)

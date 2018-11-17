@@ -47,7 +47,7 @@ public class MissionController {
             @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     })
     @PostMapping
-    public ResponseEntity<List<PlaceDto>> attemptMission(@ApiIgnore Authentication authentication,@RequestBody MissionDto missionDto) {
+    public ResponseEntity<List<PlaceDto>> findLetter(@ApiIgnore Authentication authentication,@RequestBody MissionDto missionDto) {
         return ResponseEntity.ok().body(missionService.filterSuccessPlaces(authentication.getPrincipal().toString(),missionDto));
     }
 }

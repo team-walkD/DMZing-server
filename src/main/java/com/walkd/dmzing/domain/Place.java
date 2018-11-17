@@ -3,6 +3,7 @@ package com.walkd.dmzing.domain;
 import com.walkd.dmzing.dto.course.place.PeripheryDto;
 import com.walkd.dmzing.dto.course.place.PlaceDto;
 import com.walkd.dmzing.dto.exception.LetterDto;
+import com.walkd.dmzing.exception.NotMatchedCourseException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -129,9 +130,8 @@ public class Place {
     }
 
     public Long checkSuccessed(Double latitude, Double longitude) {
-        //todo 사용자 익셉션발생, 상수빼기
         if(500 > distance(latitude,longitude)) return reward;
-        throw new RuntimeException();
+        throw new NotMatchedCourseException();
     }
 
     private  double distance(double latitude, double longitude) {
