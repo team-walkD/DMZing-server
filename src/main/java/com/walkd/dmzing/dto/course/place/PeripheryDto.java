@@ -19,17 +19,21 @@ public class PeripheryDto {
             .append("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey=%s")
             .append("&contentTypeId=%d&mapX=%s&mapY=%s&radius=10000&listYN=Y")
             .append("&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=1&pageNo=1&_type=json").toString();
-    public static List<Integer> codes = new ArrayList<>(Arrays.asList(39,32,15));
+    public static List<Integer> codes = new ArrayList<>(Arrays.asList(39, 32, 15));
 
     private String title;
     private String firstimage;
     private Long contenttypeid;
 
     public static PeripheryDto createDto(JsonElement jsonElement, Gson gson) {
-        return gson.fromJson(CommonConfig.getJsonString(jsonElement), PeripheryDto.class);
+        String jsonString = CommonConfig.getJsonString(jsonElement);
+        if (jsonString == null) {
+            return PeripheryDto.builder().build();
+        }
+        return gson.fromJson(jsonString, PeripheryDto.class);
     }
 
-    public Periphery toEntity(){
+    public Periphery toEntity() {
         return Periphery.builder()
                 .title(title)
                 .imageUrl(firstimage)

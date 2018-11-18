@@ -121,8 +121,10 @@ public class Place {
     }
 
     public URI getNearByUri(Integer contentTypeId, String apiKey) {
-        return java.net.URI
+        URI uri = java.net.URI
                 .create(String.format(PeripheryDto.URI, apiKey, contentTypeId, this.longitude.toString(), this.latitude.toString()));
+        log.info(uri.toString());
+        return uri;
     }
 
     public boolean isEqualToId(Long pid) {
