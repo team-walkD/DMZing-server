@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.walkd.dmzing.domain.*;
-import com.walkd.dmzing.dto.course.place.*;
-import com.walkd.dmzing.dto.user.UserDto;
+import com.walkd.dmzing.dto.course.place.PeripheryDto;
+import com.walkd.dmzing.dto.course.place.PlaceApiDto;
+import com.walkd.dmzing.dto.course.place.PlaceInfoApiDto;
+import com.walkd.dmzing.dto.course.place.PlaceSubDto;
 import com.walkd.dmzing.exception.NotFoundCourseException;
 import com.walkd.dmzing.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +27,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class InitComponent implements ApplicationRunner {
-
-    private final UserRepository userRepository;
 
     private final CourseRepository courseRepository;
 
@@ -53,10 +53,10 @@ public class InitComponent implements ApplicationRunner {
                     .setPlaces(updatePeripheryDto(createPlaces(InitData.datePlaceDtos)));
 
             courseRepository.findByType(Type.ADVENTURE).orElseThrow(NotFoundCourseException::new)
-                    .setPlaces(updatePeripheryDto(createPlaces(InitData.datePlaceDtos)));
+                    .setPlaces(updatePeripheryDto(createPlaces(InitData.naturePlaceDtos)));
 
             courseRepository.findByType(Type.HISTORY).orElseThrow(NotFoundCourseException::new)
-                    .setPlaces(updatePeripheryDto(createPlaces(InitData.datePlaceDtos)));
+                    .setPlaces(updatePeripheryDto(createPlaces(InitData.historyPlaceDtos)));
 
             Place place1 = placeRepository.findById(1L).get();
             Place place2 = placeRepository.findById(2L).get();
@@ -82,7 +82,9 @@ public class InitComponent implements ApplicationRunner {
     }
 
     private JsonElement getJsonElement(String uri, Integer contentTypeId, Integer contentId) {
-        String json = restTemplate.getForObject(URI.create(String.format(uri, apiKey, contentTypeId, contentId)), String.class);
+        URI courseUri = URI.create(String.format(uri, apiKey, contentTypeId, contentId));
+        log.info(courseUri.toString());
+        String json = restTemplate.getForObject(courseUri, String.class);
         return jsonParser.parse(json);
     }
 

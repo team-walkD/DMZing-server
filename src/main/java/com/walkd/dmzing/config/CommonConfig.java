@@ -3,7 +3,7 @@ package com.walkd.dmzing.config;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
 
+@Slf4j
 @Configuration
 public class CommonConfig {
     public static final String ENCODE = "UTF-8";
@@ -42,11 +43,19 @@ public class CommonConfig {
     }
 
     public static String getJsonString(JsonElement element) {
-        return element.getAsJsonObject().get("response")
+        String checkElement = element.getAsJsonObject().get("response")
                 .getAsJsonObject().get("body")
-                .getAsJsonObject().get("items")
-                .getAsJsonObject().get("item")
-                .getAsJsonObject().toString();
+                .getAsJsonObject().get("items").toString();
+
+        if (!checkElement.trim().equals("\"\"")) {
+            return element.getAsJsonObject().get("response")
+                    .getAsJsonObject().get("body")
+                    .getAsJsonObject().get("items")
+                    .getAsJsonObject().get("item")
+                    .getAsJsonObject().toString();
+        }
+        return null;
+
     }
 
 
