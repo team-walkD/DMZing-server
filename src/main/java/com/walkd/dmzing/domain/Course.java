@@ -41,6 +41,8 @@ public class Course {
 
     private String imageUrl;
 
+    private String mainImageUrl;
+
     private String lineImageUrl;
 
     private String backgroundImageUrl;
@@ -55,13 +57,16 @@ public class Course {
 
     private Long price;
 
+
     @Builder
-    public Course(Type type, String title, String mainDescription, String subDescription, String imageUrl, String lineImageUrl, String backgroundImageUrl, List<Place> places, Level level, Double estimatedTime, Long price) {
+    public Course(Type type, String title, String mainDescription, String subDescription, String imageUrl, String mainImageUrl,
+                  String lineImageUrl, String backgroundImageUrl, List<Place> places, Level level, Double estimatedTime, Long price) {
         this.type = type;
         this.title = title;
         this.mainDescription = mainDescription;
         this.subDescription = subDescription;
         this.imageUrl = imageUrl;
+        this.mainImageUrl = mainImageUrl;
         this.lineImageUrl = lineImageUrl;
         this.backgroundImageUrl = backgroundImageUrl;
         this.places = places;
@@ -99,7 +104,7 @@ public class Course {
         return CourseMainDto.builder()
                 .id(id)
                 .title(type.getTypeName())
-                .imageUrl(imageUrl)
+                .imageUrl(mainImageUrl)
                 .lineImageUrl(lineImageUrl)
                 .mainDescription(mainDescription)
                 .subDescription(subDescription)
@@ -113,7 +118,7 @@ public class Course {
         return CourseDetailDto.builder()
                 .id(id)
                 .title(type.getTypeName())
-                .imageUrl(imageUrl)
+                .imageUrl(mainImageUrl)
                 .lineImageUrl(lineImageUrl)
                 .mainDescription(mainDescription)
                 .subDescription(subDescription)
@@ -154,7 +159,7 @@ public class Course {
 
     public Place getCheckPlace(Long pid) {
         List<Place> checkPlaces = places.stream().filter(place -> place.isEqualToId(pid)).collect(Collectors.toList());
-        if(checkPlaces != null) {
+        if (checkPlaces != null) {
             return checkPlaces.get(0);
         }
         throw new NotMatchedCourseException();
