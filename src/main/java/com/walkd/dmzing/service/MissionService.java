@@ -68,10 +68,10 @@ public class MissionService {
         if(!missionHistoryRepository.existsByPlaceAndPurchasedCoursesByUser(checkPlace,purchasedCourse)){
             Long reward = checkPlace.checkSuccessed(missionDto.getLatitude(),missionDto.getLongitude());
             user.addDmzPoint(reward);
-            dpHistoryRepository.save(DpHistory.builder().dpType(DpHistory.FIND_LETTER).user(user).dp(reward).build());
             List<PlaceDto> placeDtos = checkPlace.toPlaceDtos(purchasedCourse.getCourse()
                     .makePlaceList(missionHistoryRepository
                             .save(MissionHistory.builder().purchasedCourseByUser(purchasedCourse).place(checkPlace).build())));
+            dpHistoryRepository.save(DpHistory.builder().dpType(DpHistory.FIND_LETTER).user(user).dp(reward).build());
             return checkPlace.getRemovedPlaceDtos(placeDtos);
         }
         throw new AlreadySuccessedException();
