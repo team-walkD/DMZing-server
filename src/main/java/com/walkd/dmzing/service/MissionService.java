@@ -58,7 +58,7 @@ public class MissionService {
                 .purchaseList(purchaseList).build();
     }
 
-    @Transactional
+    @Transactional(rollbackFor = AlreadySuccessedException.class)
     public List<PlaceDto> filterSuccessPlaces(String email, MissionDto missionDto) {
         User user= userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
         PurchasedCourseByUser purchasedCourse = purchasedCourseByUserRepository.findByCourse_IdAndUser_Email(missionDto.getCid(), email)
@@ -68,10 +68,12 @@ public class MissionService {
         if(!missionHistoryRepository.existsByPlaceAndPurchasedCoursesByUser(checkPlace,purchasedCourse)){
             Long reward = checkPlace.checkSuccessed(missionDto.getLatitude(),missionDto.getLongitude());
             user.addDmzPoint(reward);
+
             List<PlaceDto> placeDtos = checkPlace.toPlaceDtos(purchasedCourse.getCourse()
                     .makePlaceList(missionHistoryRepository
                             .save(MissionHistory.builder().purchasedCourseByUser(purchasedCourse).place(checkPlace).build())));
             dpHistoryRepository.save(DpHistory.builder().dpType(DpHistory.FIND_LETTER).user(user).dp(reward).build());
+
             return checkPlace.getRemovedPlaceDtos(placeDtos);
         }
         throw new AlreadySuccessedException();
