@@ -104,6 +104,9 @@ public class Place {
         for (int i = 0; i < sorted.size(); i++) {
             if (sorted.get(i).equals(this.toPlaceDto())) {
                 count = i + 1;
+                if(count >= len) {
+                    break;
+                }
                 sorted.get(count).deleteInfo();
                 count++;
             }
@@ -117,6 +120,9 @@ public class Place {
     }
 
     public List<PlaceDto> getRemovedPlaceDtos(List<PlaceDto> placeDtos) {
+        if(sequence == 100){
+            return placeDtos.stream().filter(placeDto -> placeDto.isLatePlace(3)).collect(Collectors.toList());
+        }
         return placeDtos.stream().filter(placeDto -> placeDto.isLatePlace(sequence)).collect(Collectors.toList());
     }
 

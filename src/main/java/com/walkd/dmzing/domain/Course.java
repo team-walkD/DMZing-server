@@ -126,7 +126,8 @@ public class Course {
                 .level(level.getLevelName())
                 .estimatedTime(estimatedTime)
                 .backgroundImageUrl(backgroundImageUrl)
-                .places(places.stream().map(place -> place.toPlaceDto().deleteDetailInfo()).collect(Collectors.toList()))
+                .places(places.stream().map(place -> place.toPlaceDto().deleteDetailInfo())
+                        .sorted(Comparator.comparing(PlaceDto::getSequence)).collect(Collectors.toList()))
                 .reviewCount(count)
                 .build();
     }
@@ -158,8 +159,9 @@ public class Course {
     }
 
     public Place getCheckPlace(Long pid) {
-        List<Place> checkPlaces = places.stream().filter(place -> place.isEqualToId(pid)).collect(Collectors.toList());
-        if (checkPlaces != null) {
+        List<Place> checkPlaces = places.stream().filter(place -> {
+            return place.isEqualToId(pid);}).collect(Collectors.toList());
+        if (checkPlaces.size() != 0) {
             return checkPlaces.get(0);
         }
         throw new NotMatchedCourseException();
