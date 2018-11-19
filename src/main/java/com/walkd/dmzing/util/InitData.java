@@ -19,14 +19,16 @@ public class InitData {
                     PlaceSubDto.builder().hint("힌트3").letterImageUrl("편지url3").reward(80L)
                     .sequence(3).contentId(127001).contentTypeId(12).build(),
                     PlaceSubDto.builder().hint("힌트4").letterImageUrl("편지url4").reward(100L)
-                    .sequence(4).contentId(131919).contentTypeId(28).build(),
-                    PlaceSubDto.builder().hint("힌트5").letterImageUrl("편지url5").reward(100L)
-                    .sequence(100).contentId(752431).contentTypeId(12).build()));
+                    .sequence(100).contentId(131919).contentTypeId(28).build()));
 
     public static final List<PlaceSubDto> historyPlaceDtos = new ArrayList<>(Arrays
-            .asList(PlaceSubDto.builder().hint("힌트1").letterImageUrl("편지url1").reward(100L)
+            .asList(PlaceSubDto.builder().hint("힌트1").letterImageUrl("편지url1").reward(70L)
                             .sequence(1).contentId(778140).contentTypeId(14).build(),
-                    PlaceSubDto.builder().hint("힌트2").letterImageUrl("편지url2").reward(110L)
+                    PlaceSubDto.builder().hint("힌트2").letterImageUrl("편지url2").reward(90L)
+                            .sequence(2).contentId(125752).contentTypeId(12).build(),
+                    PlaceSubDto.builder().hint("힌트3").letterImageUrl("편지url3").reward(950L)
+                            .sequence(3).contentId(129591).contentTypeId(12).build(),
+                    PlaceSubDto.builder().hint("힌트4").letterImageUrl("편지url4").reward(110L)
                             .sequence(100).contentId(128171).contentTypeId(12).build()));
 
     public static final List<PlaceSubDto> naturePlaceDtos = new ArrayList<>(Arrays

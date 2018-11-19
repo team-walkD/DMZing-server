@@ -13,9 +13,9 @@ public class PlaceInfoApiDto {
             .append("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro?ServiceKey=%s")
             .append("&contentTypeId=%d&contentId=%d&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&introYN=Y&_type=json").toString();
 
-    private String parkingculture;
-    private String restdateculture;
-    private String infocenterculture;
+    private String parking;
+    private String restdate;
+    private String infocenter;
 
     public static PlaceInfoApiDto createDto(JsonElement jsonElement, Gson gson){
         return gson.fromJson(CommonConfig.getJsonString(jsonElement), PlaceInfoApiDto.class);
