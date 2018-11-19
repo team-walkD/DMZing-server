@@ -1,9 +1,6 @@
 package com.walkd.dmzing.service;
 
-import com.walkd.dmzing.domain.Course;
-import com.walkd.dmzing.domain.DpHistory;
-import com.walkd.dmzing.domain.PurchasedCourseByUser;
-import com.walkd.dmzing.domain.User;
+import com.walkd.dmzing.domain.*;
 import com.walkd.dmzing.dto.course.CourseDetailDto;
 import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.course.place.PlaceDto;
@@ -16,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,6 +78,9 @@ public class CourseService {
                 .getPlaces()
                 .stream()
                 .map(place -> place.toPlaceDto().deleteDetailInfo())
+                .collect(Collectors.toList())
+                .stream()
+                .sorted(Comparator.comparing(PlaceDto::getSequence))
                 .collect(Collectors.toList());
     }
 }

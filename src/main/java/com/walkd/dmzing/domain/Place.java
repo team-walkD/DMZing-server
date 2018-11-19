@@ -138,20 +138,14 @@ public class Place {
     }
 
     public Long checkSuccessed(Double latitude, Double longitude) {
-        if(500 > distance(latitude,longitude)) return reward;
+        if(0.5 > distance(latitude,longitude)) return reward;
         throw new NotMatchedCourseException();
     }
 
     private  double distance(double latitude, double longitude) {
-        double theta = this.longitude - longitude;
-
-        double dist = Math.sin(deg2rad(this.latitude)) * Math.sin(deg2rad(latitude))
-                + Math.cos(deg2rad(this.latitude)) * Math.cos(deg2rad(latitude)) * Math.cos(deg2rad(theta));
-
-        dist = rad2deg(Math.acos(dist));
-        dist = dist * 60 * 1.1515;
-
-        return (dist * 1609.344);
+        return 6371 * Math.acos(
+                Math.sin(this.latitude) * Math.sin(latitude)
+                        + Math.cos(this.latitude) * Math.cos(latitude) * Math.cos(longitude - this.longitude));
     }
 
     private double deg2rad(double deg) {
