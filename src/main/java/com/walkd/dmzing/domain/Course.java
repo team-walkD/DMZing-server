@@ -135,7 +135,7 @@ public class Course {
         return CourseDetailDto.builder()
                 .id(id)
                 .title(type.getTypeName())
-                .imageUrl(imageUrl)
+                .imageUrl(mainImageUrl)
                 .lineImageUrl(lineImageUrl)
                 .mainDescription(mainDescription)
                 .subDescription(subDescription)

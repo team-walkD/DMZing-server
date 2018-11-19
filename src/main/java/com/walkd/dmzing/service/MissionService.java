@@ -40,7 +40,6 @@ public class MissionService {
         List<PurchasedCourseByUser> purchasedCourseByUsers = purchasedCourseByUserRepository.findByUser_Email(email)
                 .orElseThrow(NotFoundPurchaseHistoryException::new);
 
-        log.info(purchasedCourseByUsers.get(0).getIsPicked()+"@@@@@@@@@@@@@@@@");
         List<CourseSimpleDto> purchaseList = purchasedCourseByUsers.stream()
                 .map(purchasedCourseByUser -> purchasedCourseByUser.toCourseSimpleDto())
                 .collect(Collectors.toList());
