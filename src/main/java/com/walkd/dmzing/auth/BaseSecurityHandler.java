@@ -1,7 +1,10 @@
 package com.walkd.dmzing.auth;
 
+import com.google.gson.Gson;
 import com.walkd.dmzing.auth.jwt.JwtInfo;
+import com.walkd.dmzing.dto.exception.ExceptionDto;
 import com.walkd.dmzing.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -18,7 +21,12 @@ import java.util.ArrayList;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class BaseSecurityHandler implements AuthenticationSuccessHandler, AuthenticationFailureHandler {
+
+    private final Gson gson;
+
+    private static final String FIELD = "AUTH";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -34,8 +42,10 @@ public class BaseSecurityHandler implements AuthenticationSuccessHandler, Authen
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
-                                        AuthenticationException exception) {
+                                        AuthenticationException exception) throws IOException {
         log.warn("[BadCredentialsException] credentials exception {}", exception.getMessage());
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().print(gson.toJson(ExceptionDto.builder().field(FIELD).message(exception.getMessage())));
     }
 }
