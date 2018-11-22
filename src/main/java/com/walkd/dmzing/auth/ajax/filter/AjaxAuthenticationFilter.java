@@ -31,7 +31,7 @@ public class AjaxAuthenticationFilter extends AbstractAuthenticationProcessingFi
         if (isJson(request)) {
             UserDto userDto = objectMapper.readValue(request.getReader(), UserDto.class);
             UsernamePasswordAuthenticationToken authentication = userDto.createUsernamePasswordAuthenticationToken();
-
+            log.info("[request start] -> {}",request.getRequestURI());
             return getAuthenticationManager().authenticate(authentication);
         }
 
