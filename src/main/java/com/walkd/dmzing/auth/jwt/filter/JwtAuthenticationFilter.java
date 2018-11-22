@@ -2,6 +2,7 @@ package com.walkd.dmzing.auth.jwt.filter;
 
 import com.walkd.dmzing.auth.jwt.JwtAuthenticationToken;
 import com.walkd.dmzing.auth.jwt.JwtInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     public JwtAuthenticationFilter(RequestMatcher requestMatcher) {
@@ -31,6 +33,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         if (StringUtils.isEmpty(token)) {
             throw new AccessDeniedException("Not empty Token");
         } else {
+            log.info("[request start] -> {}",request.getRequestURI());
             return getAuthenticationManager().authenticate(new JwtAuthenticationToken(token));
         }
     }
@@ -44,6 +47,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         context.setAuthentication(authResult);
         SecurityContextHolder.setContext(context);
         chain.doFilter(request, response);
+        log.info("[request end] -> {}",request.getRequestURI());
     }
 
     @Override
