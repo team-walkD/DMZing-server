@@ -2,7 +2,7 @@
 /build/
 !gradle/wrapper/gradle-wrapper.jar
 
-
+/app/config/
 aws.properties
 ### STS ###
 .apt_generated
@@ -13,6 +13,7 @@ aws.properties
 .springBeans
 .sts4-cache
 .DS_Store
+/logs
 
 ### IntelliJ IDEA ###
 .idea

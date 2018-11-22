@@ -12,7 +12,7 @@ public class JwtInfo {
 
     public static final String TOKEN_KEY = "cys";
 
-    public static final Long EXPIRES_LIMIT = 3L;
+    public static final Long EXPIRES_LIMIT = 100L;
 
     public static final String USER_EMAIL = "email";
 

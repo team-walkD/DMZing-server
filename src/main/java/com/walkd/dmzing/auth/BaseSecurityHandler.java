@@ -28,13 +28,14 @@ public class BaseSecurityHandler implements AuthenticationSuccessHandler, Authen
         UserDetails userDetails = new UserDetailsImpl(authentication.getName(), new ArrayList<>(authentication.getAuthorities()));
         response.setContentType(MediaType.APPLICATION_JSON.toString());
         response.setHeader(JwtInfo.HEADER_NAME, JwtUtil.createToken(userDetails));
+        log.info("[request end] -> {}",request.getRequestURI());
     }
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) {
-        log.debug("[BadCredentialsException] credentials exception {}", exception.getMessage());
+        log.warn("[BadCredentialsException] credentials exception {}", exception.getMessage());
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
     }
 }

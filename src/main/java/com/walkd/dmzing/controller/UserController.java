@@ -1,25 +1,32 @@
 package com.walkd.dmzing.controller;
 
 import com.walkd.dmzing.auth.jwt.JwtInfo;
+import com.walkd.dmzing.dto.course.CourseSimpleDto;
+import com.walkd.dmzing.dto.exception.LetterDto;
 import com.walkd.dmzing.dto.exception.ExceptionDto;
+import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.JoinUser;
 import com.walkd.dmzing.dto.user.LoginUser;
 import com.walkd.dmzing.dto.user.UserDto;
+import com.walkd.dmzing.dto.user.UserInfoDto;
+import com.walkd.dmzing.dto.user.UserDpInfoDto;
 import com.walkd.dmzing.service.UserService;
 import com.walkd.dmzing.util.JwtUtil;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.List;
+
+
+@Slf4j
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -52,6 +59,81 @@ public class UserController {
     })
     @PostMapping("/login")
     public void login(@Validated(LoginUser.class) @RequestBody LoginUser loginUser) {
+    }
+
+
+    @ApiOperation(value = "마이페이지 조회", notes = "마이페이지 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @GetMapping("/info")
+    public ResponseEntity<UserInfoDto> showUserInfo(@ApiIgnore Authentication authentication) {
+        return ResponseEntity.ok().body(userService.showUserInfo(authentication.getPrincipal().toString()));
+    }
+
+
+    @ApiOperation(value = "마이페이지 리뷰 조회", notes = "좋아요나 본인이 쓴 리뷰 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @GetMapping("/reviews")
+    public ResponseEntity<List<SimpleReviewDto>> showUserReview(@ApiIgnore Authentication authentication) {
+        return ResponseEntity.ok().body(userService.showUserReview(authentication.getPrincipal().toString()));
+    }
+
+
+    @ApiOperation(value = "마이페이지 코스 조회", notes = "구매한 코스 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @GetMapping("/course")
+    public ResponseEntity<List<CourseSimpleDto>> showUserCourse(@ApiIgnore Authentication authentication) {
+        return ResponseEntity.ok().body(userService.showUserCourse(authentication.getPrincipal().toString()));
+    }
+
+
+    @ApiOperation(value = "마이페이지 DP 조회", notes = "DP 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @GetMapping("/dp")
+
+    public ResponseEntity<UserDpInfoDto> showUserDmzPoint(@ApiIgnore Authentication authentication) {
+        return ResponseEntity.ok().body(userService.showUserDmzPoint(authentication.getPrincipal().toString()));
+    }
+
+    @ApiOperation(value = "마이페이지 편지함 조회", notes = "편지함 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    })
+    @GetMapping("/{cid}/mail")
+    public ResponseEntity<List<LetterDto>> showUserMailBox(@PathVariable Long cid, @ApiIgnore Authentication authentication) {
+        return ResponseEntity.ok().body(userService.showUserMailBox(cid, authentication.getPrincipal().toString()));
     }
 
 }

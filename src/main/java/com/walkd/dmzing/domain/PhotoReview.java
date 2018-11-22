@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PhotoReview extends BaseTimeEntity {
+public class PhotoReview extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,10 +44,11 @@ public class PhotoReview extends BaseTimeEntity {
     public PhotoReviewDto toDto() {
         return PhotoReviewDto.builder()
                 .imageUrl(imageUrl)
-                .courseId(course.getId())
+                .id(id)
                 .placeName(placeName)
                 .startAt(startAt)
                 .tag(tag)
+                .courseId(course.getId())
                 .build();
     }
 }

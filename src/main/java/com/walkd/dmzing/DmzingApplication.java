@@ -11,8 +11,9 @@ public class DmzingApplication {
 
     public static final String APPLICATION_LOCATIONS = "spring.config.location="
             + "classpath:application.properties,"
-            + "classpath:aws.properties";
-
+            + "classpath:aws.properties,"
+            + "./../local.properties,"
+            + "./../secret.properties";
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(DmzingApplication.class)
