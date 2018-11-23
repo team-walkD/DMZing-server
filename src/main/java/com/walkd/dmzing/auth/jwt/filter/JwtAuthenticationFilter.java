@@ -3,7 +3,7 @@ package com.walkd.dmzing.auth.jwt.filter;
 import com.walkd.dmzing.auth.jwt.JwtAuthenticationToken;
 import com.walkd.dmzing.auth.jwt.JwtInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         String token = request.getHeader(JwtInfo.HEADER_NAME);
 
         if (StringUtils.isEmpty(token)) {
-            throw new AccessDeniedException("Not empty Token");
+            throw new BadCredentialsException("잘못된 토큰입니다.");
         } else {
             log.info("[request start] -> {}",request.getRequestURI());
             return getAuthenticationManager().authenticate(new JwtAuthenticationToken(token));

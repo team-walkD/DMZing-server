@@ -18,7 +18,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         if (authentication.getCredentials() == null) {
-            throw new BadCredentialsException("Bad token");
+            throw new BadCredentialsException("잘못된 토큰입니다.");
         }
 
         String token = authentication.getCredentials().toString();
@@ -27,7 +27,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             UserDetails userDetails = userDetailsService.loadUserByUsername(token);
             return new JwtAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
         } else {
-            throw new BadCredentialsException("Bad token");
+            throw new BadCredentialsException("잘못된 토큰입니다.");
         }
     }
 

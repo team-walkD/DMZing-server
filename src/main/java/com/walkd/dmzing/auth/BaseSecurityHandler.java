@@ -1,8 +1,10 @@
 package com.walkd.dmzing.auth;
 
 import com.google.gson.Gson;
+import com.walkd.dmzing.advice.ValidationExceptionControllerAdvice;
 import com.walkd.dmzing.auth.jwt.JwtInfo;
 import com.walkd.dmzing.dto.exception.ExceptionDto;
+import com.walkd.dmzing.exception.LoginContentTypeException;
 import com.walkd.dmzing.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +46,19 @@ public class BaseSecurityHandler implements AuthenticationSuccessHandler, Authen
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
         log.warn("[BadCredentialsException] credentials exception {}", exception.getMessage());
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().print(gson.toJson(ExceptionDto.builder().field(FIELD).message(exception.getMessage())));
+
+        if(exception.getMessage().equals(LoginContentTypeException.MESSAGE)){
+            response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
+            response.getWriter().print(gson.toJson(ExceptionDto.builder()
+                    .field(ValidationExceptionControllerAdvice.FIELD)
+                    .message(exception.getMessage())));
+        }else {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().print(gson.toJson(ExceptionDto.builder()
+                    .field(FIELD)
+                    .message(exception.getMessage())));
+        }
     }
+
 }

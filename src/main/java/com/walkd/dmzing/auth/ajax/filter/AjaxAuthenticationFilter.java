@@ -2,7 +2,7 @@ package com.walkd.dmzing.auth.ajax.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.walkd.dmzing.dto.user.UserDto;
-import com.walkd.dmzing.service.LoginContentTypeException;
+import com.walkd.dmzing.exception.LoginContentTypeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,7 +35,7 @@ public class AjaxAuthenticationFilter extends AbstractAuthenticationProcessingFi
             return getAuthenticationManager().authenticate(authentication);
         }
 
-        throw new LoginContentTypeException("Don't use content type for " + request.getContentType());
+        throw new LoginContentTypeException();
     }
 
     private boolean isJson(HttpServletRequest request) {
