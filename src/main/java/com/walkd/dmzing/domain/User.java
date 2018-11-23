@@ -49,32 +49,6 @@ public class User {
         this.dmzPoint = course.isEnoughMoney(this.dmzPoint);
     }
 
-    public UserInfoDto toUserInfoDto(Long courseCount, Long reviewCount) {
-        return UserInfoDto.builder()
-                .email(this.email)
-                .nick(nickname)
-                .dp(dmzPoint)
-                .reviewCount(reviewCount)
-                .courseCount(courseCount)
-                .build();
-    }
-
-    public UserDpInfoDto toUserDpDto(List<DpHistory> dpHistories) {
-        return UserDpInfoDto.builder()
-                .totalDp(dmzPoint)
-                .dpHistoryDtos(dpHistories.stream().map(dpHistory -> dpHistory.toDto()).collect(Collectors.toList()))
-                .build();
-    }
-
-    public static User fromDto(UserDto userDto, PasswordEncoder passwordEncoder) {
-        return User.builder()
-                .email(userDto.getEmail())
-                .password(passwordEncoder.encode(userDto.getPassword()))
-                .nickname(userDto.getNickname())
-                .phoneNumber(userDto.getPhoneNumber())
-                .authority(UserDto.USER_AUTHORITY).build();
-    }
-
     public void addDmzPoint(Long reward) {
         dmzPoint += reward;
     }

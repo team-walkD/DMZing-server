@@ -1,13 +1,14 @@
 package com.walkd.dmzing.domain;
 
-import com.walkd.dmzing.dto.dp.DpHistoryDto;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DpHistory extends BaseTime {
     public static final String INIT_DP = "시작 포인트";
@@ -31,14 +32,5 @@ public class DpHistory extends BaseTime {
         this.user = user;
         this.dp = dp;
         this.dpType = dpType;
-    }
-
-    public DpHistoryDto toDto() {
-        return DpHistoryDto.builder()
-                .createdAt(getCreatedAt().getTime())
-                .dp(dp)
-                .dpType(dpType)
-                .id(id)
-                .build();
     }
 }

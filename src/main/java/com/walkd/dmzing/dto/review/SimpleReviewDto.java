@@ -25,7 +25,6 @@ public interface SimpleReviewDto {
     @ApiModelProperty(example = "1533333", position = 7)
     Long getEndAt();
 
-
     @ApiModelProperty(example = "true", position = 8)
     Boolean getLike();
 

@@ -2,10 +2,12 @@ package com.walkd.dmzing.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.walkd.dmzing.domain.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -43,4 +45,12 @@ public class UserDto implements LoginUser {
         return new UsernamePasswordAuthenticationToken(this.email, this.password);
     }
 
+    public User toEntity(PasswordEncoder passwordEncoder) {
+        return User.builder()
+                .email(email)
+                .password(passwordEncoder.encode(password))
+                .phoneNumber(phoneNumber)
+                .nickname(nickname)
+                .build();
+    }
 }

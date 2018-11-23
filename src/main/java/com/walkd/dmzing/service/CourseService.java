@@ -8,6 +8,7 @@ import com.walkd.dmzing.exception.AlreadyBuyCourseException;
 import com.walkd.dmzing.exception.NotFoundCourseException;
 import com.walkd.dmzing.exception.NotFoundUserException;
 import com.walkd.dmzing.repository.*;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

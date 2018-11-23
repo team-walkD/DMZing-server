@@ -53,7 +53,7 @@ public class ReviewService {
         if (id == 0) {
             return reviewRepository.findTop30ByCourse_TypeOrderByIdDesc(type)
                     .stream()
-                    .map(review -> review.toSimpleDto(userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new)))
+                    .map(review -> review.toSimpleDto(userRepository.findByEmail(email).orElseThrow(NotFoundUserException:: new)))
                     .collect(Collectors.toList());
         }
         return reviewRepository.findTop30ByIdAndCourse_TypeLessThanOrderByIdDesc(id, type)
