@@ -1,11 +1,11 @@
 package com.walkd.dmzing.dto.user;
 
 
+import com.walkd.dmzing.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class UserInfoDto {
 
     private String email;
@@ -18,4 +18,11 @@ public class UserInfoDto {
 
     private Long dp;
 
+    public UserInfoDto(User user,Long courseCount,Long reviewCount) {
+        this.email = user.getEmail();
+        this.nick = user.getNickname();
+        this.courseCount = courseCount;
+        this.reviewCount = reviewCount;
+        this.dp = user.getDmzPoint();
+    }
 }

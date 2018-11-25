@@ -2,14 +2,11 @@ package com.walkd.dmzing.controller;
 
 import com.walkd.dmzing.auth.jwt.JwtInfo;
 import com.walkd.dmzing.dto.course.CourseSimpleDto;
-import com.walkd.dmzing.dto.exception.LetterDto;
+import com.walkd.dmzing.dto.dp.DpHistoryDto;
 import com.walkd.dmzing.dto.exception.ExceptionDto;
+import com.walkd.dmzing.dto.exception.LetterDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
-import com.walkd.dmzing.dto.user.JoinUser;
-import com.walkd.dmzing.dto.user.LoginUser;
-import com.walkd.dmzing.dto.user.UserDto;
-import com.walkd.dmzing.dto.user.UserInfoDto;
-import com.walkd.dmzing.dto.user.UserDpInfoDto;
+import com.walkd.dmzing.dto.user.*;
 import com.walkd.dmzing.service.UserService;
 import com.walkd.dmzing.util.JwtUtil;
 import io.swagger.annotations.*;
@@ -106,7 +103,6 @@ public class UserController {
         return ResponseEntity.ok().body(userService.showUserCourse(authentication.getPrincipal().toString()));
     }
 
-
     @ApiOperation(value = "마이페이지 DP 조회", notes = "DP 조회")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "조회 성공"),
@@ -121,6 +117,7 @@ public class UserController {
     public ResponseEntity<UserDpInfoDto> showUserDmzPoint(@ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(userService.showUserDmzPoint(authentication.getPrincipal().toString()));
     }
+
 
     @ApiOperation(value = "마이페이지 편지함 조회", notes = "편지함 조회")
     @ApiResponses(value = {

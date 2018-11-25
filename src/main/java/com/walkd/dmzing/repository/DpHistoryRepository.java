@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface DpHistoryRepository extends JpaRepository<DpHistory, Long> {
 
-    List<DpHistory> findAllByUserId(Long id);
+    List<DpHistory> findAllByUser_Email(String email);
 }

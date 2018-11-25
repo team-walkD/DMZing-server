@@ -16,7 +16,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Long countByCourse_Type(Type type);
 
-    Long countReviewByUserId(Long id);
+    Long countReviewByUser_Email(String eamil);
 
-    List<Review> findAllByUserId(Long id);
+    List<Review> findAllByUser_Email(String email);
 }

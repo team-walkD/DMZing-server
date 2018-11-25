@@ -1,7 +1,6 @@
 package com.walkd.dmzing.controller;
 
 import com.walkd.dmzing.dto.course.PurchaseListAndPickCourseDto;
-import com.walkd.dmzing.dto.course.place.PlaceApiDto;
 import com.walkd.dmzing.dto.course.place.PlaceDto;
 import com.walkd.dmzing.dto.mission.MissionDto;
 import com.walkd.dmzing.service.MissionService;

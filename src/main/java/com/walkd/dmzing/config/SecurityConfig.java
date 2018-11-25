@@ -72,7 +72,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(USER_ENTRY_POINT).permitAll()
                 .antMatchers(ERROR_ENTRY_POINT).permitAll()
                 .antMatchers(H2_CONSOLE).permitAll()
                 .and()

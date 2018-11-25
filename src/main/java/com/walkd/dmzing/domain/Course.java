@@ -132,7 +132,7 @@ public class Course {
                 .build();
     }
 
-    public CourseDetailDto toCourseDetailDto(Long count, MissionHistory missionHistory) {
+    public CourseDetailDto toCourseDetailDto(Long reviewCount,Long pickCount ,MissionHistory missionHistory) {
         return CourseDetailDto.builder()
                 .id(id)
                 .title(type.getTypeName())
@@ -145,7 +145,8 @@ public class Course {
                 .estimatedTime(estimatedTime)
                 .backgroundImageUrl(backgroundImageUrl)
                 .places(makePlaceList(missionHistory))
-                .reviewCount(count)
+                .reviewCount(reviewCount)
+                .pickCount(pickCount)
                 .build();
     }
 

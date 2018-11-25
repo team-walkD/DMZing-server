@@ -24,12 +24,12 @@ public class AjaxAuthenticationProvider extends AbstractUserDetailsAuthenticatio
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         if (authentication.getCredentials() == null) {
-            throw new BadCredentialsException("Bad credentials");
+            throw new BadCredentialsException("잘못된 회원정보 입니다.");
         }
 
         String presentedPassword = authentication.getCredentials().toString();
         if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
-            throw new BadCredentialsException("Bad credentials");
+            throw new BadCredentialsException("잘못된 회원정보 입니다.");
         }
     }
 

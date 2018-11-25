@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewDto implements SimpleReviewDto, DetailReviewDto {
+public class ReviewDto implements DetailReviewDto {
 
     @ApiModelProperty(hidden = true)
     private Long id;
@@ -46,6 +46,19 @@ public class ReviewDto implements SimpleReviewDto, DetailReviewDto {
 
     @ApiModelProperty(hidden = true)
     private Long likeCount;
+
+    public ReviewDto(Review review,String email) {
+        this.id = review.getId();
+        this.title = review.getTitle();
+        this.thumbnailUrl = review.getThumbnailUrl();
+        this.courseId = review.getCourse().getId();
+        this.createdAt = review.getCreatedAt().getTime();
+        this.startAt = review.getStartAt();
+        this.endAt = review.getEndAt();
+        this.postDto = review.getPosts().stream().map(post -> post.toDto()).collect(Collectors.toList());
+        this.like = review.isLike(email);
+        this.likeCount = review.getReviewLikes().stream().count();
+    }
 
     public Review toEntity() {
         return Review.builder().title(title)

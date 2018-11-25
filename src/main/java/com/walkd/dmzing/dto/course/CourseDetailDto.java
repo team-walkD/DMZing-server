@@ -23,4 +23,5 @@ public class CourseDetailDto {
 
     private List<PlaceDto> places;
     private Long reviewCount;
+    private Long pickCount;
 }

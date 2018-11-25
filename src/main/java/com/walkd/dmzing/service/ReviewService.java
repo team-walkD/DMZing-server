@@ -53,12 +53,12 @@ public class ReviewService {
         if (id == 0) {
             return reviewRepository.findTop30ByCourse_TypeOrderByIdDesc(type)
                     .stream()
-                    .map(review -> review.toSimpleDto(userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new)))
+                    .map(review -> new SimpleReviewDto(review, email))
                     .collect(Collectors.toList());
         }
         return reviewRepository.findTop30ByIdAndCourse_TypeLessThanOrderByIdDesc(id, type)
                 .stream()
-                .map(review -> review.toSimpleDto(userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new)))
+                .map(review -> new SimpleReviewDto(review, email))
                 .collect(Collectors.toList());
     }
 
@@ -86,8 +86,7 @@ public class ReviewService {
 
     @Transactional
     public ReviewDto showReview(Long rid, String email) {
-        return reviewRepository.findById(rid).orElseThrow(NotFoundCourseException::new)
-                .toDto(userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new));
+        return new ReviewDto(reviewRepository.findById(rid).orElseThrow(NotFoundCourseException::new),email);
     }
 
     @Transactional

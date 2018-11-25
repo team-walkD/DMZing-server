@@ -3,6 +3,7 @@ package com.walkd.dmzing.service;
 import com.walkd.dmzing.auth.UserDetailsImpl;
 import com.walkd.dmzing.domain.*;
 import com.walkd.dmzing.dto.course.CourseSimpleDto;
+import com.walkd.dmzing.dto.dp.DpHistoryDto;
 import com.walkd.dmzing.dto.exception.LetterDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import com.walkd.dmzing.dto.user.UserDpInfoDto;
@@ -45,7 +46,7 @@ public class UserService {
     public UserDetailsImpl create(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) throw new EmailAlreadyExistsException();
 
-        User user = userRepository.save(User.fromDto(userDto, passwordEncoder));
+        User user = userRepository.save(userDto.toEntity(passwordEncoder));
 
         purchasedCourseByUserRepository.save(PurchasedCourseByUser.builder()
                 .course(courseRepository.findById(Course.DEFAULT_COURSE_ID).orElseThrow(NotFoundCourseException::new))
@@ -55,20 +56,23 @@ public class UserService {
         return user.createUserDetails();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public UserInfoDto showUserInfo(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
+//        select (SELECT count(*) FROM dmzing.purchased_course_by_user where purchased_course_by_user.user_id = user.id),
+//        (SELECT count(*) FROM dmzing.review where review.user_id = user.id),email,nickname,dmz_point
+//        from dmzing.user where user.email = "example@gmail.com"
 
-        return user.toUserInfoDto(purchasedCourseByUserRepository.countByUser_Email(email)
-                , reviewRepository.countReviewByUserId(user.getId()));
+        return new UserInfoDto(
+                userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new),
+                purchasedCourseByUserRepository.countByUser_Email(email),
+                reviewRepository.countReviewByUser_Email(email));
     }
 
     @Transactional
     public List<SimpleReviewDto> showUserReview(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
-        return reviewRepository.findAllByUserId(user.getId())
+        return reviewRepository.findAllByUser_Email(email)
                 .stream()
-                .map(review -> review.toSimpleDto(user))
+                .map(review -> new SimpleReviewDto(review,email))
                 .collect(Collectors.toList());
     }
 
@@ -80,16 +84,25 @@ public class UserService {
                 .map(purchasedCourseByUser -> purchasedCourseByUser.toCourseSimpleDto())
                 .collect(Collectors.toList());
     }
+//
+//    @Transactional
+//    public List<DpHistoryDto> showUserDmzPoint(String email) {
+//        return dpHistoryRepository.findAllByUser_Email(email)
+//                .stream()
+//                .map(dpHistory -> new DpHistoryDto(dpHistory))
+//                .collect(Collectors.toList());
+//    }
+
 
     @Transactional
     public UserDpInfoDto showUserDmzPoint(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
+    User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
 
-        List<DpHistory> dpHistories = dpHistoryRepository.findAllByUserId(user.getId());
-
-        return user.toUserDpDto(dpHistories);
+        return UserDpInfoDto.builder().dpHistoryDtos(dpHistoryRepository.findAllByUser_Email(email)
+                .stream()
+                .map(dpHistory -> new DpHistoryDto(dpHistory))
+                .collect(Collectors.toList())).totalDp(user.getDmzPoint()).build();
     }
-
 
     @Transactional
     public List<LetterDto> showUserMailBox(Long cid, String email) {
@@ -98,7 +111,6 @@ public class UserService {
 
         List<MissionHistory> missionHistories = missionHistoryRepository
                 .findAllByPurchasedCoursesByUser_CourseAndPurchasedCoursesByUser_User(course, user);
-
 
         if (missionHistories == null) return new ArrayList<>();
 

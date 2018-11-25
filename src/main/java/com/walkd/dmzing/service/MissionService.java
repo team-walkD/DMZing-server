@@ -54,18 +54,20 @@ public class MissionService {
 
         return PurchaseListAndPickCourseDto.builder().pickCourse(pickPurchasedCourse.getCourse()
                 .toCourseDetailDto(reviewRepository.countByCourse_Type(course.getType())
-                + photoReviewRepository.countByCourse_Type(course.getType()), missionHistory))
+                                + photoReviewRepository.countByCourse_Type(course.getType()),
+                        purchasedCourseByUserRepository.countByCourse_TypeAndIsPickedTrue(course.getType())
+                        , missionHistory))
                 .purchaseList(purchaseList).build();
     }
 
     @Transactional
     public List<PlaceDto> filterSuccessPlaces(String email, MissionDto missionDto) {
-        User user= userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
+        User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
         PurchasedCourseByUser purchasedCourse = purchasedCourseByUserRepository.findByCourse_IdAndUser_Email(missionDto.getCid(), email)
                 .orElseThrow(NotFoundPurchaseHistoryException::new);
         Place checkPlace = purchasedCourse.getPlace(missionDto.getPid());
-        if(!missionHistoryRepository.existsByPlaceAndPurchasedCoursesByUser(checkPlace,purchasedCourse)){
-            Long reward = checkPlace.checkSuccessed(missionDto.getLatitude(),missionDto.getLongitude());
+        if (!missionHistoryRepository.existsByPlaceAndPurchasedCoursesByUser(checkPlace, purchasedCourse)) {
+            Long reward = checkPlace.checkSuccessed(missionDto.getLatitude(), missionDto.getLongitude());
             user.addDmzPoint(reward);
 
             List<PlaceDto> placeDtos = checkPlace.toPlaceDtos(purchasedCourse.getCourse()
@@ -94,7 +96,9 @@ public class MissionService {
             MissionHistory missionHistory = missionHistoryRepository.findTopByPurchasedCoursesByUserOrderByIdDesc(purchasedCourse);
 
             return course.toCourseDetailDto(reviewRepository.countByCourse_Type(course.getType())
-                    + photoReviewRepository.countByCourse_Type(course.getType()), missionHistory);
+                            + photoReviewRepository.countByCourse_Type(course.getType()),
+                    purchasedCourseByUserRepository.countByCourse_TypeAndIsPickedTrue(course.getType())
+                    , missionHistory);
         }
         throw new NotFoundPurchaseHistoryException();
     }
