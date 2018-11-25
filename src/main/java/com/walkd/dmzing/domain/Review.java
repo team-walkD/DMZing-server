@@ -1,8 +1,6 @@
 package com.walkd.dmzing.domain;
 
 
-import com.walkd.dmzing.dto.review.ReviewDto;
-import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter

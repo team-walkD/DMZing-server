@@ -51,6 +51,7 @@ public class UserDto implements LoginUser {
                 .password(passwordEncoder.encode(password))
                 .phoneNumber(phoneNumber)
                 .nickname(nickname)
+                .authority(USER_AUTHORITY)
                 .build();
     }
 }
