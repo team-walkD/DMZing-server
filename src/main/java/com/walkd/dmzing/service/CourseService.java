@@ -50,7 +50,8 @@ public class CourseService {
             Course course = courseRepository.findById(cid).orElseThrow(NotFoundCourseException::new);
 
             return course.toCourseDetailDto(reviewRepository.countByCourse_Type(course.getType())
-                    + photoReviewRepository.countByCourse_Type(course.getType()));
+                    + photoReviewRepository.countByCourse_Type(course.getType()),
+                    purchasedCourseByUserRepository.countByCourse_TypeAndIsPickedTrue(course.getType()));
         }
 
         throw new NotFoundCourseException();
@@ -71,7 +72,8 @@ public class CourseService {
         dpHistoryRepository.save(DpHistory.builder().dpType(course.getType().getTypeName()).user(user).dp(-course.getPrice()).build());
 
         return course.toCourseDetailDto(reviewRepository.countByCourse_Type(course.getType())
-                + photoReviewRepository.countByCourse_Type(course.getType()));
+                + photoReviewRepository.countByCourse_Type(course.getType()),
+                purchasedCourseByUserRepository.countByCourse_TypeAndIsPickedTrue(course.getType()));
     }
 
     public List<PlaceDto> showPlacesInCourse(Long cid) {

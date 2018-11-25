@@ -117,7 +117,7 @@ public class Course {
                 .build();
     }
 
-    public CourseDetailDto toCourseDetailDto(Long count) {
+    public CourseDetailDto toCourseDetailDto(Long count,Long pickCount) {
         return CourseDetailDto.builder()
                 .id(id)
                 .title(type.getTypeName())
@@ -133,6 +133,7 @@ public class Course {
                 .places(places.stream().map(place -> place.toPlaceDto().deleteDetailInfo())
                         .sorted(Comparator.comparing(PlaceDto::getSequence)).collect(Collectors.toList()))
                 .reviewCount(count)
+                .pickCount(pickCount)
                 .build();
     }
 
