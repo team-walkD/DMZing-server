@@ -6,6 +6,7 @@ import com.walkd.dmzing.dto.course.CourseSimpleDto;
 import com.walkd.dmzing.dto.dp.DpHistoryDto;
 import com.walkd.dmzing.dto.exception.LetterDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
+import com.walkd.dmzing.dto.user.UserDpInfoDto;
 import com.walkd.dmzing.dto.user.UserDto;
 import com.walkd.dmzing.dto.user.UserInfoDto;
 import com.walkd.dmzing.exception.EmailAlreadyExistsException;
@@ -69,10 +70,9 @@ public class UserService {
 
     @Transactional
     public List<SimpleReviewDto> showUserReview(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
-        return reviewRepository.findAllByUserId(user.getId())
+        return reviewRepository.findAllByUser_Email(email)
                 .stream()
-                .map(review -> review.toSimpleDto(user))
+                .map(review -> new SimpleReviewDto(review,email))
                 .collect(Collectors.toList());
     }
 
@@ -84,14 +84,24 @@ public class UserService {
                 .map(purchasedCourseByUser -> purchasedCourseByUser.toCourseSimpleDto())
                 .collect(Collectors.toList());
     }
+//
+//    @Transactional
+//    public List<DpHistoryDto> showUserDmzPoint(String email) {
+//        return dpHistoryRepository.findAllByUser_Email(email)
+//                .stream()
+//                .map(dpHistory -> new DpHistoryDto(dpHistory))
+//                .collect(Collectors.toList());
+//    }
+
 
     @Transactional
-    public List<DpHistoryDto> showUserDmzPoint(String email) {
-        //토탈 dp 삭제
-        return dpHistoryRepository.findAllByUser_Email(email)
+    public UserDpInfoDto showUserDmzPoint(String email) {
+    User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
+
+        return UserDpInfoDto.builder().dpHistoryDtos(dpHistoryRepository.findAllByUser_Email(email)
                 .stream()
                 .map(dpHistory -> new DpHistoryDto(dpHistory))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())).totalDp(user.getDmzPoint()).build();
     }
 
     @Transactional

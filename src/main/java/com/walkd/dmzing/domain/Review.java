@@ -5,6 +5,7 @@ import com.walkd.dmzing.dto.review.ReviewDto;
 import com.walkd.dmzing.dto.review.SimpleReviewDto;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review extends BaseTime {
 
@@ -61,32 +63,7 @@ public class Review extends BaseTime {
         return this;
     }
 
-    public SimpleReviewDto toSimpleDto(User loginUser) {
-        return ReviewDto.builder()
-                .id(id)
-                .title(title)
-                .createdAt(getCreatedAt().getTime())
-                .thumbnailUrl(thumbnailUrl)
-                .courseId(course.getId())
-                .startAt(startAt)
-                .endAt(endAt)
-                .likeCount(reviewLikes.stream().count())
-                .like(reviewLikes.stream().anyMatch(reviewLike -> reviewLike.isMyLike(loginUser.getId())))
-                .build();
-    }
-
-    public ReviewDto toDto(User loginUser) {
-        return ReviewDto.builder()
-                .id(id)
-                .title(title)
-                .createdAt(getCreatedAt().getTime())
-                .thumbnailUrl(thumbnailUrl)
-                .startAt(startAt)
-                .endAt(endAt)
-                .courseId(course.getId())
-                .postDto(posts.stream().map(post -> post.toDto()).collect(Collectors.toList()))
-                .likeCount(reviewLikes.stream().count())
-                .like(reviewLikes.stream().anyMatch(reviewLike -> reviewLike.isMyLike(loginUser.getId())))
-                .build();
+    public Boolean isLike(String email){
+        return reviewLikes.stream().anyMatch(reviewLike -> reviewLike.isMyLike(email));
     }
 }

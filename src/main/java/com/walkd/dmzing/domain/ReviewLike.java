@@ -27,7 +27,7 @@ public class ReviewLike {
         this.review = review;
     }
 
-    public boolean isMyLike(Long uid) {
-        return this.user.getId() == uid;
+    public boolean isMyLike(String email) {
+        return this.user.getEmail().equals(email);
     }
 }

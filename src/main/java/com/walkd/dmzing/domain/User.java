@@ -1,16 +1,13 @@
 package com.walkd.dmzing.domain;
 
 import com.walkd.dmzing.auth.UserDetailsImpl;
-import com.walkd.dmzing.dto.user.UserDto;
-import com.walkd.dmzing.dto.user.UserInfoDto;
-import com.walkd.dmzing.dto.user.UserDpInfoDto;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

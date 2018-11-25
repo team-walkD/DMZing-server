@@ -1,33 +1,45 @@
 package com.walkd.dmzing.dto.review;
 
+import com.walkd.dmzing.domain.Review;
 import io.swagger.annotations.ApiModelProperty;
 
-public interface SimpleReviewDto {
-    //todo 직렬화시 여기 getter만 나가도록 적용
-    @ApiModelProperty(example = "1", position = 1)
-    Long getId();
+public class SimpleReviewDto {
+    @ApiModelProperty(hidden = true)
+    private Long id;
 
-    @ApiModelProperty(example = "dmzing 후기", position = 2)
-    String getTitle();
+    @ApiModelProperty(example = "dmzing 후기", position = 1)
+    private String title;
 
-    @ApiModelProperty(example = "dmzing.png", position = 3)
-    String getThumbnailUrl();
+    @ApiModelProperty(example = "dmzing.png", position = 2)
+    private String thumbnailUrl;
 
-    @ApiModelProperty(example = "15203333", position = 4)
-    Long getCreatedAt();
+    @ApiModelProperty(example = "1", position = 3)
+    private Long courseId;
 
-    @ApiModelProperty(example = "1", position = 5)
-    Long getCourseId();
+    @ApiModelProperty(hidden = true)
+    private Long createdAt;
 
-    @ApiModelProperty(example = "1522222", position = 6)
-    Long getStartAt();
+    @ApiModelProperty(example = "1522222", position = 4)
+    private Long startAt;
 
-    @ApiModelProperty(example = "1533333", position = 7)
-    Long getEndAt();
+    @ApiModelProperty(example = "1533333", position = 5)
+    private Long endAt;
 
-    @ApiModelProperty(example = "true", position = 8)
-    Boolean getLike();
+    @ApiModelProperty(hidden = true)
+    private Boolean like;
 
-    @ApiModelProperty(example = "10", position = 9)
-    Long getLikeCount();
+    @ApiModelProperty(hidden = true)
+    private Long likeCount;
+
+    public SimpleReviewDto(Review review,String email) {
+        this.id = review.getId();
+        this.title = review.getTitle();
+        this.thumbnailUrl = review.getThumbnailUrl();
+        this.courseId = review.getCourse().getId();
+        this.createdAt = review.getCreatedAt().getTime();
+        this.startAt = review.getStartAt();
+        this.endAt = review.getEndAt();
+        this.like = review.isLike(email);
+        this.likeCount = review.getReviewLikes().stream().count();
+    }
 }

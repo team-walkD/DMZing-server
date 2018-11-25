@@ -103,7 +103,6 @@ public class UserController {
         return ResponseEntity.ok().body(userService.showUserCourse(authentication.getPrincipal().toString()));
     }
 
-
     @ApiOperation(value = "마이페이지 DP 조회", notes = "DP 조회")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "조회 성공"),
@@ -115,9 +114,10 @@ public class UserController {
     })
     @GetMapping("/dp")
 
-    public ResponseEntity<List<DpHistoryDto>> showUserDmzPoint(@ApiIgnore Authentication authentication) {
+    public ResponseEntity<UserDpInfoDto> showUserDmzPoint(@ApiIgnore Authentication authentication) {
         return ResponseEntity.ok().body(userService.showUserDmzPoint(authentication.getPrincipal().toString()));
     }
+
 
     @ApiOperation(value = "마이페이지 편지함 조회", notes = "편지함 조회")
     @ApiResponses(value = {

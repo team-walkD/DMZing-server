@@ -17,6 +17,6 @@ insert into user(id, authority, dmz_point, email, nickname, password, phone_numb
 -- insert into place(id, course_id, hint, latitude, longitude,  letter_image_url, title, reward, sequence, tour_type_id, content_id) values (11, 3, '힌트11', 1111, 1111,  '편지url11', '장소11', '100', 2, 1111, 1111);
 -- insert into place(id, course_id, hint, latitude, longitude,  letter_image_url, title, reward, sequence, tour_type_id, content_id) values (12, 3, '힌트12', 1212, 1212,  '편지url12', '장소12', '100', 3, 1212, 1212);
 INSERT INTO purchased_course_by_user(is_picked,course_id,user_id) VALUES(true, 1, 1);
-INSERT INTO purchased_course_by_user(is_picked,course_id,user_id) VALUES(true, 2, 1);
+INSERT INTO purchased_course_by_user(is_picked,course_id,user_id) VALUES(false, 2, 1);
 -- insert into MISSION_HISTORY(place_id,PURCHASED_COURSES_BY_USER_id) values (1,1);
 -- insert into MISSION_HISTORY(place_id,PURCHASED_COURSES_BY_USER_id) values (2,1);
