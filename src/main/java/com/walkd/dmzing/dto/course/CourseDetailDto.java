@@ -20,6 +20,7 @@ public class CourseDetailDto {
     private Double estimatedTime;
     private Long price;
     private String backgroundImageUrl;
+    private String backgroundGifUrl;
 
     private List<PlaceDto> places;
     private Long reviewCount;

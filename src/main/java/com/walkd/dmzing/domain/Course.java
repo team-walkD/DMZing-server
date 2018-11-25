@@ -57,10 +57,12 @@ public class Course {
 
     private Long price;
 
+    private String backgroundGifUrl;
 
     @Builder
     public Course(Type type, String title, String mainDescription, String subDescription, String imageUrl, String mainImageUrl,
-                  String lineImageUrl, String backgroundImageUrl, List<Place> places, Level level, Double estimatedTime, Long price) {
+                  String lineImageUrl, String backgroundImageUrl, List<Place> places, Level level, Double estimatedTime, Long price,
+                  String backgroundGifUrl) {
         this.type = type;
         this.title = title;
         this.mainDescription = mainDescription;
@@ -73,6 +75,7 @@ public class Course {
         this.level = level;
         this.estimatedTime = estimatedTime;
         this.price = price;
+        this.backgroundGifUrl = backgroundGifUrl;
     }
 
     public void setPlaces(List<Place> places) {
@@ -114,7 +117,7 @@ public class Course {
                 .build();
     }
 
-    public CourseDetailDto toCourseDetailDto(Long count) {
+    public CourseDetailDto toCourseDetailDto(Long count,Long pickCount) {
         return CourseDetailDto.builder()
                 .id(id)
                 .title(type.getTypeName())
@@ -126,13 +129,15 @@ public class Course {
                 .level(level.getLevelName())
                 .estimatedTime(estimatedTime)
                 .backgroundImageUrl(backgroundImageUrl)
+                .backgroundGifUrl(backgroundGifUrl)
                 .places(places.stream().map(place -> place.toPlaceDto().deleteDetailInfo())
                         .sorted(Comparator.comparing(PlaceDto::getSequence)).collect(Collectors.toList()))
                 .reviewCount(count)
+                .pickCount(pickCount)
                 .build();
     }
 
-    public CourseDetailDto toCourseDetailDto(Long reviewCount,Long pickCount ,MissionHistory missionHistory) {
+    public CourseDetailDto toCourseDetailDto(Long reviewCount, Long pickCount, MissionHistory missionHistory) {
         return CourseDetailDto.builder()
                 .id(id)
                 .title(type.getTypeName())
@@ -144,6 +149,7 @@ public class Course {
                 .level(level.getLevelName())
                 .estimatedTime(estimatedTime)
                 .backgroundImageUrl(backgroundImageUrl)
+                .backgroundGifUrl(backgroundGifUrl)
                 .places(makePlaceList(missionHistory))
                 .reviewCount(reviewCount)
                 .pickCount(pickCount)
@@ -161,7 +167,8 @@ public class Course {
 
     public Place getCheckPlace(Long pid) {
         List<Place> checkPlaces = places.stream().filter(place -> {
-            return place.isEqualToId(pid);}).collect(Collectors.toList());
+            return place.isEqualToId(pid);
+        }).collect(Collectors.toList());
         if (checkPlaces.size() != 0) {
             return checkPlaces.get(0);
         }
