@@ -2,7 +2,14 @@ package com.walkd.dmzing.dto.review;
 
 import com.walkd.dmzing.domain.Review;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SimpleReviewDto {
     @ApiModelProperty(hidden = true)
     private Long id;
