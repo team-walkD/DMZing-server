@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 public class CourseStatusDto {
-
     private String typeName;
     private String mainDescription;
     private Long pickCount;
     private Boolean isPurchased;
-
 }

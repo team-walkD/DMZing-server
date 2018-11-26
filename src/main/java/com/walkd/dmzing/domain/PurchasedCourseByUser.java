@@ -1,6 +1,5 @@
 package com.walkd.dmzing.domain;
 
-import com.walkd.dmzing.dto.course.CourseMainDto;
 import com.walkd.dmzing.dto.course.CourseSimpleDto;
 import com.walkd.dmzing.exception.NotFoundPickException;
 import lombok.AccessLevel;
