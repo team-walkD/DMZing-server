@@ -14,6 +14,6 @@ public class DpHistoryDto {
         this.id = dpHistory.getId();
         this.createdAt = dpHistory.getCreatedAt().getTime();
         this.dpType = dpHistory.getDpType();
-        this.dp = getDp();
+        this.dp = dpHistory.getDp();
     }
 }
