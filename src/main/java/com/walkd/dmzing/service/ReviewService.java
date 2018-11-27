@@ -97,6 +97,7 @@ public class ReviewService {
                         .conut(reviewRepository.countByCourse_Type(type) + photoReviewRepository.countByCourse_Type(type))
                         .imageUrl(courseRepository.findByType(type).orElseThrow(NotFoundCourseException::new).getImageUrl())
                         .courseId(courseRepository.findByType(type).orElseThrow(NotFoundCourseException::new).getId())
+                        .type(type)
                         .build())
                 .collect(Collectors.toList());
     }
