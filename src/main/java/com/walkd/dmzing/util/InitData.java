@@ -45,4 +45,18 @@ public class InitData {
                     PlaceSubDto.builder().hint("힌트2").letterImageUrl("편지url2").reward(120L)
                             .sequence(100).contentId(1626292).contentTypeId(12).build()));
 
+    public static final List<PlaceSubDto> dmzPlaceDtos = new ArrayList<>(Arrays
+            .asList(PlaceSubDto.builder().hint("영화 ‘고지전’의 배경이 된 유명한 전투를 기억하시나요? 한국전쟁 당시 국군은 중공군과 철원평야 요충지인 이곳을 두고 공방전을 벌였는데요, 이곳을 기리기 위해 세워진 기념관에서 첫번째 편지를 찾아보세요.")
+                            .letterImageUrl("https://dmzing-s3.s3.ap-northeast-2.amazonaws.com/review/1542635141870_imjingak.png").reward(70L)
+                            .sequence(1).contentId(731587).contentTypeId(12).build(),
+                    PlaceSubDto.builder().hint("해방이후 북한정권이 철원에 세운 것으로 의미가 있는 건물을 찾아보세요~ 현재는 건물의 외벽만 남아있으니 찾기 어렵지 않을거예요!")
+                            .letterImageUrl("https://dmzing-s3.s3.ap-northeast-2.amazonaws.com/review/1542637319216_tongil_park.png").reward(80L)
+                            .sequence(2).contentId(264485).contentTypeId(12).build(),
+                    PlaceSubDto.builder().hint("휴전선 비무장지대를 비롯하여 평강고원과 북한 선전마을을 전망할 수 있는 이 전망대를 찾아가세요! 모노레일을 타고 올라가면 좀 더 편안하게 갈 수 있답니다~")
+                            .letterImageUrl("https://dmzing-s3.s3.ap-northeast-2.amazonaws.com/review/1542637556154_cart_land.png").reward(80L)
+                            .sequence(3).contentId(561034).contentTypeId(12).build(),
+                    PlaceSubDto.builder().hint("우리나라에서 두 번째로 발견된 남침용 땅굴을 찾으세요.")
+                            .letterImageUrl("https://dmzing-s3.s3.ap-northeast-2.amazonaws.com/review/1542637580237_paju_outlet.png").reward(100L)
+                            .sequence(100).contentId(264481).contentTypeId(12).build()));
+
 }

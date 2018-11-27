@@ -51,21 +51,24 @@ public class InitComponent implements ApplicationRunner {
     @Transactional
     public void run(ApplicationArguments args) {
           if (!apiKey.equals("test")) {
-            courseRepository.findByType(Type.DATE).orElseThrow(NotFoundCourseException::new)
-                    .setPlaces(updatePeripheryDto(createPlaces(InitData.datePlaceDtos)));
+              courseRepository.findByType(Type.DMZ).orElseThrow(NotFoundCourseException::new)
+                    .setPlaces(updatePeripheryDto(createPlaces(InitData.dmzPlaceDtos)));
 
-            courseRepository.findByType(Type.ADVENTURE).orElseThrow(NotFoundCourseException::new)
-                    .setPlaces(updatePeripheryDto(createPlaces(InitData.naturePlaceDtos)));
+              courseRepository.findByType(Type.DATE).orElseThrow(NotFoundCourseException::new)
+                      .setPlaces(updatePeripheryDto(createPlaces(InitData.datePlaceDtos)));
 
-            courseRepository.findByType(Type.HISTORY).orElseThrow(NotFoundCourseException::new)
-                    .setPlaces(updatePeripheryDto(createPlaces(InitData.historyPlaceDtos)));
+              courseRepository.findByType(Type.ADVENTURE).orElseThrow(NotFoundCourseException::new)
+                      .setPlaces(updatePeripheryDto(createPlaces(InitData.naturePlaceDtos)));
 
-            Place place1 = placeRepository.findById(1L).get();
-            Place place2 = placeRepository.findById(2L).get();
-            PurchasedCourseByUser purchasedCourseByUser = purchasedCourseByUserRepository.findById(1L).get();
+              courseRepository.findByType(Type.HISTORY).orElseThrow(NotFoundCourseException::new)
+                      .setPlaces(updatePeripheryDto(createPlaces(InitData.historyPlaceDtos)));
 
-            missionHistoryRepository.save(MissionHistory.builder().place(place1).purchasedCourseByUser(purchasedCourseByUser).build());
-            missionHistoryRepository.save(MissionHistory.builder().place(place2).purchasedCourseByUser(purchasedCourseByUser).build());
+              Place place1 = placeRepository.findById(1L).get();
+              Place place2 = placeRepository.findById(2L).get();
+              PurchasedCourseByUser purchasedCourseByUser = purchasedCourseByUserRepository.findById(1L).get();
+
+              missionHistoryRepository.save(MissionHistory.builder().place(place1).purchasedCourseByUser(purchasedCourseByUser).build());
+              missionHistoryRepository.save(MissionHistory.builder().place(place2).purchasedCourseByUser(purchasedCourseByUser).build());
         }
     }
 
