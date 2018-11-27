@@ -1,5 +1,6 @@
 package com.walkd.dmzing.dto.review;
 
+import com.walkd.dmzing.domain.Type;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,4 +24,7 @@ public class ReviewCountDto {
 
     @ApiModelProperty(example = "1", position = 4)
     private Long courseId;
+
+    @ApiModelProperty(example = "DATE", position = 5)
+    private Type type;
 }
