@@ -4,9 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum Type {
-    DATE("데이트하기 좋은 코스"),
-    HISTORY("역사기행하기 좋은 코스"),
-    ADVENTURE("자연탐방하기 좋은 코스");
+    DATE("데이트 맵"),
+    HISTORY("역사기행 맵"),
+    ADVENTURE("자연탐방 맵"),
+    DMZ("DMZ탑방 맵");
 
     private String typeName;
 
